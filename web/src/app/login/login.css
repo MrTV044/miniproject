@@ -1,0 +1,36 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Custom styles for login page */
+.login-container {
+  @apply flex items-center justify-center min-h-screen  bg-gray-600;
+}
+
+.login-box {
+  @apply w-full max-w-md bg-white shadow-lg rounded-lg p-6;
+}
+
+.login-title {
+  @apply text-2xl font-bold text-center mb-6 text-gray-500;
+}
+
+.input-group label {
+  @apply block font-medium text-gray-500;
+}
+
+.input-group input {
+  @apply w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 text-black;
+}
+
+.login-button {
+  @apply w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 transition;
+}
+
+.signup-text {
+  @apply text-center mt-4 text-gray-600;
+}
+
+.signup-link {
+  @apply text-blue-500;
+}
