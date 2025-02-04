@@ -12,3 +12,52 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+enum Role {
+  ORGANIZER
+  CUSTOMER
+  ADMIN
+}
+
+model User {
+  id         Int      @id @default(autoincrement())
+  fullname   String
+  email      String   @unique
+  role       Role
+  referral   String   @unique
+  Coupon     Coupon[]
+  Order      Order[]
+  created_at DateTime @default(now())
+}
+
+model Order {
+  id      Int   @id @default(autoincrement())
+  userId  Int
+  user    User  @relation(fields: [userId], references: [id])
+  eventId Int
+  event   Event @relation(fields: [eventId], references: [id])
+}
+
+model Event {
+  id          Int     @id @default(autoincrement())
+  name        String
+  image       String
+  description String
+  prices      Int
+  Order       Order[]
+}
+
+model Voucher {
+  id       Int    @id @default(autoincrement())
+  code     String @unique
+  discount Int
+  eventId  Int
+}
+
+model Coupon {
+  id       Int    @id @default(autoincrement())
+  code     String @unique
+  discount Int
+  userId   Int
+  User     User   @relation(fields: [userId], references: [id])
+}
