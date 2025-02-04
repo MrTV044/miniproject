@@ -63,11 +63,39 @@ export default function EventDetail() {
               <span className="font-black">Harga</span>
             </div>
 
-            <div className="flex justify-center py-3 mt-3 rounded-xl bg-orange-600">
+            <button className="flex justify-center py-3 mt-3 w-full rounded-xl bg-orange-600">
               Buy
-            </div>
+            </button>
           </div>
         </div>
+      </div>
+
+      <div className="ml-[150px]">
+        <h2>Description</h2>
+        <p className="w-[700px]">
+          Lorem ipsum odor amet, consectetuer adipiscing elit. Quis massa morbi
+          tellus suscipit tellus efficitur libero. Dapibus urna bibendum
+          facilisis auctor ut nunc; torquent eleifend. Dui elementum proin nisl
+          vitae duis maximus amet? Class suspendisse euismod quam placerat
+          sagittis tincidunt metus mi. Consequat neque non posuere, porta ut et!
+          Porttitor torquent bibendum pretium purus nisl platea orci bibendum.
+          Ultricies porttitor adipiscing montes diam eleifend purus pretium.
+          Tincidunt lacus duis tortor tellus odio ut ligula per. Elementum odio
+          porttitor felis ad quisque. Tortor dapibus penatibus quisque sagittis
+          fringilla ridiculus aenean ut quisque. Nibh natoque porttitor felis
+          finibus congue justo. Lectus iaculis posuere taciti sed ex metus.
+          Fusce tellus maximus egestas semper sollicitudin potenti ligula hac.
+          Eu iaculis sed suspendisse; quis netus vivamus. Elementum fames leo ut
+          nascetur odio eleifend laoreet. Hac libero libero duis dolor eros.
+          Posuere felis torquent bibendum sagittis facilisis urna. Sed fermentum
+          felis blandit dolor habitasse; et congue etiam. Vitae tristique
+          convallis consectetur cursus quisque. Est imperdiet primis condimentum
+          potenti vestibulum. Ullamcorper nostra volutpat turpis rutrum orci
+          varius. Mi amet rutrum libero quam natoque nisi. Sem lacus ornare duis
+          mi vestibulum; tortor volutpat in. Maximus ac ac sed sapien augue
+          suscipit finibus aptent pharetra. Nam mus ridiculus interdum mollis;
+          habitant suspendisse.
+        </p>
       </div>
     </section>
   );
