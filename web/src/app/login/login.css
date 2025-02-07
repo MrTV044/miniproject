@@ -4,11 +4,11 @@
 
 /* Custom styles for login page */
 .login-container {
-  @apply flex items-center justify-center min-h-screen  bg-gray-600;
+  @apply flex items-center justify-center min-h-screen  bg-white;
 }
 
 .login-box {
-  @apply w-full max-w-md bg-white shadow-lg rounded-lg p-6;
+  @apply w-full max-w-md bg-white shadow-2xl rounded-lg p-6;
 }
 
 .login-title {

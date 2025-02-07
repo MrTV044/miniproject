@@ -1,14 +1,30 @@
 import express, { Request, Response } from "express";
 import prisma from "../configs/prisma";
-import bcryptjs from "bcryptjs";
+import bcrypt, { genSalt, hash } from "bcryptjs";
 import jwt from "jsonwebtoken";
+import { Role } from "@prisma/client";
 
-export async function CreateUser(req: Request, res: Response) {
+export async function register(req: Request, res: Response) {
   try {
-    const { name, email, password, role } = req.body;
+    console.log("Hit");
+    const { fullname, email, password, confirmPassword, role } = req.body;
+    console.log(req.body);
+    if (password !== confirmPassword) {
+      res.status(400).json({ message: "Passwords do not match!!!" });
+      return;
+    }
+    const salt = await genSalt(10);
+    const hashedPassword = await hash(password, salt);
+    const hashedConfirmPassword = await hash(confirmPassword, 10);
 
     const user = await prisma.user.create({
-      data: { name, email, password, role },
+      data: {
+        fullname,
+        email,
+        password: hashedPassword,
+        confirmpassword: hashedConfirmPassword,
+        role: role as Role,
+      },
     });
 
     res.status(201).json({ ok: true, message: "User created successfully" });
@@ -31,7 +47,7 @@ export async function login(req: Request, res: Response) {
       return;
     }
 
-    const validpassword = await bcryptjs.compare(password, user.password);
+    const validpassword = await bcrypt.compare(password, user.password);
 
     if (!validpassword) {
       res.status(401).json({ message: "Invalid credentials" });
@@ -39,11 +55,17 @@ export async function login(req: Request, res: Response) {
     }
 
     const JwtPayload = { email: user.email, password: user.password };
-    const token = jwt.sign(JwtPayload, process.env.JWT_SECRET!, {
+    const token = jwt.sign(JwtPayload, process.env.JWT_SECRET! as string, {
       expiresIn: "1h",
     });
 
-    res.json({ ok: true, message: "Logged in successfully" });
+    res
+      .cookie("token", token, {
+        httpOnly: true,
+        sameSite: "none",
+        secure: true,
+      })
+      .json({ ok: true, message: "Logged in successfully" });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "general error" });

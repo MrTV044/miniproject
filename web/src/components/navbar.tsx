@@ -7,7 +7,7 @@ export default function Navbar() {
     <nav>
       <div className="flex justify-between px-10 font-InterThigt items-center">
         <div className="p-3 text-[40px] font-black text-orange-600">
-          QuickTix
+          <Link href="/">QuickTix</Link>
         </div>
 
         <ul className="hidden md:flex gap-5 pb-2 font-InterThigt font-semibold">
@@ -27,11 +27,17 @@ export default function Navbar() {
             Create Event
           </Link> */}
 
-          <Link href="/" className="p-3 rounded-full  hover:hover:bg-gray-200">
+          <Link
+            href="/login"
+            className="p-3 rounded-full  hover:hover:bg-gray-200"
+          >
             Log In
           </Link>
 
-          <Link href="/" className="p-3 rounded-full  hover:hover:bg-gray-200">
+          <Link
+            href="/sign-up"
+            className="p-3 rounded-full  hover:hover:bg-gray-200"
+          >
             Sign Up
           </Link>
         </ul>
