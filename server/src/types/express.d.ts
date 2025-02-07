@@ -5,6 +5,7 @@ interface CustomJWTPayload extends JwtPayload {
   email: string;
   password: string;
   role: string;
+  referral?: string;
 }
 
 declare global {

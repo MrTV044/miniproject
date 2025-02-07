@@ -9,5 +9,5 @@ export interface SignUp1 {
 
 export interface Login1 {
   email: string;
-  password: string
+  password: string;
 }

@@ -1,6 +1,6 @@
 "use client";
 import "../sign-up/sign-up.css";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { SignUp1 } from "@/types/authorization";
 
 export default function SignUp() {
@@ -18,6 +18,9 @@ export default function SignUp() {
     try {
       await fetch("http://localhost:8000/api/v1/register", {
         method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
         body: JSON.stringify({
           fullname: signUp?.fullname,
           email: signUp?.email,
@@ -32,6 +35,22 @@ export default function SignUp() {
       console.error(error);
     }
   }
+
+  const [roles, setRoles] = useState<string[]>();
+  useEffect(() => {
+    async function fetchRoles() {
+      try {
+        const response = await fetch("http://localhost:8000/api/v1/getroles");
+        const roles = await response.json();
+        setRoles(roles.data);
+      } catch (error) {
+        console.error("Error fetching roles:", error);
+      }
+    }
+    fetchRoles();
+  }, []);
+
+  console.log(roles);
 
   function clearForm() {
     setSignUp({
@@ -125,39 +144,23 @@ export default function SignUp() {
           </div>
 
           <div>
-            <label>Role</label>
+            <label htmlFor="role">Role</label>
             <br />
             <div className="w-fit m-auto">
-              <input
+              <select
                 name="role"
-                className="mr-2"
-                id="organizer"
-                type="radio"
-                checked={signUp.role === "ORGANIZER"}
-                value="ORGANIZER"
+                id="role"
+                className="p-2 border rounded"
+                value={signUp.role}
                 onChange={(e) =>
-                  setSignUp((prev) => {
-                    return { ...prev, role: e.target.value };
-                  })
+                  setSignUp((prev) => ({ ...prev, role: e.target.value }))
                 }
                 required
-              />
-              <label htmlFor="organizer">Organizer</label>
-              <input
-                name="role"
-                id="customer"
-                className="ml-20 mr-2"
-                type="radio"
-                value="CUSTOMER"
-                checked={signUp.role === "CUSTOMER"}
-                onChange={(e) =>
-                  setSignUp((prev) => {
-                    return { ...prev, role: e.target.value };
-                  })
-                }
-                required
-              />
-              <label htmlFor="customer">User</label>
+              >
+                {roles?.map((role, index: number) => {
+                  return <option key={index}>{role}</option>;
+                })}
+              </select>
             </div>
           </div>
 

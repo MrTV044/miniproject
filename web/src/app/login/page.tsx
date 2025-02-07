@@ -14,6 +14,9 @@ export default function Login() {
     try {
       await fetch("http://localhost:8000/api/v1/login", {
         method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
         body: JSON.stringify({
           email: login.email,
           password: login.password,
