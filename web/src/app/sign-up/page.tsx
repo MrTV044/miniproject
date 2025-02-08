@@ -2,8 +2,12 @@
 import "../sign-up/sign-up.css";
 import { useState, useEffect } from "react";
 import { SignUp1 } from "@/types/authorization";
+import { toast, ToastContainer } from "react-toastify";
+import { useRouter } from "next/navigation";
 
 export default function SignUp() {
+  const router = useRouter();
+  const [isLoading, setIsLoading] = useState(false);
   const [signUp, setSignUp] = useState<SignUp1>({
     fullname: "",
     email: "",
@@ -13,10 +17,26 @@ export default function SignUp() {
     referral: "",
   });
 
+  function notify(message: string) {
+    return toast(message);
+  }
+
+  function clearForm() {
+    setSignUp({
+      fullname: "",
+      email: "",
+      password: "",
+      referral: "",
+      confirmPassword: "",
+      role: "",
+    });
+  }
+
   async function handleSubmit() {
+    setIsLoading(true);
     console.log(signUp);
     try {
-      await fetch("http://localhost:8000/api/v1/register", {
+      const response = await fetch("http://localhost:8000/api/v1/register", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -30,10 +50,18 @@ export default function SignUp() {
           referral: signUp?.referral,
         }),
       });
-      console.log("Signup successful");
+
+      if (!response.ok) {
+        return notify("Sign up failed");
+      }
+
+      clearForm();
+      notify("Signup successful!");
+      router.push("/login");
     } catch (error) {
       console.error(error);
     }
+    setIsLoading(false);
   }
 
   const [roles, setRoles] = useState<string[]>();
@@ -50,28 +78,15 @@ export default function SignUp() {
     fetchRoles();
   }, []);
 
-  console.log(roles);
-
-  function clearForm() {
-    setSignUp({
-      fullname: "",
-      email: "",
-      password: "",
-      referral: "",
-      confirmPassword: "",
-      role: "",
-    });
-  }
-
   return (
     <>
+      <ToastContainer />
       <div className="auth-container">
         <form
           className="auth-box space-y-4"
           onSubmit={(e) => {
             e.preventDefault();
             handleSubmit();
-            clearForm();
           }}
         >
           <h2 className="auth-title">Sign Up</h2>
@@ -151,21 +166,35 @@ export default function SignUp() {
                 name="role"
                 id="role"
                 className="p-2 border rounded"
+                defaultValue=""
                 value={signUp.role}
                 onChange={(e) =>
                   setSignUp((prev) => ({ ...prev, role: e.target.value }))
                 }
                 required
               >
+                <option value="">Pick a Role</option>
                 {roles?.map((role, index: number) => {
-                  return <option key={index}>{role}</option>;
+                  return (
+                    <option key={index} value={role}>
+                      {role.toLowerCase()}
+                    </option>
+                  );
                 })}
               </select>
             </div>
           </div>
 
-          <button type="submit" className="auth-button">
-            Sign Up
+          <button
+            type="submit"
+            className={`${
+              isLoading
+                ? "border-gray-500 text-gray-500"
+                : "border-white text-white"
+            } border  mt-2 mb-4 auth-button`}
+            disabled={isLoading}
+          >
+            {isLoading ? "Loading..." : "Register"}
           </button>
           <p className="switch-text">
             Already have an account?{" "}

@@ -24,10 +24,10 @@ model User {
   fullname        String
   email           String   @unique
   password        String
-  confirmpassword String
   role            Role?
   referral        String?  @unique
   Coupon          Coupon[]
+  Event           Event[]
   Order           Order[]
   created_at      DateTime @default(now())
 }
@@ -41,12 +41,14 @@ model Order {
 }
 
 model Event {
-  id          Int     @id @default(autoincrement())
+  id          Int     @id @unique @default(autoincrement())
   name        String
   image       String
   description String
   prices      Int
   Order       Order[]
+
+  User User[]
 }
 
 model Voucher {
@@ -60,6 +62,7 @@ model Coupon {
   id       Int    @id @default(autoincrement())
   code     String @unique
   discount Int
+  expirationDate Int
   userId   Int
   User     User   @relation(fields: [userId], references: [id])
 }

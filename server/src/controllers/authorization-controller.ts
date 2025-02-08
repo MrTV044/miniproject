@@ -7,25 +7,33 @@ import { Role } from "@prisma/client";
 export async function register(req: Request, res: Response) {
   try {
     console.log("Hit");
-    const { fullname, email, password, confirmPassword, role } = req.body;
- 
+    const { fullname, email, password, confirmPassword, referral, role } =
+      req.body;
+
+    const date = new Date();
+    const referralCode = fullname.slice(0, 3) + "REF" + date.getMilliseconds();
+
+    if (referralCode !== referral) {
+      res.status(400).json({ message: "Invalid referral code!!!" });
+      return;
+    } else {
+    }
+
     if (password !== confirmPassword) {
       res.status(400).json({ message: "Passwords do not match!!!" });
       return;
     }
 
-    console.log(password, confirmPassword);
     const salt = await genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
-    const hashedConfirmPassword = await bcrypt.hash(confirmPassword, 10);
 
     const user = await prisma.user.create({
       data: {
         fullname,
         email,
         password: hashedPassword,
-        confirmpassword: hashedConfirmPassword,
-        role: role as Role,
+        referral: referralCode,
+        role: role,
       },
     });
 

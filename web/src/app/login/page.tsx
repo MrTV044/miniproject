@@ -3,16 +3,23 @@
 import "../login/login.css";
 import { useState } from "react";
 import { Login1 } from "@/types/authorization";
+import { toast, ToastContainer } from "react-toastify";
+import { useRouter } from "next/navigation";
 
 export default function Login() {
+  const router = useRouter();
   const [login, setLogin] = useState<Login1>({
     email: "",
     password: "",
   });
 
+  function notify(message: string) {
+    return toast(message);
+  }
+
   async function handleSubmit() {
     try {
-      await fetch("http://localhost:8000/api/v1/login", {
+      const response = await fetch("http://localhost:8000/api/v1/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -22,6 +29,13 @@ export default function Login() {
           password: login.password,
         }),
       });
+
+      if (!response.ok) {
+        return notify("Invalid credentials");
+      }
+
+      notify("login successfully");
+      router.push("/");
     } catch (error) {
       console.error(error);
     }
@@ -36,6 +50,7 @@ export default function Login() {
 
   return (
     <>
+      <ToastContainer />
       <form
         className="login-container space-y-4"
         onSubmit={(e) => {
@@ -77,7 +92,7 @@ export default function Login() {
               }
             />
           </div>
-          <button type="submit" className="login-button">
+          <button type="submit" className="login-button mt-4">
             Login
           </button>
           <p className="signup-text">
