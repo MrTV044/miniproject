@@ -19,19 +19,33 @@ enum Role {
   ADMIN
 }
 
+enum Genre {
+  ROCK
+  JAZZ
+  POP
+  INDIE
+  EDM
+  HIP_HOP @map("HIP-HOP")
+}
+
 model User {
   id         Int      @id @default(autoincrement())
   fullname   String
   email      String   @unique
+  password   String
   role       Role
-  referral   String   @unique
-  Coupon     Coupon[]
-  Order      Order[]
+  referral   String?  @unique
   created_at DateTime @default(now())
+
+  Coupon   Coupon[]
+  Order    Order[]
+  FeedBack FeedBack[]
+  Wallet   Wallet?
 }
 
 model Order {
   id      Int   @id @default(autoincrement())
+  amount  Int
   userId  Int
   user    User  @relation(fields: [userId], references: [id])
   eventId Int
@@ -39,12 +53,21 @@ model Order {
 }
 
 model Event {
-  id          Int     @id @default(autoincrement())
-  name        String
+  id          Int      @id @default(autoincrement())
   image       String
-  description String
+  name        String
+  genre       String
+  date        DateTime
+  place       String
+  ticketSlot  Int
+  ticketSold  Int      @default(0)
   prices      Int
+  organizer   String
+  description String
   Order       Order[]
+
+  Voucher  Voucher[]
+  Feedback FeedBack[]
 }
 
 model Voucher {
@@ -52,6 +75,8 @@ model Voucher {
   code     String @unique
   discount Int
   eventId  Int
+
+  Event Event @relation(fields: [eventId], references: [id])
 }
 
 model Coupon {
@@ -60,4 +85,24 @@ model Coupon {
   discount Int
   userId   Int
   User     User   @relation(fields: [userId], references: [id])
+}
+
+model FeedBack {
+  id        Int      @id @default(autoincrement())
+  review    String
+  rating    Int
+  createdAt DateTime @default(now())
+  eventId   Int
+  userId    Int
+
+  Event Event @relation(fields: [eventId], references: [id])
+  User  User  @relation(fields: [userId], references: [id])
+}
+
+model Wallet {
+  id     Int @id @default(autoincrement())
+  credit Int
+  userId Int @unique
+
+  User User @relation(fields: [userId], references: [id])
 }

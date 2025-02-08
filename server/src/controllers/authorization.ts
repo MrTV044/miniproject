@@ -5,10 +5,10 @@ import jwt from "jsonwebtoken";
 
 export async function CreateUser(req: Request, res: Response) {
   try {
-    const { name, email, password, role } = req.body;
+    const { fullname, email, password, role } = req.body;
 
     const user = await prisma.user.create({
-      data: { name, email, password, role },
+      data: { fullname, email, password, role },
     });
 
     res.status(201).json({ ok: true, message: "User created successfully" });
@@ -56,4 +56,12 @@ export function logout(req: Request, res: Response) {
 
     res.status(200).json({ ok: true, message: "Logged out successfully" });
   } catch (error) {}
+}
+
+export function CreateEvent(req: Request, res: Response) {
+  try {
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({});
+  }
 }
