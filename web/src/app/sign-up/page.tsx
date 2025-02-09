@@ -17,6 +17,56 @@ export default function SignUp() {
     referral: "",
   });
 
+  // make function to hit Coupon API when user is referral code is valid
+
+  async function postCoupon() {
+    try {
+      const date = new Date();
+
+      const response1 = await fetch("http://localhost:8000/api/v1/postCoupon", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          code: `${date.getTime()}`,
+          expirationDate: new Date(date.setMonth(date.getMonth() + 3)),
+          discount: 20000,
+        }),
+      });
+
+      if (!response1.ok) {
+        console.error("Coupon API failed");
+        return;
+      }
+
+      const couponData = await response1.json();
+      console.log("Generated Coupon:", couponData);
+
+      const response2 = await fetch(
+        "http://localhost:8000/api/v1/patchUserCoupon",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            coupon: couponData.code, 
+          }),
+        }
+      );
+
+      if (!response2.ok) {
+        console.error("Patch User Coupon API failed");
+        return;
+      }
+
+      console.log("Coupon successfully assigned to user.");
+    } catch (error) {
+      console.error("Error in postCoupon:", error);
+    }
+  }
+
   function notify(message: string) {
     return toast(message);
   }
@@ -54,7 +104,7 @@ export default function SignUp() {
       if (!response.ok) {
         return notify("Sign up failed");
       }
-
+      postCoupon();
       clearForm();
       notify("Signup successful!");
       router.push("/login");

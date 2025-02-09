@@ -9,11 +9,14 @@ export async function register(req: Request, res: Response) {
     console.log("Hit");
     const { fullname, email, password, confirmPassword, referral, role } =
       req.body;
+    const existingrefferal = await prisma.user.findUnique({
+      where: { referral },
+    });
 
     const date = new Date();
     const referralCode = fullname.slice(0, 3) + "REF" + date.getMilliseconds();
 
-    if (referralCode !== referral) {
+    if (referral !== existingrefferal?.referral) {
       res.status(400).json({ message: "Invalid referral code!!!" });
       return;
     } else {
