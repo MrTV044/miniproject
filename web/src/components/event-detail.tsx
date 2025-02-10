@@ -1,17 +1,32 @@
-import Image from "next/image";
+import { format } from "date-fns";
 
-export default function EventDetail() {
+import Image from "next/image";
+import Link from "next/link";
+
+export default async function EventDetail({ id }: { id: string }) {
+  const response = await fetch(`http://localhost:8000/api/v1/events/${id}`);
+  const eventDetail = await response.json();
+
+  const formatter = new Intl.NumberFormat("id-ID", {
+    style: "currency",
+    currency: "IDR",
+  });
   return (
     <section className="py-10">
       <div className="flex justify-center gap-10">
-        <div className="relative h-[300px] w-[750px] rounded-3xl overflow-hidden">
-          <Image src="/find-event.webp" alt="" fill className="object-cover" />
+        <div className="relative h-[350px] w-[750px] rounded-3xl overflow-hidden">
+          <Image
+            src={eventDetail.data.image}
+            alt=""
+            fill
+            className="object-cover"
+          />
         </div>
 
         <div>
           <div className="shadow-[0_10px_15px_rgba(0,0,0,0.25)] p-4 rounded-2xl h-fit w-[300px]">
             <span className="font-semibold pb-5 text-[18px]">
-              Membangun & Menghancurkan
+              {eventDetail.data.name}
             </span>
 
             <div className="flex items-center gap-2">
@@ -23,14 +38,18 @@ export default function EventDetail() {
                   className="object-cover"
                 />
               </div>
-              <span>31 May 2025</span>
+              <p className="mb-1 text-[#9497a1] font-medium">
+                {format(new Date(eventDetail.data.date), "yyyy-MMM-dd")}
+              </p>
             </div>
 
             <div className="flex items-center gap-2">
               <div className="relative h-5 w-5">
                 <Image src="/clock.svg" alt="" fill className="object-cover" />
               </div>
-              <span>16.00 - 00.00 WIB</span>
+              <span>
+                {format(new Date(eventDetail.data.date), "p")} - Until Finished
+              </span>
             </div>
 
             <div className="flex items-center gap-2">
@@ -42,12 +61,12 @@ export default function EventDetail() {
                   className="object-cover"
                 />
               </div>
-              <span>Bengkel Space</span>
+              <span>{eventDetail.data.place}</span>
             </div>
           </div>
 
           <div className="shadow-[0_10px_15px_rgba(0,0,0,0.25)] mt-[50px] rounded-lg  h-fit w-[400px] p-3">
-            <div className="flex gap-3 items-center mx-3">
+            <div className="flex gap-3 items-center mx-3 mt-3">
               <div className="relative h-[50px] w-[70px]">
                 <Image src="/ticket.svg" alt="" fill className="object-cover" />
               </div>
@@ -58,44 +77,28 @@ export default function EventDetail() {
               </span>
             </div>
 
-            <div className="flex justify-between pt-10 mx-4">
+            <div className="w-full h-[1px] border mt-4"></div>
+
+            <div className="flex justify-between pt-7 mx-4">
               <span>Start from</span>
-              <span className="font-black">Harga</span>
+              <span className="font-black">
+                {formatter.format(eventDetail.data.prices)}
+              </span>
             </div>
 
-            <button className="flex justify-center py-3 mt-3 w-full rounded-xl bg-orange-600">
+            <Link
+              href={`/transaction?id=${id}`}
+              className="flex justify-center py-3 mt-3 w-full rounded-xl bg-orange-600"
+            >
               Buy
-            </button>
+            </Link>
           </div>
         </div>
       </div>
 
       <div className="ml-[150px]">
-        <h2>Description</h2>
-        <p className="w-[700px]">
-          Lorem ipsum odor amet, consectetuer adipiscing elit. Quis massa morbi
-          tellus suscipit tellus efficitur libero. Dapibus urna bibendum
-          facilisis auctor ut nunc; torquent eleifend. Dui elementum proin nisl
-          vitae duis maximus amet? Class suspendisse euismod quam placerat
-          sagittis tincidunt metus mi. Consequat neque non posuere, porta ut et!
-          Porttitor torquent bibendum pretium purus nisl platea orci bibendum.
-          Ultricies porttitor adipiscing montes diam eleifend purus pretium.
-          Tincidunt lacus duis tortor tellus odio ut ligula per. Elementum odio
-          porttitor felis ad quisque. Tortor dapibus penatibus quisque sagittis
-          fringilla ridiculus aenean ut quisque. Nibh natoque porttitor felis
-          finibus congue justo. Lectus iaculis posuere taciti sed ex metus.
-          Fusce tellus maximus egestas semper sollicitudin potenti ligula hac.
-          Eu iaculis sed suspendisse; quis netus vivamus. Elementum fames leo ut
-          nascetur odio eleifend laoreet. Hac libero libero duis dolor eros.
-          Posuere felis torquent bibendum sagittis facilisis urna. Sed fermentum
-          felis blandit dolor habitasse; et congue etiam. Vitae tristique
-          convallis consectetur cursus quisque. Est imperdiet primis condimentum
-          potenti vestibulum. Ullamcorper nostra volutpat turpis rutrum orci
-          varius. Mi amet rutrum libero quam natoque nisi. Sem lacus ornare duis
-          mi vestibulum; tortor volutpat in. Maximus ac ac sed sapien augue
-          suscipit finibus aptent pharetra. Nam mus ridiculus interdum mollis;
-          habitant suspendisse.
-        </p>
+        <h2 className="mb-3 font-black">Description</h2>
+        <p className="w-[700px]">{eventDetail.data.description}</p>
       </div>
     </section>
   );

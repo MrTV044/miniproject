@@ -1,5 +1,5 @@
 import express, { Request, Response } from "express";
-import prisma from "./configs/prisma";
+import eventRouter from "./routers/event-router";
 import authorization from "../src/routers/authorization-router";
 import cors from "cors";
 import cookieParser from "cookie-parser";
@@ -21,6 +21,8 @@ app.use(cookieParser());
 app.get(`/api/v1`, (req: Request, res: Response) => {
   res.status(200).json({ message: "Hello" });
 });
+
+app.use("/api/v1/events", eventRouter);
 
 app.use("/api/v1/", authorization);
 app.use("/api/v1/", eventStatistic);
