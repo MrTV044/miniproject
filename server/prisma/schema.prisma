@@ -23,11 +23,14 @@ model User {
   id         Int      @id @default(autoincrement())
   fullname   String
   email      String   @unique
-  role       Role
-  referral   String   @unique
+  password   String
+  role       Role?
+  referral   String?  @unique
   Coupon     Coupon[]
+  Event      Event[]
   Order      Order[]
   created_at DateTime @default(now())
+  Points     Points[]
 }
 
 model Order {
@@ -39,12 +42,14 @@ model Order {
 }
 
 model Event {
-  id          Int     @id @default(autoincrement())
+  id          Int     @id @unique @default(autoincrement())
   name        String
   image       String
   description String
   prices      Int
   Order       Order[]
+
+  User User[]
 }
 
 model Voucher {
@@ -55,9 +60,19 @@ model Voucher {
 }
 
 model Coupon {
-  id       Int    @id @default(autoincrement())
-  code     String @unique
-  discount Int
-  userId   Int
-  User     User   @relation(fields: [userId], references: [id])
+  id             Int      @id @default(autoincrement())
+  code           String   @unique
+  discount       Int
+  expirationDate DateTime
+  userId         Int
+  User           User     @relation(fields: [userId], references: [id])
+}
+
+model Points {
+  id             Int      @id @default(autoincrement())
+  code           String   @unique
+  discount       Int
+  expirationDate DateTime
+  userId         Int
+  User           User     @relation(fields: [userId], references: [id])
 }
