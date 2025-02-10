@@ -4,11 +4,11 @@
 
 /* Shared styles */
 .auth-container {
-  @apply flex items-center justify-center min-h-screen bg-gray-600;
+  @apply flex items-center justify-center min-h-screen bg-white;
 }
 
 .auth-box {
-  @apply w-full max-w-md bg-white shadow-lg rounded-lg p-6;
+  @apply w-full max-w-md bg-white shadow-2xl rounded-lg p-6;
 }
 
 .auth-title {

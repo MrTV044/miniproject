@@ -8,14 +8,11 @@ export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <nav className="bg-white shadow-md">
-      <div className="flex justify-between px-6 md:px-10 py-4 items-center">
-        <Link
-          href="/"
-          className="text-[30px] md:text-[40px] font-black text-orange-600"
-        >
-          QuickTix
-        </Link>
+    <nav>
+      <div className="flex justify-between px-10 font-InterThigt items-center">
+        <div className="p-3 text-[40px] font-black text-orange-600">
+          <Link href="/">QuickTix</Link>
+        </div>
 
         {/* Hamburger Menu Button */}
         <button
@@ -69,10 +66,16 @@ export default function Navbar() {
           >
             Create Event
           </Link>
-          <Link href="/" className="p-3 w-full text-center hover:bg-gray-200">
+          <Link
+            href="/login"
+            className="p-3 w-full text-center hover:bg-gray-200"
+          >
             Log In
           </Link>
-          <Link href="/" className="p-3 w-full text-center hover:bg-gray-200">
+          <Link
+            href="/sign-up"
+            className="p-3 w-full text-center hover:bg-gray-200"
+          >
             Sign Up
           </Link>
         </ul>
@@ -89,5 +92,6 @@ export default function Navbar() {
             } p-3 rounded-full  hover:hover:bg-gray-200`}
           >
             Create Event
+z<<<<<<< HEAD
           </Link> */
 }
