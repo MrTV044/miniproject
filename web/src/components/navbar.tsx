@@ -10,9 +10,12 @@ export default function Navbar() {
   return (
     <nav className="bg-white shadow-md">
       <div className="flex justify-between px-6 md:px-10 py-4 items-center">
-        <div className="text-[30px] md:text-[40px] font-black text-orange-600">
+        <Link
+          href="/"
+          className="text-[30px] md:text-[40px] font-black text-orange-600"
+        >
           QuickTix
-        </div>
+        </Link>
 
         {/* Hamburger Menu Button */}
         <button
@@ -27,6 +30,14 @@ export default function Navbar() {
           <Link href="/" className="p-3 rounded-full hover:bg-gray-200">
             Home
           </Link>
+
+          <Link
+            href="/dashboard"
+            className="p-3 rounded-full hover:bg-gray-200"
+          >
+            Dashboard
+          </Link>
+
           <Link
             href="/create-event"
             className="p-3 rounded-full hover:bg-gray-200"
@@ -39,6 +50,10 @@ export default function Navbar() {
           <Link href="/" className="p-3 rounded-full hover:bg-gray-200">
             Sign Up
           </Link>
+
+          <button className="p-3 rounded-full hover:bg-gray-200">
+            Log Out
+          </button>
         </ul>
       </div>
 

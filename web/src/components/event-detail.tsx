@@ -6,7 +6,6 @@ import Link from "next/link";
 export default async function EventDetail({ id }: { id: string }) {
   const response = await fetch(`http://localhost:8000/api/v1/events/${id}`);
   const eventDetail = await response.json();
-  console.log(eventDetail);
 
   const formatter = new Intl.NumberFormat("id-ID", {
     style: "currency",
@@ -88,7 +87,7 @@ export default async function EventDetail({ id }: { id: string }) {
             </div>
 
             <Link
-              href="/transaction"
+              href={`/transaction?id=${id}`}
               className="flex justify-center py-3 mt-3 w-full rounded-xl bg-orange-600"
             >
               Buy

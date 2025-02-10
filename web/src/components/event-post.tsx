@@ -5,7 +5,7 @@ import Link from "next/link";
 export default async function EventPost() {
   const response = await fetch("http://localhost:8000/api/v1/events");
   const events = await response.json();
-  console.log(events);
+
   return (
     <section className="px-4 md:px-[100px] pb-32 font-InterThigt font-semibold flex flex-col md:flex-row">
       <div w-full>
@@ -45,7 +45,8 @@ export default async function EventPost() {
         </div>
       </div>
 
-      <div className="mt-[75px] sticky top-[100px] h-fit w-[]">
+      <div className="mt-[75px] grid sticky top-[100px] h-fit">
+        <div className="ml-[85px]">Genre</div>
         <ul className="grid grid-cols-3 gap-3 ml-[85px]">
           <li>
             <button>Pop</button>

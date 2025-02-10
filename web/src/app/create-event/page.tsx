@@ -1,131 +1,189 @@
-import Image from "next/image";
+"use client";
 
-export default function CreateEvent() {
+import { useState } from "react";
+
+export default function CreateEventPage() {
+  const [eventName, setEventName] = useState("");
+  const [genre, setGenre] = useState("");
+  const [organizer, setOrganizer] = useState("Erlangga Adi Prasetya");
+  const [date, setDate] = useState("");
+  const [time, setTime] = useState("");
+  const [location, setLocation] = useState("");
+  const [image, setImage] = useState(null);
+  const [ticketSlot, setTicketSlot] = useState("");
+  const [price, setPrice] = useState("");
+  const [description, setDescription] = useState("");
+
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file && file.size <= 2 * 1024 * 1024) {
+      setImage(file);
+    } else {
+      alert("File size should not exceed 2MB.");
+    }
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log({
+      eventName,
+      genre,
+      organizer,
+      date,
+      time,
+      location,
+      image,
+      ticketSlot,
+      price,
+      description,
+    });
+  };
+
   return (
-    <section className="my-10 mx-10">
-      <button className="flex items-center mb-10 border-[3px] rounded-lg p-2 mx-10">
-        <div className="relative h-7 w-7">
-          <Image
-            src="/upload-button.svg"
-            alt=""
-            fill
-            className="object cover"
+    <div className="max-w-4xl mx-auto p-5">
+      <h1 className="text-2xl font-bold mb-5">Upload Image/Poster/Banner</h1>
+      <p className="mb-5">Recommended size: 724 x 340px and no more than 2MB</p>
+
+      <form onSubmit={handleSubmit}>
+        <div className="mb-5">
+          <label className="block mb-2 font-semibold">
+            Event Name <span className="text-red-500">*</span>
+          </label>
+          <input
+            type="text"
+            value={eventName}
+            onChange={(e) => setEventName(e.target.value)}
+            className="w-full border p-2 rounded"
+            required
           />
         </div>
-        <div>Upload Image</div>
-      </button>
 
-      <div className="grid gap-2 mb-2 items-center">
-        <label
-          htmlFor="eventName"
-          className="text-gray-700 font-medium w-[100px]"
+        <div className="mb-5">
+          <label className="block mb-2 font-semibold">
+            Select Genre <span className="text-red-500">*</span>
+          </label>
+          <select
+            value={genre}
+            onChange={(e) => setGenre(e.target.value)}
+            className="w-full border p-2 rounded"
+            required
+          >
+            <option value="">Select Genre</option>
+            <option value="Pop">Pop</option>
+            <option value="Jazz">Jazz</option>
+            <option value="Indie">Indie</option>
+            <option value="EDM">EDM</option>
+            <option value="Rock">Rock</option>
+            <option value="Hip-Hop">Hip-Hop</option>
+          </select>
+        </div>
+
+        <div className="mb-5">
+          <label className="block mb-2 font-semibold">
+            Upload Image/Poster/Banner <span className="text-red-500">*</span>
+          </label>
+          <input
+            type="file"
+            onChange={handleImageChange}
+            className="w-full border p-2 rounded"
+            accept="image/*"
+            required
+          />
+        </div>
+
+        <div className="mb-5">
+          <label className="block mb-2 font-semibold">
+            Organized By <span className="text-red-500">*</span>
+          </label>
+          <input
+            type="text"
+            value={organizer}
+            onChange={(e) => setOrganizer(e.target.value)}
+            className="w-full border p-2 rounded"
+            required
+          />
+        </div>
+
+        <div className="mb-5">
+          <label className="block mb-2 font-semibold">
+            Date & Time <span className="text-red-500">*</span>
+          </label>
+          <div className="grid grid-cols-2 gap-4">
+            <input
+              type="date"
+              value={date}
+              onChange={(e) => setDate(e.target.value)}
+              className="w-full border p-2 rounded"
+              required
+            />
+            <input
+              type="time"
+              value={time}
+              onChange={(e) => setTime(e.target.value)}
+              className="w-full border p-2 rounded"
+              required
+            />
+          </div>
+        </div>
+
+        <div className="mb-5">
+          <label className="block mb-2 font-semibold">
+            Location <span className="text-red-500">*</span>
+          </label>
+          <input
+            type="text"
+            value={location}
+            onChange={(e) => setLocation(e.target.value)}
+            className="w-full border p-2 rounded"
+            required
+          />
+        </div>
+
+        <div className="mb-5">
+          <label className="block mb-2 font-semibold">
+            Ticket Slot <span className="text-red-500">*</span>
+          </label>
+          <input
+            type="number"
+            value={ticketSlot}
+            onChange={(e) => setTicketSlot(e.target.value)}
+            className="w-full border p-2 rounded"
+            required
+          />
+        </div>
+
+        <div className="mb-5">
+          <label className="block mb-2 font-semibold">
+            Price <span className="text-red-500">*</span>
+          </label>
+          <input
+            type="number"
+            value={price}
+            onChange={(e) => setPrice(e.target.value)}
+            className="w-full border p-2 rounded"
+            required
+          />
+        </div>
+
+        <div className="mb-5">
+          <label className="block mb-2 font-semibold">
+            Description <span className="text-red-500">*</span>
+          </label>
+          <textarea
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+            className="w-full border p-2 rounded"
+            required
+          />
+        </div>
+
+        <button
+          type="submit"
+          className="w-full bg-orange-600 text-white py-2 mt-4 rounded"
         >
-          Event Name
-        </label>
-        <input
-          id="eventName"
-          type="text"
-          className="border rounded-lg w-full p-2 focus:ring focus:ring-blue-300"
-          placeholder="Enter event name"
-        />
-      </div>
-
-      <div className="flex mb-2 flex-col">
-        <label htmlFor="eventGenre" className="text-gray-700 font-medium">
-          Event Genre
-        </label>
-        <input
-          list="genres"
-          id="eventGenre"
-          className="border rounded-lg p-2 mt-1 focus:ring focus:ring-blue-300"
-          placeholder="Select a genre"
-        />
-        <datalist id="genres">
-          <option value="Rock" />
-          <option value="Indie" />
-          <option value="Pop" />
-          <option value="Jazz" />
-          <option value="Hip-Hop" />
-          <option value="EDM" />
-        </datalist>
-      </div>
-
-      <div className="flex mb-2 gap-5">
-        <div className="flex flex-col">
-          <label htmlFor="eventDate" className="text-gray-700 font-medium">
-            Event Date
-          </label>
-          <input
-            id="eventDate"
-            type="date"
-            className="border rounded-lg p-2 mt-1 focus:ring focus:ring-blue-300"
-          />
-        </div>
-
-        <div className="flex flex-col">
-          <label htmlFor="eventTime" className="text-gray-700 font-medium">
-            Event Time
-          </label>
-          <input
-            id="eventTime"
-            type="time"
-            className="border rounded-lg p-2 mt-1 focus:ring focus:ring-blue-300"
-          />
-        </div>
-      </div>
-
-      <div className="flex mb-2 flex-col">
-        <label htmlFor="eventPlace" className="text-gray-700 font-medium">
-          Event Place
-        </label>
-        <input
-          id="eventPlace"
-          type="text"
-          placeholder="Enter event location"
-          className="border rounded-lg p-2 mt-1 focus:ring focus:ring-blue-300"
-        />
-      </div>
-
-      <div className="flex mb-2 flex-col">
-        <label htmlFor="ticketSlot" className="text-gray-700 font-medium">
-          Ticket Slot
-        </label>
-        <input
-          id="ticketSlot"
-          type="number"
-          min="1"
-          placeholder="Enter number of slots"
-          className="border rounded-lg p-2 mt-1 focus:ring focus:ring-blue-300"
-        />
-      </div>
-
-      <div className="flex mb-2 flex-col">
-        <label htmlFor="ticketSlot" className="text-gray-700 font-medium">
-          Price
-        </label>
-        <input
-          id="ticketSlot"
-          type="number"
-          min="1"
-          placeholder="Enter the price"
-          className="border rounded-lg p-2 mt-1 focus:ring focus:ring-blue-300"
-        />
-      </div>
-
-      <div className="flex mb-2 flex-col">
-        <label htmlFor="ticketSlot" className="text-gray-700 font-medium">
-          Organizer name
-        </label>
-        <input
-          id="ticketSlot"
-          type="number"
-          min="1"
-          placeholder="Enter organizer name"
-          className="border rounded-lg p-2 mt-1 focus:ring focus:ring-blue-300"
-        />
-      </div>
-
-      <div>order</div>
-    </section>
+          Submit
+        </button>
+      </form>
+    </div>
   );
 }
