@@ -7,6 +7,7 @@ async function seed() {
     await prisma.coupon.deleteMany();
     await prisma.user.deleteMany();
     await prisma.event.deleteMany();
+    await prisma.points.deleteMany();
 
     /* -------------------------------------------------------------------------- */
     /*                                 Create User                                */
@@ -204,6 +205,7 @@ async function seed() {
         code: "123ABC",
         discount: 10,
         userId: user1.id,
+        expirationDate: "2025-05-31T00:00:00.000Z",
       },
     });
 

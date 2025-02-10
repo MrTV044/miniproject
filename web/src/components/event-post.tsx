@@ -2,6 +2,8 @@ import { format } from "date-fns";
 
 import Image from "next/image";
 import Link from "next/link";
+
+
 export default async function EventPost() {
   const response = await fetch("http://localhost:8000/api/v1/events");
   const events = await response.json();
