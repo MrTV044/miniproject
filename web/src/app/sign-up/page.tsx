@@ -19,9 +19,13 @@ export default function SignUp() {
 
   // make function to hit Coupon API when user is referral code is valid
 
-  async function postCoupon() {
+  async function postCoupon(id: string) {
+    console.log(id);
     try {
       const date = new Date();
+
+      // const response3 = await fetch("http://localhost:8000/api/v1/register");
+      // const responseId = await response3.json();
 
       const response1 = await fetch("http://localhost:8000/api/v1/postCoupon", {
         method: "POST",
@@ -32,6 +36,7 @@ export default function SignUp() {
           code: `${date.getTime()}`,
           expirationDate: new Date(date.setMonth(date.getMonth() + 3)),
           discount: 20000,
+          userId: id,
         }),
       });
 
@@ -44,14 +49,14 @@ export default function SignUp() {
       console.log("Generated Coupon:", couponData);
 
       const response2 = await fetch(
-        "http://localhost:8000/api/v1/patchUserCoupon",
+        "http://localhost:8000/api/v1/patchUserPoint",
         {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            coupon: couponData.code, 
+            point: 10000,
           }),
         }
       );
@@ -100,14 +105,15 @@ export default function SignUp() {
           referral: signUp?.referral,
         }),
       });
+      const parsedResponse = await response.json();
 
       if (!response.ok) {
         return notify("Sign up failed");
       }
-      postCoupon();
-      clearForm();
+      postCoupon(parsedResponse.data);
+      // clearForm();
       notify("Signup successful!");
-      router.push("/login");
+      // router.push("/login");
     } catch (error) {
       console.error(error);
     }

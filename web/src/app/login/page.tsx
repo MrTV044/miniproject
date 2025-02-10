@@ -28,6 +28,7 @@ export default function Login() {
           email: login.email,
           password: login.password,
         }),
+        credentials: "include",
       });
 
       if (!response.ok) {

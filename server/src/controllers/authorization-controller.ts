@@ -9,6 +9,7 @@ export async function register(req: Request, res: Response) {
     console.log("Hit");
     const { fullname, email, password, confirmPassword, referral, role } =
       req.body;
+
     const existingrefferal = await prisma.user.findUnique({
       where: { referral },
     });
@@ -40,7 +41,31 @@ export async function register(req: Request, res: Response) {
       },
     });
 
-    res.status(201).json({ ok: true, message: "User created successfully" });
+    const referralOwner = await prisma.user.findFirst({
+      where: { referral: referral}
+    })
+
+        const coupon = await prisma.points.create({
+          data: {
+            discount: 10000,
+            code: `${Math.random()}`,
+            userId: referralOwner?.id ?? 0,
+            expirationDate: new Date(date.setMonth(date.getMonth() + 3)),
+          },
+        });
+    
+
+
+
+    const findUser = await prisma.user.findUnique({
+      where: { email: email },
+    });
+
+    const userId1 = findUser?.id;
+
+    res
+      .status(201)
+      .json({ ok: true, message: "User created successfully", data: userId1 });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "general error" });
@@ -73,10 +98,10 @@ export async function login(req: Request, res: Response) {
     });
 
     res
-      .cookie("token", token, {
+      .cookie("accessToken", token, {
         httpOnly: true,
-        sameSite: "none",
-        secure: true,
+        sameSite: "lax",
+        secure: false,
       })
       .json({ ok: true, message: "Logged in successfully" });
   } catch (error) {

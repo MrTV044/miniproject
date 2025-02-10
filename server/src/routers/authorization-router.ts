@@ -8,7 +8,7 @@ import {
 
 const router = express.Router();
 
-router.route("/register").post(register);
+router.route("/register").post(register).get(register);
 router.route("/login").post(login);
 router.route("/logout").post(logout);
 router.route("/getroles").get(getRole);
