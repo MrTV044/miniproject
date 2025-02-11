@@ -29,7 +29,7 @@ export default function Navbar() {
           </Link>
 
           <Link
-            href="/dashboard"
+            href="/dashboard/user"
             className="p-3 rounded-full hover:bg-gray-200"
           >
             Dashboard

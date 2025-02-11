@@ -1,20 +1,39 @@
-import { format } from "date-fns";
+"use client";
 
+import { useState, useEffect } from "react";
+import { format } from "date-fns";
 import Image from "next/image";
 import Link from "next/link";
-export default async function EventPost() {
-  const response = await fetch("http://localhost:8000/api/v1/events");
-  const events = await response.json();
+
+export default function EventPost() {
+  const [events, setEvents] = useState([]);
+  const [selectedGenre, setSelectedGenre] = useState("");
+
+  useEffect(() => {
+    async function fetchEvents() {
+      const response = await fetch("http://localhost:8000/api/v1/events");
+      const data = await response.json();
+      setEvents(data.data);
+    }
+    fetchEvents();
+  }, []);
+
+  const genres = ["POP", "JAZZ", "INDIE", "EDM", "ROCK", "HIP-HOP"];
+
+  const filteredEvents = selectedGenre
+    ? events.filter((event) => event.genre === selectedGenre)
+    : events;
 
   return (
     <section className="px-4 md:px-[100px] pb-32 font-InterThigt font-semibold flex flex-col md:flex-row">
-      <div w-full>
-        <div className="text-[25px] text-gray-500 pb-10">Event in Jakarta</div>
-        <div className="grid grid-cols-3 gap-[100px]">
-          {events.data.map((item, index: number) => (
-            // <h1 key={index}>{item.name}</h1>
+      <div className="w-full">
+        <div className="text-[25px] text-gray-500 pb-10 w-[1100px]">
+          Event in Jakarta
+        </div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-[25px]">
+          {filteredEvents.map((item, index) => (
             <Link key={index} href={`/events/${item.id}`}>
-              <div className="shadow-[0_1px_15px_rgba(0,0,0,0.25)] rounded-xl overflow-hidden w-[350px]">
+              <div className="shadow-md rounded-xl overflow-hidden w-full max-w-[350px] lg:max-w-[500px] mx-auto">
                 <div className="relative h-[175px] w-full">
                   <Image
                     src={item.image}
@@ -23,20 +42,14 @@ export default async function EventPost() {
                     className="object-cover"
                   />
                 </div>
-
-                <div className="ml-5 mr-3 mt-5">
-                  <p className="mb-1">{item.name}</p>
-
+                <div className="p-5">
+                  <p className="mb-1 text-lg">{item.name}</p>
                   <p className="mb-1 font-medium">{item.genre}</p>
-
                   <p className="mb-1 text-[#9497a1] font-medium">
                     {format(new Date(item.date), "yyyy-MMM-dd")}
                   </p>
-
                   <p className="text-[18px]">{item.price}</p>
-
                   <div className="border w-full h-[1px] mt-6"></div>
-
                   <p className="my-3 ml-3">{item.organizer}</p>
                 </div>
               </div>
@@ -45,27 +58,35 @@ export default async function EventPost() {
         </div>
       </div>
 
-      <div className="mt-[75px] grid sticky top-[100px] h-fit">
-        <div className="ml-[85px]">Genre</div>
-        <ul className="grid grid-cols-3 gap-3 ml-[85px]">
+      <div className="mt-10 md:mt-[75px] grid sticky top-[100px] h-fit">
+        <div className="ml-4 md:ml-[25px] text-lg font-bold">Genre</div>
+        <ul className="grid grid-cols-3 gap-[7px] ml-4 md:grid md:grid-cols-2 lg:ml-[25px] text-sm md:text-base">
           <li>
-            <button>Pop</button>
+            <button
+              className={`px-3 py-1 rounded ${
+                selectedGenre === "" ? "bg-blue-500 text-white" : "bg-gray-200"
+              }`}
+              onClick={() => setSelectedGenre("")}
+            >
+              All
+            </button>
           </li>
-          <li>
-            <button>Jaz</button>
-          </li>
-          <li>
-            <button>Indie</button>
-          </li>
-          <li>
-            <button>EDM</button>
-          </li>
-          <li>
-            <button>Rock</button>
-          </li>
-          <li>
-            <button>Hip-Hop</button>
-          </li>
+          {genres.map((genre) => (
+            <li key={genre}>
+              <button
+                className={`px-3 py-1 rounded ${
+                  selectedGenre === genre
+                    ? "bg-blue-500 text-white"
+                    : "bg-gray-200"
+                }`}
+                onClick={() =>
+                  setSelectedGenre(selectedGenre === genre ? "" : genre)
+                }
+              >
+                {genre}
+              </button>
+            </li>
+          ))}
         </ul>
       </div>
     </section>

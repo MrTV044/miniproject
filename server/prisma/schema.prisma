@@ -28,6 +28,11 @@ enum Genre {
   HIP_HOP @map("HIP-HOP")
 }
 
+enum EventType {
+  PAID
+  FREE
+}
+
 model User {
   id         Int        @id @default(autoincrement())
   fullname   String
@@ -45,30 +50,34 @@ model User {
 }
 
 model Order {
-  id      Int   @id @default(autoincrement())
-  amount  Int
-  userId  Int
-  user    User  @relation(fields: [userId], references: [id])
-  eventId Int
-  event   Event @relation(fields: [eventId], references: [id])
+  id          Int   @id @default(autoincrement())
+  totalPrice  Int
+  totalTicket Int
+  userId      Int
+  user        User  @relation(fields: [userId], references: [id])
+  eventId     Int
+  event       Event @relation(fields: [eventId], references: [id])
 }
 
 model Event {
-  id          Int      @id @default(autoincrement())
+  id          Int       @id @default(autoincrement())
   image       String
   name        String
   genre       String
   date        DateTime
   place       String
   ticketSlot  Int
-  ticketSold  Int      @default(0)
+  ticketSold  Int       @default(0)
   prices      Int
+  eventType   EventType
   organizer   String
   description String
   Order       Order[]
 
   Voucher  Voucher[]
   Feedback FeedBack[]
+
+  User User[]
 }
 
 model Voucher {
@@ -96,26 +105,6 @@ model Points {
   expirationDate DateTime
   userId         Int
   User           User     @relation(fields: [userId], references: [id])
-}
-
-model FeedBack {
-  id        Int      @id @default(autoincrement())
-  review    String
-  rating    Int
-  createdAt DateTime @default(now())
-  eventId   Int
-  userId    Int
-
-  Event Event @relation(fields: [eventId], references: [id])
-  User  User  @relation(fields: [userId], references: [id])
-}
-
-model Wallet {
-  id     Int @id @default(autoincrement())
-  credit Int
-  userId Int @unique
-
-  User User @relation(fields: [userId], references: [id])
 }
 
 model FeedBack {
