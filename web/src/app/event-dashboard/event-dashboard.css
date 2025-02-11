@@ -1,0 +1,32 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.dashboard-container {
+  @apply p-6 space-y-6;
+}
+
+.dashboard-title {
+  @apply text-2xl font-bold;
+}
+
+.card {
+  @apply border rounded-lg p-4 shadow bg-white;
+}
+
+.card-title {
+  @apply text-xl font-semibold mb-4;
+}
+
+.table {
+  @apply w-full border-collapse border border-gray-300;
+}
+
+.table th,
+.table td {
+  @apply border p-2 text-left;
+}
+
+.table th {
+  @apply bg-gray-200;
+}

@@ -17,10 +17,9 @@ export async function register(req: Request, res: Response) {
     const date = new Date();
     const referralCode = fullname.slice(0, 3) + "REF" + date.getMilliseconds();
 
-    if (referral !== existingrefferal?.referral) {
+    if (referral && referral !== existingrefferal?.referral) {
       res.status(400).json({ message: "Invalid referral code!!!" });
       return;
-    } else {
     }
 
     if (password !== confirmPassword) {
@@ -42,20 +41,19 @@ export async function register(req: Request, res: Response) {
     });
 
     const referralOwner = await prisma.user.findFirst({
-      where: { referral: referral}
-    })
+      where: { referral: referral },
+    });
 
-        const coupon = await prisma.points.create({
-          data: {
-            discount: 10000,
-            code: `${Math.random()}`,
-            userId: referralOwner?.id ?? 0,
-            expirationDate: new Date(date.setMonth(date.getMonth() + 3)),
-          },
-        });
-    
-
-
+    if (referralOwner) {
+      const coupon = await prisma.points.create({
+        data: {
+          discount: 10000,
+          code: `${Math.random()}`,
+          userId: referralOwner?.id,
+          expirationDate: new Date(date.setMonth(date.getMonth() + 3)),
+        },
+      });
+    }
 
     const findUser = await prisma.user.findUnique({
       where: { email: email },

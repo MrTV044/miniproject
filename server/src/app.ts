@@ -5,6 +5,7 @@ import cors from "cors";
 import cookieParser from "cookie-parser";
 import eventStatistic from "../src/routers/event-statistic-router";
 import coupon from "../src/routers/coupon-router";
+import transactiondummy from "../src/routers/transaction-dummy-router";
 
 const app = express();
 const PORT = 8000;
@@ -27,6 +28,7 @@ app.use("/api/v1/events", eventRouter);
 app.use("/api/v1/", authorization);
 app.use("/api/v1/", eventStatistic);
 app.use("/api/v1/", coupon);
+app.use("/api/v1/", transactiondummy);
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);

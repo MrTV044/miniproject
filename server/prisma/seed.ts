@@ -7,6 +7,7 @@ async function seed() {
     await prisma.wallet.deleteMany();
     await prisma.coupon.deleteMany();
     await prisma.event.deleteMany();
+    await prisma.points.deleteMany();
     await prisma.user.deleteMany();
 
     /* -------------------------------------------------------------------------- */
@@ -206,6 +207,7 @@ async function seed() {
         discount: 10,
         userId: user1.id,
         expirationDate: new Date(),
+
       },
     });
 

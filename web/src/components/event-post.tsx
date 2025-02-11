@@ -5,6 +5,7 @@ import { format } from "date-fns";
 import Image from "next/image";
 import Link from "next/link";
 
+
 export default function EventPost() {
   const [events, setEvents] = useState([]);
   const [selectedGenre, setSelectedGenre] = useState("");
@@ -23,6 +24,7 @@ export default function EventPost() {
   const filteredEvents = selectedGenre
     ? events.filter((event) => event.genre === selectedGenre)
     : events;
+
 
   return (
     <section className="px-4 md:px-[100px] pb-32 font-InterThigt font-semibold flex flex-col md:flex-row">
