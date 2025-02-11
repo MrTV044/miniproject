@@ -102,13 +102,13 @@ async function seed() {
       },
     });
 
-    // Data untuk ORGANIZER
+    // Data untuk organizerId
     const user11 = await prisma.user.create({
       data: {
         fullname: "Andi Saputra",
         email: "andi@mail.com",
-        password: "organizer1",
-        role: "ORGANIZER",
+        password: "organizerId1",
+        role: "organizerId",
       },
     });
 
@@ -116,8 +116,8 @@ async function seed() {
       data: {
         fullname: "Citra Melati",
         email: "citra@mail.com",
-        password: "organizer2",
-        role: "ORGANIZER",
+        password: "organizerId2",
+        role: "organizerId",
       },
     });
 
@@ -125,8 +125,8 @@ async function seed() {
       data: {
         fullname: "Hendro Pranoto",
         email: "hendro@mail.com",
-        password: "organizer3",
-        role: "ORGANIZER",
+        password: "organizerId3",
+        role: "organizerId",
       },
     });
 
@@ -224,7 +224,7 @@ async function seed() {
         place: "Veledrome",
         ticketSlot: 10000,
         prices: 250_000,
-        organizer: "Sun Eater",
+        organizerId: "Sun Eater",
         description:
           "Konser spesial album terbaru dari .Feast yang akan membawa penonton dalam perjalanan musik penuh energi dan pesan mendalam. Album 'Membangun & Menghancurkan' menghadirkan konsep baru yang kuat dengan lirik-lirik yang penuh makna, menggugah, dan berani. Di Veledrome, para penggemar akan disuguhkan dengan aksi panggung luar biasa yang memadukan kekuatan musik rock dengan visual yang mendalam, serta tata panggung yang megah. Jangan lewatkan kesempatan untuk menyaksikan .Feast membawakan lagu-lagu terbaru mereka dan merasakan setiap emosi yang disampaikan lewat musik!",
       },
@@ -240,7 +240,7 @@ async function seed() {
         place: "Istora Senayan",
         ticketSlot: 10000,
         prices: 300_000,
-        organizer: "Slank Management",
+        organizerId: "Slank Management",
         description:
           "Konser spesial dari Slank dengan hits legendaris yang telah menemani perjalanan musik Indonesia selama bertahun-tahun. 'Rock Never Dies' akan membawa Anda merasakan kembali momen-momen tak terlupakan melalui lagu-lagu ikonik Slank yang penuh energi. Di Istora Senayan, ribuan penggemar akan berkumpul untuk menyanyikan bersama setiap lirik yang sudah menjadi bagian dari sejarah musik rock Indonesia. Dengan panggung megah dan tata suara yang luar biasa, konser ini akan menjadi pengalaman yang tak bisa dilewatkan oleh para Slanker sejati!",
       },
@@ -256,7 +256,7 @@ async function seed() {
         place: "The Pallas",
         ticketSlot: 10000,
         prices: 250_000,
-        organizer: "MetalHead",
+        organizerId: "MetalHead",
         description:
           "Malam penuh headbang dengan Burgerkill! Konser ini akan membawa Anda menyelami dunia metal yang keras dan penuh kekuatan dengan salah satu band metal terbesar Indonesia. Burgerkill akan membawakan lagu-lagu mereka yang sudah menjadi anthem bagi para metalhead sejati. Di The Pallas, para penonton akan disuguhkan pengalaman musik yang intens dengan energi yang tak terbendung, serta penampilan panggung yang memukau dan menegangkan. Bersiaplah untuk merasakan adrenalin yang meluap dan terlibat dalam euforia headbang tanpa henti!",
       },
@@ -272,7 +272,7 @@ async function seed() {
         place: "Bali Beach Club",
         ticketSlot: 10000,
         prices: 280_000,
-        organizer: "SID Official",
+        organizerId: "SID Official",
         description:
           "Konser rock terbaik dari Bali! Superman Is Dead (SID) kembali dengan penampilan spesial yang akan memanjakan para penggemar mereka di Bali. 'Bali Rockin'' adalah sebuah pesta musik yang akan mengguncang pantai dengan suara keras dan penuh semangat. Di Bali Beach Club, para penonton akan merasakan pengalaman rock yang tak terlupakan dengan suasana tropis yang menyatu dengan musik. Dapatkan kesempatan untuk menikmati lagu-lagu terbaik SID yang sudah menjadi simbol gerakan rock di Indonesia, sambil merasakan kehangatan atmosfer Bali yang ikonik!",
       },
@@ -288,7 +288,7 @@ async function seed() {
         place: "Stadion GBK",
         ticketSlot: 10000,
         prices: 350_000,
-        organizer: "RockNation",
+        organizerId: "RockNation",
         description:
           "Festival musik rock terbesar tahun ini! Rock Fest 2025 akan menyatukan berbagai band rock ternama dari dalam dan luar negeri dalam satu panggung megah di Stadion GBK. Para penggemar akan merasakan euforia musik yang tak terbendung, dengan deretan penampilan spektakuler yang akan mengguncang setiap sudut stadion. Dengan berbagai genre rock yang berbeda, mulai dari classic rock hingga metal, Rock Fest 2025 akan menjadi pesta musik yang penuh dengan energi, kegembiraan, dan kenangan tak terlupakan. Jangan lewatkan kesempatan untuk menjadi bagian dari festival terbesar dalam dunia musik rock Indonesia!",
       },
@@ -305,7 +305,7 @@ async function seed() {
         place: "JIExpo Kemayoran",
         ticketSlot: 10000,
         prices: 500_000,
-        organizer: "Jazz Nation",
+        organizerId: "Jazz Nation",
         description:
           "Festival Jazz terbesar di Indonesia yang menghadirkan musisi internasional dari berbagai penjuru dunia. Jakarta International Jazz Festival akan menyuguhkan pengalaman luar biasa dengan berbagai penampilan spektakuler dari para jazz legend dan musisi muda berbakat. Di JIExpo Kemayoran, festival ini akan menggabungkan berbagai genre jazz, mulai dari tradisional hingga kontemporer, dalam suasana yang penuh energi dan kehangatan. Jangan lewatkan kesempatan untuk menyaksikan aksi panggung yang memukau dan menikmati malam penuh musik berkualitas tinggi!",
       },
@@ -321,7 +321,7 @@ async function seed() {
         place: "Bentara Budaya",
         ticketSlot: 10000,
         prices: 200_000,
-        organizer: "JazzVibes",
+        organizerId: "JazzVibes",
         description:
           "Tohpati, gitaris jazz ternama Indonesia, akan menghadirkan malam penuh nuansa jazz yang menenangkan dan mendalam bersama para musisi handal lainnya. 'A Night of Jazz' di Bentara Budaya akan membawa penonton dalam alunan musik jazz yang lembut namun penuh ekspresi. Tophati & Friends akan memainkan komposisi yang membawa sentuhan jazz fusion yang elegan, dengan improvisasi dan harmoni yang indah. Nikmati setiap notasi yang mengalun dengan indah, dan rasakan suasana intim yang akan membuat malam ini tak terlupakan!",
       },
@@ -337,7 +337,7 @@ async function seed() {
         place: "Taman Ismail Marzuki",
         ticketSlot: 10000,
         prices: 250_000,
-        organizer: "JazzVibes",
+        organizerId: "JazzVibes",
         description:
           "Malam eksklusif bersama Dewa Bujana dalam alunan jazz yang syahdu dan memukau. Dewa Bujana, gitaris jazz yang telah mendunia, akan membawakan komposisi-komposisi terbaiknya dalam suasana yang sangat intim di Taman Ismail Marzuki. Konser ini akan menggabungkan improvisasi jazz yang khas dengan teknik permainan gitar yang memukau, menghadirkan pengalaman musikal yang mendalam dan penuh nuansa. Bersiaplah untuk terhanyut dalam setiap melodi yang mengalun dengan indah dan membawa Anda dalam perjalanan musikal yang tak terlupakan!",
       },
@@ -353,7 +353,7 @@ async function seed() {
         place: "La Piazza",
         ticketSlot: 10000,
         prices: 180_000,
-        organizer: "Smooth Jazz Indonesia",
+        organizerId: "Smooth Jazz Indonesia",
         description:
           "Akhir pekan santai dengan lantunan jazz yang menenangkan di La Piazza. 'Chill Jazz Weekend' akan menghadirkan penampilan-penampilan jazz yang lebih santai, penuh relaksasi, dan cocok untuk dinikmati sambil menikmati suasana akhir pekan yang tenang. Dengan latar belakang suasana La Piazza yang nyaman dan santai, acara ini adalah pilihan sempurna bagi Anda yang ingin bersantai sambil menikmati alunan musik jazz yang menenangkan hati. Jangan lewatkan kesempatan untuk menikmati musik berkualitas dalam suasana yang hangat dan akrab!",
       },
@@ -369,7 +369,7 @@ async function seed() {
         place: "Balai Sarbini",
         ticketSlot: 10000,
         prices: 300_000,
-        organizer: "IndoJazz Community",
+        organizerId: "IndoJazz Community",
         description:
           "Pertemuan para legenda jazz Indonesia dalam satu panggung spektakuler yang akan menghadirkan kolaborasi langka antara musisi jazz terbaik Tanah Air. 'Indonesian Jazz Legends' di Balai Sarbini akan menghadirkan penampilan dari musisi jazz yang telah membentuk sejarah musik Indonesia, dengan kombinasi gaya dan teknik yang khas. Saksikan aksi panggung yang penuh emosi, improvisasi, dan harmoni luar biasa, serta rasakan aura magis dari setiap lagu yang dibawakan. Ini adalah kesempatan langka untuk menyaksikan kehebatan para legenda jazz Indonesia dalam satu malam penuh keajaiban musikal!",
       },
@@ -386,7 +386,7 @@ async function seed() {
         place: "Istora Senayan",
         ticketSlot: 10000,
         prices: 400_000,
-        organizer: "PopLive",
+        organizerId: "PopLive",
         description:
           "Konser megah dari Raisa yang akan membawa para penggemar dalam perjalanan musik penuh emosi dan nostalgia melalui lagu-lagu terbaik dari album-album sebelumnya. " +
           "Dari perjalanan kariernya yang telah menemani banyak momen, Raisa kembali ke panggung besar dengan aransemen musik yang lebih kaya dan tata panggung yang spektakuler. " +
@@ -405,7 +405,7 @@ async function seed() {
         place: "Balai Sarbini",
         ticketSlot: 10000,
         prices: 350_000,
-        organizer: "PopStar Indonesia",
+        organizerId: "PopStar Indonesia",
         description:
           "Malam istimewa bersama Afgan dalam konser eksklusif yang akan membawa Anda ke dalam perjalanan penuh emosi melalui lagu-lagu hitsnya. " +
           "Dari balada penuh perasaan hingga lagu-lagu upbeat yang menggugah semangat, Afgan siap menyuguhkan penampilan yang tak terlupakan. " +
@@ -424,7 +424,7 @@ async function seed() {
         place: "Tennis Indoor Senayan",
         ticketSlot: 10000,
         prices: 300_000,
-        organizer: "Harmony Music",
+        organizerId: "Harmony Music",
         description:
           "Bersiaplah untuk malam penuh kehangatan dan harmoni dalam konser spesial Mahalini. " +
           "Dikenal dengan suara merdunya dan lirik-lirik yang penuh makna, Mahalini akan membawakan lagu-lagu terbaiknya dalam suasana yang romantis dan menyentuh hati. " +
@@ -443,7 +443,7 @@ async function seed() {
         place: "JCC Senayan",
         ticketSlot: 10000,
         prices: 450_000,
-        organizer: "Tulus Management",
+        organizerId: "Tulus Management",
         description:
           "Tur konser Tulus kembali hadir dengan membawakan lagu-lagu dari album 'Manusia', serta deretan hits yang telah menjadi favorit para penggemar. " +
           "Dikenal dengan suara lembut dan lirik-lirik yang puitis, Tulus akan menghadirkan pertunjukan yang membawa perasaan hangat dan reflektif. " +
@@ -462,7 +462,7 @@ async function seed() {
         place: "Stadion GBK",
         ticketSlot: 10000,
         prices: 500_000,
-        organizer: "NOAH Official",
+        organizerId: "NOAH Official",
         description:
           "Konser spektakuler dari NOAH yang akan membawa para penggemar dalam perjalanan nostalgia melalui lagu-lagu legendaris mereka. " +
           "Dari era Peterpan hingga transformasi menjadi NOAH, band ini terus menghadirkan karya-karya luar biasa yang menggugah perasaan. " +
@@ -482,7 +482,7 @@ async function seed() {
         place: "Cafe Mondo",
         ticketSlot: 10000,
         prices: 150_000,
-        organizer: "IndieSound",
+        organizerId: "IndieSound",
         description:
           "Bergabunglah bersama kami dalam 'Fourtwnty - Live Acoustic' di Cafe Mondo, sebuah malam penuh musik akustik yang santai dan intim. Fourtwnty, band indie yang dikenal dengan lagu-lagu yang menenangkan dan lirik penuh makna, akan membawakan hits terbaik mereka dengan sentuhan akustik yang lebih mendalam. Suasana cafe yang hangat dan akrab akan menciptakan pengalaman yang lebih personal, memungkinkan penonton untuk merasakan kedekatan dengan musik yang dibawakan. \n\n" +
           "Dari lagu-lagu mellow hingga yang lebih upbeat, konser ini akan menyajikan perjalanan musikal yang penuh perasaan. Setiap alunan gitar dan vokal khas Fourtwnty akan menggugah hati dan membawa penonton masuk ke dalam dunia musik mereka. Bagi Anda yang mencari pengalaman musik yang lebih intimate, akustik, dan penuh emosi, acara ini adalah pilihan yang sempurna. Jangan lewatkan kesempatan untuk menikmati malam santai penuh dengan musik indie berkualitas di salah satu tempat paling nyaman di kota.",
@@ -499,7 +499,7 @@ async function seed() {
         place: "Taman Ismail Marzuki",
         ticketSlot: 10000,
         prices: 180_000,
-        organizer: "IndieVibes",
+        organizerId: "IndieVibes",
         description:
           "Nikmati malam penuh melodi lembut dari Payung Teduh dalam 'A Beautiful Night'. Konser ini akan membawa penonton menikmati musik indie dengan suasana yang intim dan santai. Dengan alunan gitar akustik dan vokal khas, Payung Teduh akan membawakan lagu-lagu hits mereka dalam format akustik yang menghangatkan hati. Suasana yang tenang dan penuh perasaan akan membuat malam ini menjadi momen yang tak terlupakan.",
       },
@@ -515,7 +515,7 @@ async function seed() {
         place: "Blok M Square",
         ticketSlot: 10000,
         prices: 200_000,
-        organizer: "IndieSound",
+        organizerId: "IndieSound",
         description:
           "Dengarkan karya terbaik .Feast dalam 'The Acoustic Sessions' yang mengubah suasana lagu-lagu mereka menjadi lebih intim. Di Blok M Square, para penggemar dapat merasakan setiap lirik dan melodi dengan lebih dekat dalam format akustik yang lebih mendalam. Dengan suasana yang santai dan hangat, konser ini menjadi kesempatan sempurna untuk merasakan musik .Feast dari sisi yang berbeda, lebih personal, dan lebih emosional.",
       },
@@ -531,7 +531,7 @@ async function seed() {
         place: "Parker’s Coffee House",
         ticketSlot: 10000,
         prices: 160_000,
-        organizer: "IndieVibes",
+        organizerId: "IndieVibes",
         description:
           "Malam penuh musik akustik dari The Overtunes di 'Indie Acoustic Night' yang akan mengajak penonton untuk menikmati penampilan yang lebih sederhana namun penuh emosi. Dengan suasana yang nyaman dan akrab, The Overtunes akan membawakan lagu-lagu hits mereka dalam versi akustik yang akan membawa penonton terhanyut dalam setiap melodi. Sebuah malam yang sempurna untuk menikmati musik indie berkualitas dalam suasana yang hangat dan menyenangkan.",
       },
@@ -547,7 +547,7 @@ async function seed() {
         place: "Kafe Indie Space",
         ticketSlot: 10000,
         prices: 170_000,
-        organizer: "IndieSound",
+        organizerId: "IndieSound",
         description:
           "Ruang Sentuh mengundang Anda untuk bergabung dalam 'Acoustic Journey' yang membawa pengalaman musikal yang lebih personal dan penuh perasaan. Dalam suasana akustik yang hangat di Kafe Indie Space, penonton akan dimanjakan dengan alunan musik yang menenangkan hati. Setiap lagu akan dibawakan dengan sentuhan yang lebih mendalam, membawa para penggemar untuk merasakan setiap nuansa musik yang dibawakan oleh Ruang Sentuh. Sebuah malam yang penuh keindahan dan ketenangan!",
       },
@@ -564,7 +564,7 @@ async function seed() {
         place: "JIExpo Kemayoran",
         ticketSlot: 10000,
         prices: 800_000,
-        organizer: "Ismaya Live",
+        organizerId: "Ismaya Live",
         description: "Festival EDM terbesar di Indonesia dengan DJ dunia!",
       },
     });
@@ -579,7 +579,7 @@ async function seed() {
         place: "Gelora Bung Karno Stadium",
         ticketSlot: 10000,
         prices: 900_000,
-        organizer: "Sensation Global",
+        organizerId: "Sensation Global",
         description:
           "Sensation Jakarta kembali hadir dengan pengalaman EDM yang luar biasa! Dikenal dengan pertunjukan panggung spektakuler dan DJ dunia, Sensation 2025 akan membawa penonton ke dalam dunia yang penuh energi dan cahaya. Dengan tema unik yang akan disajikan dalam setiap edisi, festival ini menghadirkan suasana yang menggabungkan musik elektronik dengan visual yang memukau. Jangan lewatkan kesempatan untuk menjadi bagian dari pengalaman luar biasa ini dan merasakan euforia musik EDM dengan ribuan penggemar lainnya!",
       },
@@ -595,7 +595,7 @@ async function seed() {
         place: "Stadion GBK",
         ticketSlot: 10000,
         prices: 850_000,
-        organizer: "Ultra Worldwide",
+        organizerId: "Ultra Worldwide",
         description:
           "Festival Ultra Music kembali ke Indonesia dengan pengalaman musik EDM yang penuh energi dan semangat! Dengan lineup DJ internasional yang sangat dinanti, Ultra Music Festival Indonesia 2025 akan menghidupkan Stadion GBK dengan musik yang memukau dan pertunjukan panggung yang megah. Para penggemar akan dibawa dalam perjalanan euforia melalui berbagai genre EDM, mulai dari house, techno, hingga dubstep. Dapatkan tiketmu sekarang dan bersiaplah untuk malam yang tak terlupakan!",
       },
@@ -611,7 +611,7 @@ async function seed() {
         place: "Ancol Beach City",
         ticketSlot: 10000,
         prices: 950_000,
-        organizer: "Tomorrowland",
+        organizerId: "Tomorrowland",
         description:
           "The world’s biggest electronic dance music festival is coming to Jakarta! Tomorrowland 2025 will take over Ancol Beach City, bringing together top DJs and artists from around the world for an unforgettable EDM experience. The festival will feature multiple stages, immersive visuals, and a lineup that includes the biggest names in the EDM scene. Prepare to lose yourself in the music, lights, and energy of Tomorrowland, and be part of a global celebration of music and unity!",
       },
@@ -627,7 +627,7 @@ async function seed() {
         place: "Jakarta International Expo",
         ticketSlot: 10000,
         prices: 750_000,
-        organizer: "Creamfields",
+        organizerId: "Creamfields",
         description:
           "Creamfields Indonesia 2025 is bringing the ultimate EDM experience to Jakarta! Known for its high-energy performances and stunning production, Creamfields is one of the biggest names in the global EDM scene. With an incredible lineup of DJs, this festival promises to deliver the best of house, techno, and trance music. Immerse yourself in the electrifying atmosphere, surrounded by thousands of EDM fans, and experience an unforgettable night of music and lights!",
       },
@@ -644,7 +644,7 @@ async function seed() {
         place: "The Pallas",
         ticketSlot: 10000,
         prices: 500_000,
-        organizer: "88Rising",
+        organizerId: "88Rising",
         description:
           "Rich Brian kembali ke tanah air dengan tur eksklusifnya, '88Rising Tour', yang akan menggebrak panggung dengan energi luar biasa! Setelah meraih kesuksesan global melalui lagu-lagu hitnya seperti 'Dat $tick' dan 'Yellow', Rich Brian siap memberikan pengalaman musik yang tak terlupakan bagi penggemar di Indonesia. Dalam tur ini, ia akan membawakan lagu-lagu favorit dari albumnya yang telah mendunia, termasuk beberapa kejutan spesial yang hanya bisa Anda saksikan langsung. \n\n" +
           "Tur ini bukan sekadar konser, tapi sebuah perayaan perjalanan musik Brian dari Jakarta ke dunia internasional. Dengan gaya yang unik, Rich Brian akan menyuguhkan penampilan live yang penuh semangat, dengan dukungan visual dan pencahayaan yang spektakuler. Jika Anda penggemar hip-hop dan musik yang inovatif, konser ini adalah kesempatan langka untuk melihat Rich Brian tampil di hadapan Anda dengan energi penuh di The Pallas. Jangan lewatkan kesempatan untuk bergabung dalam euforia musik yang akan mengguncang Jakarta!",
@@ -661,7 +661,7 @@ async function seed() {
         place: "Istora Senayan",
         ticketSlot: 10000,
         prices: 400_000,
-        organizer: "Raisa Music",
+        organizerId: "Raisa Music",
         description:
           "Raisa dan teman-teman kembali ke panggung dengan kolaborasi genre hip-hop yang penuh kejutan! Dalam 'Hip Hop Night', Anda akan menyaksikan penampilan luar biasa dari Raisa yang berkolaborasi dengan beberapa musisi hip-hop ternama. Nikmati atmosfer yang penuh energi dengan beat yang menghentak dan lirik yang mengalir. Konser ini akan membawa Anda dalam perjalanan musikal yang tak terlupakan dengan perpaduan suara yang segar dan penuh semangat!",
       },
@@ -677,7 +677,7 @@ async function seed() {
         place: "Stadion GBK",
         ticketSlot: 10000,
         prices: 600_000,
-        organizer: "Live Nation",
+        organizerId: "Live Nation",
         description:
           "Wiz Khalifa kembali untuk menggebrak Jakarta dengan 'The Smoke Tour'! Saksikan penampilan spektakuler dari rapper internasional ini yang telah mendunia dengan hits seperti 'See You Again' dan 'Young, Wild & Free'. Acara ini akan disuguhkan dengan visual yang luar biasa, pertunjukan panggung yang megah, dan tentu saja, musik yang membakar semangat. Bergabunglah dalam suasana penuh energi dan euforia bersama Wiz Khalifa dan penggemarnya!",
       },
@@ -693,7 +693,7 @@ async function seed() {
         place: "Gelora Bung Karno Stadium",
         ticketSlot: 10000,
         prices: 700_000,
-        organizer: "Travis Scott Inc.",
+        organizerId: "Travis Scott Inc.",
         description:
           "Travis Scott membawa tur 'Utopia' ke Jakarta! Nikmati malam penuh dengan pengalaman visual yang mendalam dan musik yang menghentak dari rapper, produser, dan inovator ini. Dengan lagu-lagu hits seperti 'SICKO MODE' dan 'Goosebumps', Travis Scott akan membuat setiap detik di konser ini terasa intens. Di Gelora Bung Karno Stadium, Anda akan merasakan atmosfer yang luar biasa dengan penampilan panggung yang futuristik dan penuh kejutan. Bersiaplah untuk merasakan energi yang tak tertandingi!",
       },
@@ -709,7 +709,7 @@ async function seed() {
         place: "The Pallas",
         ticketSlot: 10000,
         prices: 550_000,
-        organizer: "A$AP Worldwide",
+        organizerId: "A$AP Worldwide",
         description:
           "A$AP Rocky hadir untuk menggebrak Jakarta dengan 'Live in Jakarta'. Konser ini akan membawa Anda dalam perjalanan musik penuh dengan gaya, lirik tajam, dan beat yang menghentak. Dengan penampilan megah, A$AP Rocky akan membawakan lagu-lagu favorit dari albumnya yang telah mendunia, seperti 'Praise the Lord' dan 'L$D'. Tidak hanya musik, tapi visual dan atmosfer yang tercipta juga akan membuat Anda merasakan sensasi yang unik dari rapper ikonik ini. Bergabunglah dalam acara ini untuk merasakan langsung gaya hidup dan musik A$AP Rocky!",
       },

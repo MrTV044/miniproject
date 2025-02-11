@@ -55,6 +55,8 @@ export async function register(req: Request, res: Response) {
       });
     }
 
+    // referral doesnt add automatically
+
     const findUser = await prisma.user.findUnique({
       where: { email: email },
     });
@@ -90,7 +92,11 @@ export async function login(req: Request, res: Response) {
       return;
     }
 
-    const JwtPayload = { email: user.email, password: user.password };
+    const JwtPayload = {
+      id: user.id,
+      email: user.email,
+      password: user.password,
+    };
     const token = jwt.sign(JwtPayload, process.env.JWT_SECRET! as string, {
       expiresIn: "1h",
     });
