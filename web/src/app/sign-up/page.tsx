@@ -88,9 +88,9 @@ export default function SignUp() {
   }
 
   async function handleSubmit() {
-    setIsLoading(true);
     console.log(signUp);
     try {
+      setIsLoading(true);
       const response = await fetch("http://localhost:8000/api/v1/register", {
         method: "POST",
         headers: {
@@ -116,8 +116,9 @@ export default function SignUp() {
       // router.push("/login");
     } catch (error) {
       console.error(error);
+    } finally {
+      setIsLoading(false);
     }
-    setIsLoading(false);
   }
 
   const [roles, setRoles] = useState<string[]>();

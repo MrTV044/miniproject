@@ -45,12 +45,13 @@ model User {
 }
 
 model Order {
-  id      Int   @id @default(autoincrement())
-  amount  Int
-  userId  Int
-  user    User  @relation(fields: [userId], references: [id])
-  eventId Int
-  event   Event @relation(fields: [eventId], references: [id])
+  id            Int   @id @default(autoincrement())
+  amount        Int
+  userId        Int
+  user          User  @relation(fields: [userId], references: [id])
+  eventId       Int
+  event         Event @relation(fields: [eventId], references: [id])
+  transactionId Int
 }
 
 model Event {
@@ -63,7 +64,7 @@ model Event {
   ticketSlot  Int
   ticketSold  Int      @default(0)
   prices      Int
-  organizer   String
+  organizer   String   @unique
   description String
   Order       Order[]
 

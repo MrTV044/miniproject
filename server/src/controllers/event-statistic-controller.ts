@@ -6,17 +6,19 @@ export async function GetOrganizerEvents(
   res: Response,
   next: NextFunction
 ) {
-//   const token = req.cookies.token;
-//   if (!token) {
-//     res.status(401).json({ message: "Unauthorized" });
-//     return;
-//   }
+  //   const token = req.cookies.token;
+  //   if (!token) {
+  //     res.status(401).json({ message: "Unauthorized" });
+  //     return;
+  //   }
 
   try {
     console.log("hit");
     const { email } = req.body;
-    const userEvents = await prisma.user.findUnique({
+    const userEvents = await prisma.event.findUnique({
       where: { email },
+
+      // need to filter role organizer
     });
 
     if (!userEvents) {
@@ -28,5 +30,3 @@ export async function GetOrganizerEvents(
     console.error(error);
   }
 }
-
-

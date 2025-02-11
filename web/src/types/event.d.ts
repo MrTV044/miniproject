@@ -1,11 +1,12 @@
 export interface events {
-  labels: string[];
-  data: {
-    label: string;
-    data: number[];
-    borderColor: string;
-    backgroundColor: string;
-    borderWidth: number;
-    tension: number;
-  };
+  name: string;
+  date: Date;
+  order: string;
+}
+
+export interface transactions {
+  name: string;
+  amount: number;
+  date: Date;
+  event: string;
 }
