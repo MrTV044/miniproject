@@ -5,6 +5,7 @@ import { format } from "date-fns";
 import Image from "next/image";
 import Link from "next/link";
 
+
 // Mendefinisikan tipe untuk acara
 interface Event {
   id: number;
@@ -15,6 +16,7 @@ interface Event {
   organizer: string;
   image: string;
 }
+
 
 export default function EventPost() {
   const [events, setEvents] = useState<Event[]>([]);
@@ -44,6 +46,7 @@ export default function EventPost() {
       event.name.toLowerCase().includes(searchTerm.toLowerCase())
     )
     .filter((event) => (selectedGenre ? event.genre === selectedGenre : true));
+
 
   return (
     <section className="px-4 md:px-[100px] pb-32 font-InterThigt font-semibold flex flex-col md:flex-row">

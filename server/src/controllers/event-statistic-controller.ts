@@ -6,27 +6,37 @@ export async function GetOrganizerEvents(
   res: Response,
   next: NextFunction
 ) {
-//   const token = req.cookies.token;
-//   if (!token) {
-//     res.status(401).json({ message: "Unauthorized" });
-//     return;
-//   }
-
   try {
     console.log("hit");
-    const { email } = req.body;
-    const userEvents = await prisma.user.findUnique({
-      where: { email },
-    });
+    if (!req.user) {
+      res.status(401).json({ message: "Unauthorized" });
+      return;
+    }
 
-    if (!userEvents) {
+    const { id } = req.user;
+
+    if (!id) {
       res.status(404).json({ message: "User not found" });
       return;
     }
-    res.status(200).json({ ok: true, data: userEvents });
+
+    const userEvents = await prisma.event.findMany({
+      where: { organizerId: id },
+    });
+
+    const userOrders = await prisma.order.findMany({
+      where: { userId: id },
+      include: {
+        event: {
+          include: {
+            Organizer: true,
+          },
+        },
+      },
+    });
+
+    res.status(200).json({ ok: true, data: { userEvents, userOrders } });
   } catch (error) {
     console.error(error);
   }
 }
-
-

@@ -41,10 +41,10 @@ export default function Navbar() {
           >
             Create Event
           </Link>
-          <Link href="/" className="p-3 rounded-full hover:bg-gray-200">
+          <Link href="/login" className="p-3 rounded-full hover:bg-gray-200">
             Log In
           </Link>
-          <Link href="/" className="p-3 rounded-full hover:bg-gray-200">
+          <Link href="/sign-up" className="p-3 rounded-full hover:bg-gray-200">
             Sign Up
           </Link>
 

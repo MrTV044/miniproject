@@ -1,6 +1,7 @@
 import { JwtPayload } from "jsonwebtoken";
 
 interface CustomJWTPayload extends JwtPayload {
+  id: number;
   fullname: string;
   email: string;
   password: string;

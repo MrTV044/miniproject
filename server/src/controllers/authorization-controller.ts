@@ -17,10 +17,9 @@ export async function register(req: Request, res: Response) {
     const date = new Date();
     const referralCode = fullname.slice(0, 3) + "REF" + date.getMilliseconds();
 
-    if (referral !== existingrefferal?.referral) {
+    if (referral && referral !== existingrefferal?.referral) {
       res.status(400).json({ message: "Invalid referral code!!!" });
       return;
-    } else {
     }
 
     if (password !== confirmPassword) {
@@ -41,6 +40,7 @@ export async function register(req: Request, res: Response) {
       },
     });
 
+
     const referralOwner = await prisma.user.findFirst({
       where: { referral: referral },
     });
@@ -51,18 +51,33 @@ export async function register(req: Request, res: Response) {
         code: `${Math.random()}`,
         userId: referralOwner?.id ?? 0,
         expirationDate: new Date(date.setMonth(date.getMonth() + 3)),
+
+    await prisma.wallet.create({
+      data: {
+        userId: user.id,
+        credit: 0,
+
       },
     });
 
-    const findUser = await prisma.user.findUnique({
-      where: { email: email },
+    const referralOwner = await prisma.user.findFirst({
+      where: { referral: referral },
     });
 
-    const userId1 = findUser?.id;
+    if (referralOwner && role === "CUSTOMER") {
+      const coupon = await prisma.points.create({
+        data: {
+          discount: 10000,
+          code: `${Math.random()}`,
+          userId: referralOwner?.id,
+          expirationDate: new Date(date.setMonth(date.getMonth() + 3)),
+        },
+      });
+    }
 
-    res
-      .status(201)
-      .json({ ok: true, message: "User created successfully", data: userId1 });
+    // where to put the code for expiration date
+
+    res.status(201).json({ ok: true, message: "User created successfully" });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "general error" });
@@ -89,7 +104,12 @@ export async function login(req: Request, res: Response) {
       return;
     }
 
-    const JwtPayload = { email: user.email, password: user.password };
+    const JwtPayload = {
+      id: user.id,
+      email: user.email,
+      password: user.password,
+      role: user.role,
+    };
     const token = jwt.sign(JwtPayload, process.env.JWT_SECRET! as string, {
       expiresIn: "1h",
     });
@@ -114,21 +134,6 @@ export function logout(req: Request, res: Response) {
     res.status(200).json({ ok: true, message: "Logged out successfully" });
   } catch (error) {}
 }
-
-// export async function referral(req: Request, res: Response) {
-//   try {
-//     const { referral } = req.body;
-//     const user = await prisma.user.findUnique({
-//       where: { referral },
-//     });
-
-//     const correctReferral = compare(referral, user.referral)
-
-//     res.json({ ok: true, referral: referral?.referral });
-//   } catch (error) {
-//     console.log(error);
-//   }
-// }
 
 export async function getRole(req: Request, res: Response) {
   try {
