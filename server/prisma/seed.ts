@@ -4,8 +4,8 @@ const prisma = new PrismaClient();
 
 async function seed() {
   try {
-    await prisma.wallet.deleteMany();
     await prisma.coupon.deleteMany();
+    await prisma.wallet.deleteMany();
     await prisma.event.deleteMany();
     await prisma.user.deleteMany();
 
@@ -765,6 +765,9 @@ async function seed() {
     /* -------------------------------------------------------------------------- */
     /*                                Create Order                                */
     /* -------------------------------------------------------------------------- */
+    // const order1 = await prisma.order.create({
+    //   data: { totalPrice: 900000, totalTicket: 3, eventId: ev, userId: 53 },
+    // });
   } catch (error) {
     console.error(error);
   } finally {

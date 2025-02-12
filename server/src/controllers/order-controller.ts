@@ -1,17 +1,36 @@
 import { Request, Response, NextFunction } from "express";
 import prisma from "../configs/prisma";
+
+export async function getOrder(
+  req: Request,
+  res: Response,
+  next: NextFunction
+) {
+  try {
+    const order = await prisma.order.findUnique({
+      where: { id: +req.params.id },
+    });
+
+    res.status(200).json({ ok: true, data: order });
+  } catch (error) {
+    next(error);
+  }
+}
+
 export async function CreateOrder(
   req: Request,
   res: Response,
   next: NextFunction
 ) {
   try {
+    const { totalPrice, totalTicket, userId, eventId } = req.body;
+
     const createOrder = await prisma.order.create({
       data: {
-        totalPrice: req.body.totalPrice,
-        totalTicket: req.body.totalTicket,
-        userId: req.body.userId,
-        eventId: req.body.eventId,
+        totalPrice: totalPrice,
+        totalTicket: totalTicket,
+        userId: userId,
+        eventId: eventId,
       },
     });
     res.status(201).json({ ok: true, data: createOrder });

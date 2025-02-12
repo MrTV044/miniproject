@@ -50,13 +50,14 @@ model User {
 }
 
 model Order {
-  id          Int   @id @default(autoincrement())
+  id          Int      @id @default(autoincrement())
   totalPrice  Int
   totalTicket Int
   userId      Int
-  user        User  @relation(fields: [userId], references: [id])
+  user        User     @relation(fields: [userId], references: [id])
   eventId     Int
-  event       Event @relation(fields: [eventId], references: [id])
+  event       Event    @relation(fields: [eventId], references: [id])
+  Ticket      Ticket[]
 }
 
 model Event {
@@ -80,10 +81,18 @@ model Event {
   User User[]
 }
 
+model Ticket {
+  id         Int    @id @default(autoincrement())
+  ticketCode String @unique // Menggunakan String jika kode tiket bisa berupa huruf dan angka
+  orderId    Int
+  Order      Order  @relation(fields: [orderId], references: [id])
+}
+
 model Voucher {
-  id       Int    @id @default(autoincrement())
-  code     String @unique
+  id       Int      @id @default(autoincrement())
+  code     String   @unique
   discount Int
+  used     Boolean?
   eventId  Int
 
   Event Event @relation(fields: [eventId], references: [id])
@@ -94,14 +103,14 @@ model Coupon {
   code           String   @unique
   discount       Int
   expirationDate DateTime
+  used           Boolean?
   userId         Int
   User           User     @relation(fields: [userId], references: [id])
 }
 
 model Points {
   id             Int      @id @default(autoincrement())
-  code           String   @unique
-  discount       Int
+  balance        Int
   expirationDate DateTime
   userId         Int
   User           User     @relation(fields: [userId], references: [id])
@@ -120,9 +129,11 @@ model FeedBack {
 }
 
 model Wallet {
-  id     Int @id @default(autoincrement())
-  credit Int
-  userId Int @unique
+  id        Int      @id @default(autoincrement())
+  credit    Int      @default(0)
+  userId    Int      @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   User User @relation(fields: [userId], references: [id])
 }

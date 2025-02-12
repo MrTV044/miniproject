@@ -1,112 +1,120 @@
 "use client";
 
-import { useState } from "react";
-import { Search, Calendar, List } from "lucide-react";
+import { useState, useEffect } from "react";
 
-export default function EventDashboard() {
-  const [events, setEvents] = useState([]);
+const EventDashboard = () => {
+  const [activeContent, setActiveContent] = useState("dashboard"); // State untuk konten aktif
+  const [eventView, setEventView] = useState("active"); // State untuk memilih antara Event Aktif dan Event Lalu Lintas
 
-  const handleCreateEvent = () => {
-    alert("Create Event Clicked");
+  // Daftar item sidebar
+  const sidebarItems = [
+    { name: "Dashboard", value: "dashboard" },
+    { name: "Rekening", value: "accounting" },
+    { name: "Statistic", value: "statistic" },
+  ];
+
+  // Fungsi untuk mengubah konten aktif
+  const handleSidebarClick = (value) => {
+    setActiveContent(value);
   };
 
-  const handleSearch = (e) => {
-    console.log("Searching for: ", e.target.value);
-  };
+  // Fungsi untuk merender konten berdasarkan item yang dipilih
+  const renderContent = () => {
+    if (activeContent !== "dashboard") {
+      switch (activeContent) {
+        case "dashboard":
+          return (
+            <h2 className="text-lg font-semibold">Ini adalah Dashboard</h2>
+          );
+        case "accounting":
+          return <h2 className="text-lg font-semibold">Ini adalah Rekening</h2>;
+        case "statistic":
+          return (
+            <h2 className="text-lg font-semibold">Ini adalah Statistic</h2>
+          );
+        default:
+          return (
+            <h2 className="text-lg font-semibold">Pilih item di sidebar</h2>
+          );
+      }
+    }
 
-  const handleViewChange = (view) => {
-    alert(`Switched to ${view} view`);
+    return (
+      <div>
+        <div className="flex space-x-4 mb-4">
+          <button
+            className={`px-4 py-2 rounded ${
+              eventView === "active" ? "bg-blue-600 text-white" : "bg-gray-200"
+            }`}
+            onClick={() => setEventView("active")}
+          >
+            Event Aktif
+          </button>
+          <button
+            className={`px-4 py-2 rounded ${
+              eventView === "past" ? "bg-blue-600 text-white" : "bg-gray-200"
+            }`}
+            onClick={() => setEventView("past")}
+          >
+            Event Lalu Lintas
+          </button>
+        </div>
+
+        <div className="bg-white p-4 rounded shadow">
+          {eventView === "active" ? (
+            <div>
+              <h2 className="text-lg font-semibold mb-4">Event Aktif</h2>
+              <p>Detail Event Aktif</p>
+            </div>
+          ) : (
+            <div>
+              <h2 className="text-lg font-semibold mb-4">Event Lalu Lintas</h2>
+              <p>Detail Event Lalu Lintas</p>
+            </div>
+          )}
+        </div>
+      </div>
+    );
   };
 
   return (
-    <div className="flex h-screen w-full">
+    <div className="flex h-screen">
       {/* Sidebar */}
-      <aside className="w-20 bg-gray-100 flex flex-col items-center py-6 space-y-6">
-        <div className="w-8 h-8 bg-orange-500 rounded-full"></div>
-        <nav className="space-y-6">
-          <button
-            className="w-10 h-10 bg-gray-200 rounded-lg"
-            onClick={() => alert("Home Clicked")}
-          ></button>
-          <button
-            className="w-10 h-10 bg-blue-500 text-white rounded-lg flex items-center justify-center"
-            onClick={() => handleViewChange("calendar")}
-          >
-            {" "}
-            <Calendar size={20} />{" "}
-          </button>
-          <button
-            className="w-10 h-10 bg-gray-200 rounded-lg"
-            onClick={() => alert("Reports Clicked")}
-          ></button>
-          <button
-            className="w-10 h-10 bg-gray-200 rounded-lg"
-            onClick={() => alert("Settings Clicked")}
-          ></button>
+      <aside className="w-64 bg-gray-800 text-white p-6">
+        <h2 className="text-xl font-bold mb-4">Dashboard</h2>
+        <nav className="space-y-2">
+          {sidebarItems.map((item) => (
+            <a
+              key={item.value}
+              href="#"
+              className={`block py-2 px-4 rounded ${
+                activeContent === item.value ? "bg-blue-600" : ""
+              }`}
+              onClick={() => handleSidebarClick(item.value)} // Mengubah konten saat diklik
+            >
+              {item.name}
+            </a>
+          ))}
         </nav>
       </aside>
 
       {/* Main Content */}
-      <div className="flex-1 flex flex-col bg-white p-6">
-        {/* Header */}
-        <header className="flex justify-between items-center pb-6 border-b">
-          <h1 className="text-3xl font-bold">Events</h1>
-          <div className="flex items-center space-x-4">
-            <button
-              className="px-4 py-2 border border-orange-500 text-orange-500 rounded-lg"
-              onClick={handleCreateEvent}
-            >
-              + Create
-            </button>
-            <div className="w-10 h-10 bg-blue-500 text-white flex items-center justify-center rounded-full">
-              EP
-            </div>
-          </div>
+      <div className="flex-1 p-6 bg-gray-100">
+        <header className="flex justify-between items-center mb-4">
+          <h1 className="text-2xl font-bold">Event Saya</h1>
+          <input
+            type="text"
+            placeholder="Cari Event Saya"
+            className="border border-gray-300 rounded p-2"
+          />
         </header>
 
-        {/* Event Controls */}
-        <div className="flex items-center mt-6 space-x-4">
-          <div className="flex items-center bg-gray-100 px-4 py-2 rounded-lg">
-            <Search size={20} className="text-gray-500" />
-            <input
-              type="text"
-              placeholder="Search events"
-              className="bg-transparent ml-2 outline-none"
-              onChange={handleSearch}
-            />
-          </div>
-          <button
-            className="bg-blue-500 text-white px-4 py-2 rounded-lg flex items-center space-x-2"
-            onClick={() => handleViewChange("list")}
-          >
-            <List size={20} /> <span>List</span>
-          </button>
-          <button
-            className="border border-gray-300 px-4 py-2 rounded-lg flex items-center space-x-2"
-            onClick={() => handleViewChange("calendar")}
-          >
-            <Calendar size={20} /> <span>Calendar</span>
-          </button>
-          <button
-            className="bg-blue-500 text-white px-4 py-2 rounded-lg"
-            onClick={() => alert("Filter events clicked")}
-          >
-            All events ▼
-          </button>
-        </div>
-
-        {/* No Events Placeholder */}
-        <div className="flex flex-col items-center justify-center mt-20">
-          <div className="w-20 h-20 bg-gray-200 rounded-full"></div>
-          <p className="text-gray-500 mt-4">No events to show</p>
-          <button
-            className="bg-orange-500 text-white px-4 py-2 mt-4 rounded-lg"
-            onClick={handleCreateEvent}
-          >
-            Create Event
-          </button>
+        <div className="bg-white p-4 rounded shadow">
+          {renderContent()} {/* Render konten berdasarkan item yang dipilih */}
         </div>
       </div>
     </div>
   );
-}
+};
+
+export default EventDashboard;

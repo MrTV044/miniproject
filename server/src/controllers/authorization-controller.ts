@@ -42,20 +42,17 @@ export async function register(req: Request, res: Response) {
     });
 
     const referralOwner = await prisma.user.findFirst({
-      where: { referral: referral}
-    })
+      where: { referral: referral },
+    });
 
-        const coupon = await prisma.points.create({
-          data: {
-            discount: 10000,
-            code: `${Math.random()}`,
-            userId: referralOwner?.id ?? 0,
-            expirationDate: new Date(date.setMonth(date.getMonth() + 3)),
-          },
-        });
-    
-
-
+    const coupon = await prisma.coupon.create({
+      data: {
+        discount: 10000,
+        code: `${Math.random()}`,
+        userId: referralOwner?.id ?? 0,
+        expirationDate: new Date(date.setMonth(date.getMonth() + 3)),
+      },
+    });
 
     const findUser = await prisma.user.findUnique({
       where: { email: email },
