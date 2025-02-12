@@ -1,7 +1,7 @@
 import { Response, Request, NextFunction } from "express";
 import prisma from "../configs/prisma";
 
-export async function GetOrganizerEvents(
+export async function GetOrganizerEventsandOrders(
   req: Request,
   res: Response,
   next: NextFunction
@@ -24,7 +24,7 @@ export async function GetOrganizerEvents(
       where: { organizerId: id },
     });
 
-    const userOrders = await prisma.order.findMany({
+    const response = await prisma.order.findMany({
       where: { userId: id },
       include: {
         event: {
@@ -35,7 +35,17 @@ export async function GetOrganizerEvents(
       },
     });
 
-    res.status(200).json({ ok: true, data: { userEvents, userOrders } });
+    const organizerOrders = response.map((order) => {
+      return {
+        id: order.id,
+        eventId: order.eventId,
+        eventName: order.event.name,
+        totalSingleEventRevenue: order.event.prices * order.event.ticketSold,
+        totalTicketSold: order.event.ticketSold,
+      };
+    });
+
+    res.status(200).json({ ok: true, data: organizerOrders });
   } catch (error) {
     console.error(error);
   }

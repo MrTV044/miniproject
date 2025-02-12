@@ -24,21 +24,7 @@ function Dashboard() {
         console.error("Error fetching events:", error);
       }
     }
-
-    async function fetchTransactions() {
-      try {
-        const response = await fetch(
-          "http://localhost:8000/api/v1/transactions"
-        );
-        const data = await response.json();
-        setTransactions(data.data);
-      } catch (error) {
-        console.error("Error fetching transactions:", error);
-      }
-    }
-
     fetchEvents();
-    fetchTransactions();
   }, []);
 
   return (

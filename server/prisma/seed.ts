@@ -207,7 +207,6 @@ async function seed() {
         discount: 10,
         userId: user1.id,
         expirationDate: new Date(),
-
       },
     });
 
@@ -247,6 +246,7 @@ async function seed() {
         organizerId: 11,
         description:
           "Konser spesial album terbaru dari .Fiesta yang akan membawa penonton dalam perjalanan musik penuh energi dan pesan mendalam. Album 'Membangun & Menghancurkan' menghadirkan konsep baru yang kuat dengan lirik-lirik yang penuh makna, menggugah, dan berani. Di Veledrome, para penggemar akan disuguhkan dengan aksi panggung luar biasa yang memadukan kekuatan musik rock dengan visual yang mendalam, serta tata panggung yang megah. Jangan lewatkan kesempatan untuk menyaksikan .Feast membawakan lagu-lagu terbaru mereka dan merasakan setiap emosi yang disampaikan lewat musik!",
+        eventType: "PAID",
       },
     });
 
@@ -329,7 +329,7 @@ async function seed() {
         place: "JIExpo Kemayoran",
         ticketSlot: 10000,
         prices: 500_000,
-        organizer: "Jazz Nation",
+        organizerId: 13,
         description:
           "Festival Jazz terbesar di Indonesia yang menghadirkan musisi internasional dari berbagai penjuru dunia. Jakarta International Jazz Festival akan menyuguhkan pengalaman luar biasa dengan berbagai penampilan spektakuler dari para jazz legend dan musisi muda berbakat. Di JIExpo Kemayoran, festival ini akan menggabungkan berbagai genre jazz, mulai dari tradisional hingga kontemporer, dalam suasana yang penuh energi dan kehangatan. Jangan lewatkan kesempatan untuk menyaksikan aksi panggung yang memukau dan menikmati malam penuh musik berkualitas tinggi!",
         eventType: "PAID",
@@ -346,7 +346,7 @@ async function seed() {
         place: "Bentara Budaya",
         ticketSlot: 10000,
         prices: 200_000,
-        organizer: "JazzVibes",
+        organizerId: 12,
         description:
           "Tohpati, gitaris jazz ternama Indonesia, akan menghadirkan malam penuh nuansa jazz yang menenangkan dan mendalam bersama para musisi handal lainnya. 'A Night of Jazz' di Bentara Budaya akan membawa penonton dalam alunan musik jazz yang lembut namun penuh ekspresi. Tophati & Friends akan memainkan komposisi yang membawa sentuhan jazz fusion yang elegan, dengan improvisasi dan harmoni yang indah. Nikmati setiap notasi yang mengalun dengan indah, dan rasakan suasana intim yang akan membuat malam ini tak terlupakan!",
         eventType: "PAID",
@@ -363,7 +363,7 @@ async function seed() {
         place: "Taman Ismail Marzuki",
         ticketSlot: 10000,
         prices: 250_000,
-        organizer: "JazzVibes",
+        organizerId: 11,
         description:
           "Malam eksklusif bersama Dewa Bujana dalam alunan jazz yang syahdu dan memukau. Dewa Bujana, gitaris jazz yang telah mendunia, akan membawakan komposisi-komposisi terbaiknya dalam suasana yang sangat intim di Taman Ismail Marzuki. Konser ini akan menggabungkan improvisasi jazz yang khas dengan teknik permainan gitar yang memukau, menghadirkan pengalaman musikal yang mendalam dan penuh nuansa. Bersiaplah untuk terhanyut dalam setiap melodi yang mengalun dengan indah dan membawa Anda dalam perjalanan musikal yang tak terlupakan!",
         eventType: "PAID",
@@ -380,7 +380,7 @@ async function seed() {
         place: "La Piazza",
         ticketSlot: 10000,
         prices: 180_000,
-        organizer: "Smooth Jazz Indonesia",
+        organizerId: 13,
         description:
           "Akhir pekan santai dengan lantunan jazz yang menenangkan di La Piazza. 'Chill Jazz Weekend' akan menghadirkan penampilan-penampilan jazz yang lebih santai, penuh relaksasi, dan cocok untuk dinikmati sambil menikmati suasana akhir pekan yang tenang. Dengan latar belakang suasana La Piazza yang nyaman dan santai, acara ini adalah pilihan sempurna bagi Anda yang ingin bersantai sambil menikmati alunan musik jazz yang menenangkan hati. Jangan lewatkan kesempatan untuk menikmati musik berkualitas dalam suasana yang hangat dan akrab!",
         eventType: "PAID",
@@ -397,7 +397,7 @@ async function seed() {
         place: "Balai Sarbini",
         ticketSlot: 10000,
         prices: 300_000,
-        organizer: "IndoJazz Community",
+        organizerId: 12,
         description:
           "Pertemuan para legenda jazz Indonesia dalam satu panggung spektakuler yang akan menghadirkan kolaborasi langka antara musisi jazz terbaik Tanah Air. 'Indonesian Jazz Legends' di Balai Sarbini akan menghadirkan penampilan dari musisi jazz yang telah membentuk sejarah musik Indonesia, dengan kombinasi gaya dan teknik yang khas. Saksikan aksi panggung yang penuh emosi, improvisasi, dan harmoni luar biasa, serta rasakan aura magis dari setiap lagu yang dibawakan. Ini adalah kesempatan langka untuk menyaksikan kehebatan para legenda jazz Indonesia dalam satu malam penuh keajaiban musikal!",
         eventType: "PAID",
@@ -687,7 +687,7 @@ async function seed() {
         place: "Finns Beach Club, Bali",
         ticketSlot: 15000,
         prices: 0, // Gratis
-        organizer: "Ultra Worldwide",
+        organizerId: 11,
         description:
           "Ultra Music Festival akhirnya hadir di Bali! Bersiaplah untuk pengalaman musik elektronik terbesar dengan DJ kelas dunia, efek visual spektakuler, dan atmosfer pantai yang epik. Bergabunglah dengan ribuan pencinta EDM dari seluruh dunia dan rasakan pengalaman festival tak terlupakan di pulau surga!",
         eventType: "FREE",

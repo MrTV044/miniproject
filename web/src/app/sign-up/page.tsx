@@ -27,18 +27,18 @@ export default function SignUp() {
       // const response3 = await fetch("http://localhost:8000/api/v1/register");
       // const responseId = await response3.json();
 
-      const response1 = await fetch("http://localhost:8000/api/v1/postCoupon", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          code: `${date.getTime()}`,
-          expirationDate: new Date(date.setMonth(date.getMonth() + 3)),
-          discount: 20000,
-          userId: id,
-        }),
-      });
+      // const response1 = await fetch("http://localhost:8000/api/v1/postCoupon", {
+      //   method: "POST",
+      //   headers: {
+      //     "Content-Type": "application/json",
+      //   },
+      //   body: JSON.stringify({
+      //     code: `${date.getTime()}`,
+      //     expirationDate: new Date(date.setMonth(date.getMonth() + 3)),
+      //     discount: 20000,
+      //     userId: id,
+      //   }),
+      // });
 
       if (!response1.ok) {
         console.error("Coupon API failed");

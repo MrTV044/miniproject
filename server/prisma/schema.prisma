@@ -71,7 +71,6 @@ model Event {
   ticketSold  Int       @default(0)
   prices      Int
   eventType   EventType
-  organizer   String
   description String
   organizerId Int?
 
@@ -113,7 +112,7 @@ model Points {
   balance        Int
   expirationDate DateTime
   userId         Int
-  User           User     @relation(fields: [userId], references: [id],  onDelete: Cascade))
+  User           User     @relation(fields: [userId], references: [id],  onDelete: Cascade)
 }
 
 model FeedBack {

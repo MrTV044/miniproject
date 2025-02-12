@@ -1,10 +1,10 @@
 import express from "express";
-import { GetOrganizerEvents } from "../controllers/event-statistic-controller";
+import { GetOrganizerEventsandOrders } from "../controllers/event-statistic-controller";
 import { roleGuard, verifyToken } from "../middleware/authorization-middleware";
 
 const router = express.Router();
 
-router.route("/organizer-events").get(verifyToken, GetOrganizerEvents);
+router.route("/organizer-events").get(verifyToken, GetOrganizerEventsandOrders);
 
 // router.route("/organizer-events").get(GetOrganizerEvents);
 
