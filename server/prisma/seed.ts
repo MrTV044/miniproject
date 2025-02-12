@@ -225,7 +225,7 @@ async function seed() {
         place: "Veledrome",
         ticketSlot: 10000,
         prices: 250_000,
-        organizerId: 1,
+        organizerId: 11,
         description:
           "Konser spesial album terbaru dari .Feast yang akan membawa penonton dalam perjalanan musik penuh energi dan pesan mendalam. Album 'Membangun & Menghancurkan' menghadirkan konsep baru yang kuat dengan lirik-lirik yang penuh makna, menggugah, dan berani. Di Veledrome, para penggemar akan disuguhkan dengan aksi panggung luar biasa yang memadukan kekuatan musik rock dengan visual yang mendalam, serta tata panggung yang megah. Jangan lewatkan kesempatan untuk menyaksikan .Feast membawakan lagu-lagu terbaru mereka dan merasakan setiap emosi yang disampaikan lewat musik!",
         eventType: "PAID",
@@ -243,7 +243,7 @@ async function seed() {
         place: "Veledrome",
         ticketSlot: 10000,
         prices: 250_000,
-        organizerId: 11,
+        organizerId: 12,
         description:
           "Konser spesial album terbaru dari .Fiesta yang akan membawa penonton dalam perjalanan musik penuh energi dan pesan mendalam. Album 'Membangun & Menghancurkan' menghadirkan konsep baru yang kuat dengan lirik-lirik yang penuh makna, menggugah, dan berani. Di Veledrome, para penggemar akan disuguhkan dengan aksi panggung luar biasa yang memadukan kekuatan musik rock dengan visual yang mendalam, serta tata panggung yang megah. Jangan lewatkan kesempatan untuk menyaksikan .Feast membawakan lagu-lagu terbaru mereka dan merasakan setiap emosi yang disampaikan lewat musik!",
         eventType: "PAID",
@@ -784,9 +784,40 @@ async function seed() {
     /* -------------------------------------------------------------------------- */
     /*                                Create Order                                */
     /* -------------------------------------------------------------------------- */
-    // const order1 = await prisma.order.create({
-    //   data: { totalPrice: 900000, totalTicket: 3, eventId: ev, userId: 53 },
-    // });
+    await prisma.order.createMany({
+      data: [
+        {
+          totalPrice: 5000,
+          totalTicket: 50,
+          userId: 11,
+          eventId: 1,
+        },
+        {
+          totalPrice: 7500,
+          totalTicket: 200,
+          userId: 12,
+          eventId: 2,
+        },
+        {
+          totalPrice: 2000,
+          totalTicket: 100,
+          userId: 13,
+          eventId: 3,
+        },
+        {
+          totalPrice: 10000,
+          totalTicket: 25,
+          userId: 11,
+          eventId: 4,
+        },
+        {
+          totalPrice: 1500,
+          totalTicket: 35,
+          userId: 12,
+          eventId: 5,
+        },
+      ],
+    });
   } catch (error) {
     console.error(error);
   } finally {
