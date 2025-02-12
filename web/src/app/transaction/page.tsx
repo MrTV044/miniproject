@@ -5,8 +5,9 @@ import { useSearchParams } from "next/navigation";
 import Image from "next/image";
 
 export default function TicketBooking() {
+  const [point, setPoint] = useState("");
   const [coupon, setCoupon] = useState("");
-  const [paymentMethod, setPaymentMethod] = useState("");
+  const [voucher, setVoucher] = useState("");
   const [agreeTerms, setAgreeTerms] = useState(false);
   const [agreePrivacy, setAgreePrivacy] = useState(false);
   const [ticketQuantity, setTicketQuantity] = useState(1);
@@ -42,8 +43,9 @@ export default function TicketBooking() {
 
   const handleBooking = () => {
     console.log("Order Details:", {
+      point,
+      voucher,
       coupon,
-      paymentMethod,
       agreeTerms,
       agreePrivacy,
       ticketQuantity,
@@ -104,27 +106,43 @@ export default function TicketBooking() {
 
           {ticketPrice > 0 && (
             <div className="mt-10 pb-10">
-              <h2 className="text-xl font-semibold mb-4">Payment Method</h2>
+              <h2 className="text-xl font-semibold mb-4"></h2>
               <div className="border rounded-lg p-5 shadow-sm">
-                <label className="block mb-2">Select Payment Method *</label>
-                <select
-                  className="w-full border p-2 rounded"
-                  value={paymentMethod}
-                  onChange={(e) => setPaymentMethod(e.target.value)}
-                >
-                  <option value="" disabled>
-                    Select
-                  </option>
-                  <option value="Credit">Credit</option>
-                </select>
-                <label className="block mt-4 mb-2">Coupon</label>
-                <input
-                  type="text"
-                  className="w-full border p-2 rounded"
-                  placeholder="Input Coupon"
-                  value={coupon}
-                  onChange={(e) => setCoupon(e.target.value)}
-                />
+                <div>
+                  <label className="block mt-4 mb-2">Point</label>
+                  <input
+                    type="text"
+                    className="w-full border p-2 rounded"
+                    placeholder="Input Voucher"
+                    value={point}
+                    onChange={(e) => setPoint(e.target.value)}
+                  />
+                  <button onClick={() => {}}>Use</button>
+                </div>
+
+                <div>
+                  <label className="block mt-4 mb-2">Voucher</label>
+                  <input
+                    type="text"
+                    className="w-full border p-2 rounded"
+                    placeholder="Input Voucher"
+                    value={voucher}
+                    onChange={(e) => setVoucher(e.target.value)}
+                  />
+                  <button onClick={() => {}}>Use</button>
+                </div>
+
+                <div>
+                  <label className="block mt-4 mb-2">Coupon</label>
+                  <input
+                    type="text"
+                    className="w-full border p-2 rounded"
+                    placeholder="Input Coupon"
+                    value={coupon}
+                    onChange={(e) => setCoupon(e.target.value)}
+                  />
+                  <button onClick={() => {}}>Use</button>
+                </div>
               </div>
             </div>
           )}

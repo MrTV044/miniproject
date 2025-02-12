@@ -1,5 +1,7 @@
 import express, { Request, Response } from "express";
 import eventRouter from "./routers/event-router";
+import orderRouter from "./routers/order-router";
+import walletRouter from "./routers/wallet-router";
 import authorization from "../src/routers/authorization-router";
 import cors from "cors";
 import cookieParser from "cookie-parser";
@@ -24,6 +26,8 @@ app.get(`/api/v1`, (req: Request, res: Response) => {
 });
 
 app.use("/api/v1/events", eventRouter);
+app.use("/api/v1/order", orderRouter);
+app.use("/api/v1/wallet", walletRouter);
 
 app.use("/api/v1/", authorization);
 app.use("/api/v1/", eventStatistic);
