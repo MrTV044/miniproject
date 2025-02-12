@@ -14,34 +14,16 @@ export async function GetOrganizerEvents(
     }
 
     const { id } = req.user;
-    console.log(id);
-    const userEvents = await prisma.event.findMany({
-      where: { organizerId: id },
-    });
 
-    if (!userEvents) {
+    if (!id) {
       res.status(404).json({ message: "User not found" });
       return;
     }
 
-    res.status(200).json({ ok: true, data: userEvents });
-  } catch (error) {
-    console.error(error);
-  }
-}
+    const userEvents = await prisma.event.findMany({
+      where: { organizerId: id },
+    });
 
-export async function GetOrganizerOrder(
-  req: Request,
-  res: Response,
-  next: NextFunction
-) {
-  try {
-    if (!req.user) {
-      res.status(404);
-      return;
-    }
-
-    const { id } = req.user;
     const userOrders = await prisma.order.findMany({
       where: { userId: id },
       include: {
@@ -52,7 +34,8 @@ export async function GetOrganizerOrder(
         },
       },
     });
-    res.status(200).json({ ok: true, data: userOrders });
+
+    res.status(200).json({ ok: true, data: { userEvents, userOrders } });
   } catch (error) {
     console.error(error);
   }

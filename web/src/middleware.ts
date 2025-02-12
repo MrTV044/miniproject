@@ -10,7 +10,7 @@ async function verifyJWTToken(token: string) {
 
     return verifiedToken.payload;
   } catch (error) {
-    console.log("Erro!");
+    console.log("Error!");
     console.error(error);
   }
 }
@@ -19,12 +19,26 @@ export async function middleware(request: NextRequest) {
   const accessToken = request.cookies.get("accessToken")?.value;
   const verifiedToken = await verifyJWTToken(accessToken!);
 
+  console.log(verifiedToken?.payload);
+
   if (!accessToken || !verifiedToken) {
     return NextResponse.redirect(new URL("/login", request.url));
   }
 
-  return NextResponse.next();
+  const { pathname } = request.nextUrl;
+  const role = verifiedToken.role;
+
+  console.log(accessToken);
+
+  if (
+    (pathname.startsWith("/dashboard/organizer") && role === "ORGANIZER") ||
+    (pathname.startsWith("/dashboard/user") && role === "CUSTOMER")
+  ) {
+    return NextResponse.next();
+  }
+
+  return NextResponse.redirect(new URL("/sign-up", request.url));
 }
 export const config = {
-  matcher: ["/event-dashboard/:path*"],
+  matcher: ["/dashboard/:path*"],
 };

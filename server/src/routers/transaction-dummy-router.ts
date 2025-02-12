@@ -1,8 +1,8 @@
-import express from "express";
-import { GetDummyTransactions } from "../controllers/transaction-dummy-controller";
+// import express from "express";
+// import { GetDummyTransactions } from "../controllers/transaction-dummy-controller";
 
-const router = express.Router();
+// const router = express.Router();
 
-router.route("/dummy-transactions/:userId").get(GetDummyTransactions);
+// router.route("/dummy-transactions/:userId").get(GetDummyTransactions);
 
-export default router;
+// export default router;

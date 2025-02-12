@@ -9,7 +9,8 @@ export async function verifyToken(
   next: NextFunction
 ) {
   try {
-    const token = req.cookies.token;
+    const token = req.cookies.accessToken;
+    console.log(token);
 
     if (!token) {
       res.status(401).json({ message: "Token is required" });
