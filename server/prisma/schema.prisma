@@ -72,12 +72,12 @@ model Event {
   eventType   EventType
   organizer   String
   description String
-  Order       Order[]
+  organizerId Int?
 
-  Voucher  Voucher[]
-  Feedback FeedBack[]
-  User     User?      @relation(fields: [userId], references: [id])
-  userId   Int?
+  Organizer User?      @relation(fields: [organizerId], references: [id])
+  Order     Order[]
+  Voucher   Voucher[]
+  Feedback  FeedBack[]
 }
 
 model Voucher {

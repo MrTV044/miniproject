@@ -40,11 +40,18 @@ export async function register(req: Request, res: Response) {
       },
     });
 
+    await prisma.wallet.create({
+      data: {
+        userId: user.id,
+        credit: 0,
+      },
+    });
+
     const referralOwner = await prisma.user.findFirst({
       where: { referral: referral },
     });
 
-    if (referralOwner) {
+    if (referralOwner && role === "CUSTOMER") {
       const coupon = await prisma.points.create({
         data: {
           discount: 10000,
@@ -55,15 +62,9 @@ export async function register(req: Request, res: Response) {
       });
     }
 
-    const findUser = await prisma.user.findUnique({
-      where: { email: email },
-    });
+    // where to put the code for expiration date
 
-    const userId1 = findUser?.id;
-
-    res
-      .status(201)
-      .json({ ok: true, message: "User created successfully", data: userId1 });
+    res.status(201).json({ ok: true, message: "User created successfully" });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "general error" });
@@ -90,7 +91,12 @@ export async function login(req: Request, res: Response) {
       return;
     }
 
-    const JwtPayload = { email: user.email, password: user.password };
+    const JwtPayload = {
+      id: user.id,
+      email: user.email,
+      password: user.password,
+      role: user.role,
+    };
     const token = jwt.sign(JwtPayload, process.env.JWT_SECRET! as string, {
       expiresIn: "1h",
     });
@@ -115,21 +121,6 @@ export function logout(req: Request, res: Response) {
     res.status(200).json({ ok: true, message: "Logged out successfully" });
   } catch (error) {}
 }
-
-// export async function referral(req: Request, res: Response) {
-//   try {
-//     const { referral } = req.body;
-//     const user = await prisma.user.findUnique({
-//       where: { referral },
-//     });
-
-//     const correctReferral = compare(referral, user.referral)
-
-//     res.json({ ok: true, referral: referral?.referral });
-//   } catch (error) {
-//     console.log(error);
-//   }
-// }
 
 export async function getRole(req: Request, res: Response) {
   try {

@@ -48,24 +48,6 @@ export default function SignUp() {
       const couponData = await response1.json();
       console.log("Generated Coupon:", couponData);
 
-      const response2 = await fetch(
-        "http://localhost:8000/api/v1/patchUserPoint",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            point: 10000,
-          }),
-        }
-      );
-
-      if (!response2.ok) {
-        console.error("Patch User Coupon API failed");
-        return;
-      }
-
       console.log("Coupon successfully assigned to user.");
     } catch (error) {
       console.error("Error in postCoupon:", error);
