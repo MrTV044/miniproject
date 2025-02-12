@@ -19,7 +19,7 @@ export async function middleware(request: NextRequest) {
   const accessToken = request.cookies.get("accessToken")?.value;
   const verifiedToken = await verifyJWTToken(accessToken!);
 
-  console.log(verifiedToken?.payload);
+  console.log(verifiedToken);
 
   if (!accessToken || !verifiedToken) {
     return NextResponse.redirect(new URL("/login", request.url));
@@ -35,6 +35,12 @@ export async function middleware(request: NextRequest) {
     (pathname.startsWith("/dashboard/user") && role === "CUSTOMER")
   ) {
     return NextResponse.next();
+  }
+
+  if (pathname.startsWith("/dashboard") && role === "ORGANIZER") {
+    return NextResponse.redirect(new URL("/dashboard/organizer", request.url));
+  } else if (pathname.startsWith("/dashboard") && role === "CUSTOMER") {
+    return NextResponse.redirect(new URL("/dashboard/user", request.url));
   }
 
   return NextResponse.redirect(new URL("/sign-up", request.url));

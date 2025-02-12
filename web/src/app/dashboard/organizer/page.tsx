@@ -13,10 +13,13 @@ function Dashboard() {
     async function fetchEvents() {
       try {
         const response = await fetch(
-          "http://localhost:8000/api/v1/organizer-events"
+          "http://localhost:8000/api/v1/organizer-events",
+          { credentials: "include" }
         );
+
         const data = await response.json();
         setEvents(data.data);
+        console.log(data);
       } catch (error) {
         console.error("Error fetching events:", error);
       }
