@@ -1,7 +1,11 @@
 export interface events {
-  name: string;
-  date: Date;
-  order: string;
+  date: string;
+  eventImage: string;
+  eventName: string;
+  id: int;
+  price: int;
+  totalSingleEventRevenue: int;
+  totalTicketSold: int;
 }
 
 export interface transactions {

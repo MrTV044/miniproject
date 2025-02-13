@@ -3,17 +3,19 @@ import { jwtVerify } from "jose";
 
 async function verifyJWTToken(token: string) {
   try {
-    if (!token) return null; // Explicitly handle missing token case
+    if (!token) {
+      return console.log("Token unavailable");
+    }
 
     const verifiedToken = await jwtVerify(
       token,
       new TextEncoder().encode(process.env.JWT_SECRET!)
     );
 
-    return verifiedToken.payload; // Ensure payload is returned
+    return verifiedToken.payload;
   } catch (error) {
     console.error("JWT Verification Error:", error);
-    return null; // Return null instead of undefined
+    return null;
   }
 }
 
@@ -27,9 +29,6 @@ export async function middleware(request: NextRequest) {
 
   const verifiedToken = await verifyJWTToken(accessToken);
 
-  console.log("Access Token:", accessToken);
-  console.log("Verified Token:", verifiedToken);
-
   if (!verifiedToken || !verifiedToken.role) {
     console.error("Invalid or expired token.");
     return NextResponse.redirect(new URL("/login", request.url));
@@ -38,7 +37,6 @@ export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
   const role = verifiedToken.role;
 
-  // Route access logic
   if (
     (pathname.startsWith("/dashboard/organizer") && role === "ORGANIZER") ||
     (pathname.startsWith("/dashboard/user") && role === "CUSTOMER")
@@ -47,13 +45,11 @@ export async function middleware(request: NextRequest) {
   }
 
   // Redirect based on role
-  if (pathname.startsWith("/dashboard")) {
-    return NextResponse.redirect(
-      new URL(
-        role === "ORGANIZER" ? "/dashboard/organizer" : "/dashboard/user",
-        request.url
-      )
-    );
+  if (pathname.startsWith("/dashboard") && role === "ORGANIZER") {
+    return NextResponse.redirect(new URL("/dashboard/organizer", request.url));
+  }
+  if (pathname.startsWith("/dashboard") && role === "CUSTOMER") {
+    return NextResponse.redirect(new URL("/dashboard/user", request.url));
   }
 
   return NextResponse.redirect(new URL("/sign-up", request.url));

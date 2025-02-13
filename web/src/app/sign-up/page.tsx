@@ -17,7 +17,6 @@ export default function SignUp() {
     referral: "",
   });
 
-
   function notify(message: string) {
     return toast(message);
   }

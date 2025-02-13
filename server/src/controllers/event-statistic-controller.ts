@@ -1,7 +1,7 @@
 import { Response, Request, NextFunction } from "express";
 import prisma from "../configs/prisma";
 
-export async function GetOrganizerEventsandOrders(
+export async function GetOrganizerEvents(
   req: Request,
   res: Response,
   next: NextFunction
@@ -29,24 +29,56 @@ export async function GetOrganizerEventsandOrders(
         organizerId: id,
       },
       include: {
-        Organizer: true,
-        Order: true,
+        Organizer: {
+          where: {
+            id: id,
+          },
+        },
+        Order: {
+          where: {
+            userId: id,
+          },
+        },
       },
     });
-
-    console.log(response);
 
     const organizerOrders = response.map((event) => {
       return {
         id: event.id,
         eventImage: event.image,
         eventName: event.name,
-        price: event.prices,
+        price: event.prices.toLocaleString(),
         date: event.date,
-        totalSingleEventRevenue: event.prices * event.ticketSold,
+        totalSingleEventRevenue: (
+          event.prices * event.ticketSold
+        ).toLocaleString(),
         totalTicketSold: event.ticketSold,
       };
     });
+
+    // const response = await prisma.order.findMany({
+    //   where: { userId: id },
+    //   include: {
+    //     event: {
+    //       include: {
+    //         Organizer: true,
+    //       },
+    //     },
+    //   },
+    // });
+
+    // const organizerOrders = response.map((order) => {
+
+    //   return{
+    //     id: order.id,
+    //     eventImage: order.event.image,
+    //     eventName: order.event.name,
+    //     price: order.event.prices,
+    //     date: order.event.date,
+    //     totalSingleEventRevenue: order.event.prices * order.totalTicket,
+    //     totalTicketSold: order.event.ticketSlot - order.totalTicket,
+    //   }
+    // });
 
     res.status(200).json({ ok: true, data: organizerOrders });
   } catch (error) {

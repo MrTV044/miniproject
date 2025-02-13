@@ -7,6 +7,7 @@ async function seed() {
   try {
     await prisma.coupon.deleteMany();
     await prisma.wallet.deleteMany();
+    await prisma.order.deleteMany();
     await prisma.event.deleteMany();
     await prisma.points.deleteMany();
     await prisma.user.deleteMany();
