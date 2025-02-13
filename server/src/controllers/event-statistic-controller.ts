@@ -85,3 +85,28 @@ export async function GetOrganizerEvents(
     console.error(error);
   }
 }
+
+export async function getSingleOrganizerStatistics(
+  req: Request,
+  res: Response,
+  next: NextFunction
+) {
+  try {
+    const response = await prisma.event.findUnique({
+      where: {
+        id: +req.params.id,
+      },
+      include: {
+        Organizer: true,
+        Order: {
+          where: {
+            userId: +req.params.id,
+          },
+        },
+      },
+    });
+    res.status(200).json({ ok: true, data: response });
+  } catch (error) {
+    console.error(error);
+  }
+}

@@ -30,6 +30,7 @@ app.use("/api/v1/wallet", walletRouter);
 app.use("/api/v1/", authorization);
 app.use("/api/v1/", eventStatistic);
 
+
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
