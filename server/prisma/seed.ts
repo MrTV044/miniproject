@@ -1,4 +1,5 @@
 import { PrismaClient } from "@prisma/client";
+import bcrypt, { compare, genSalt, hash } from "bcryptjs";
 
 const prisma = new PrismaClient();
 
@@ -13,6 +14,7 @@ async function seed() {
     /* -------------------------------------------------------------------------- */
     /*                                 Create User                                */
     /* -------------------------------------------------------------------------- */
+    const salt = await genSalt(10);
     const user1 = await prisma.user.create({
       data: {
         fullname: "Erlangga Adi Prasetya",
@@ -26,7 +28,7 @@ async function seed() {
       data: {
         fullname: "Rizky Maulana",
         email: "rizky@mail.com",
-        password: "pass123",
+        password: await bcrypt.hash("password", 10),
         role: "CUSTOMER",
       },
     });
@@ -108,7 +110,7 @@ async function seed() {
       data: {
         fullname: "Andi Saputra",
         email: "andi@mail.com",
-        password: "organizerId1",
+        password: await bcrypt.hash("password", salt),
         role: "ORGANIZER",
       },
     });
@@ -243,7 +245,7 @@ async function seed() {
         place: "Veledrome",
         ticketSlot: 10000,
         prices: 250_000,
-        organizerId: 12,
+        organizerId: 11,
         description:
           "Konser spesial album terbaru dari .Fiesta yang akan membawa penonton dalam perjalanan musik penuh energi dan pesan mendalam. Album 'Membangun & Menghancurkan' menghadirkan konsep baru yang kuat dengan lirik-lirik yang penuh makna, menggugah, dan berani. Di Veledrome, para penggemar akan disuguhkan dengan aksi panggung luar biasa yang memadukan kekuatan musik rock dengan visual yang mendalam, serta tata panggung yang megah. Jangan lewatkan kesempatan untuk menyaksikan .Feast membawakan lagu-lagu terbaru mereka dan merasakan setiap emosi yang disampaikan lewat musik!",
         eventType: "PAID",
@@ -277,7 +279,7 @@ async function seed() {
         place: "The Pallas",
         ticketSlot: 10000,
         prices: 250_000,
-        organizerId: 13,
+        organizerId: 11,
         description:
           "Malam penuh headbang dengan Burgerkill! Konser ini akan membawa Anda menyelami dunia metal yang keras dan penuh kekuatan dengan salah satu band metal terbesar Indonesia. Burgerkill akan membawakan lagu-lagu mereka yang sudah menjadi anthem bagi para metalhead sejati. Di The Pallas, para penonton akan disuguhkan pengalaman musik yang intens dengan energi yang tak terbendung, serta penampilan panggung yang memukau dan menegangkan. Bersiaplah untuk merasakan adrenalin yang meluap dan terlibat dalam euforia headbang tanpa henti!",
         eventType: "PAID",
@@ -380,7 +382,7 @@ async function seed() {
         place: "La Piazza",
         ticketSlot: 10000,
         prices: 180_000,
-        organizerId: 13,
+        organizerId: 11,
         description:
           "Akhir pekan santai dengan lantunan jazz yang menenangkan di La Piazza. 'Chill Jazz Weekend' akan menghadirkan penampilan-penampilan jazz yang lebih santai, penuh relaksasi, dan cocok untuk dinikmati sambil menikmati suasana akhir pekan yang tenang. Dengan latar belakang suasana La Piazza yang nyaman dan santai, acara ini adalah pilihan sempurna bagi Anda yang ingin bersantai sambil menikmati alunan musik jazz yang menenangkan hati. Jangan lewatkan kesempatan untuk menikmati musik berkualitas dalam suasana yang hangat dan akrab!",
         eventType: "PAID",

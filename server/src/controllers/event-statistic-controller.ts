@@ -24,24 +24,27 @@ export async function GetOrganizerEventsandOrders(
       where: { organizerId: id },
     });
 
-    const response = await prisma.order.findMany({
-      where: { userId: id },
+    const response = await prisma.event.findMany({
+      where: {
+        organizerId: id,
+      },
       include: {
-        event: {
-          include: {
-            Organizer: true,
-          },
-        },
+        Organizer: true,
+        Order: true,
       },
     });
 
-    const organizerOrders = response.map((order) => {
+    console.log(response);
+
+    const organizerOrders = response.map((event) => {
       return {
-        id: order.id,
-        eventId: order.eventId,
-        eventName: order.event.name,
-        totalSingleEventRevenue: order.event.prices * order.event.ticketSold,
-        totalTicketSold: order.event.ticketSold,
+        id: event.id,
+        eventImage: event.image,
+        eventName: event.name,
+        price: event.prices,
+        date: event.date,
+        totalSingleEventRevenue: event.prices * event.ticketSold,
+        totalTicketSold: event.ticketSold,
       };
     });
 
