@@ -40,38 +40,38 @@ export async function register(req: Request, res: Response) {
       },
     });
 
-    const referralOwner1 = await prisma.user.findFirst({
-      where: { referral: referral },
-    });
 
-    const coupon = await prisma.coupon.create({
-      data: {
-        discount: 10000,
-        code: `${Math.random()}`,
-        userId: referralOwner1?.id ?? 0,
-        expirationDate: new Date(date.setMonth(date.getMonth() + 3)),
-      },
-    });
+    if (referral) {
+      const referralOwner = await prisma.user.findFirst({
+        where: { referral: referral },
+      });
+
+      const coupon = await prisma.coupon.create({
+        data: {
+          discount: 10000,
+          code: `${Math.random()}`,
+          userId: referralOwner?.id ?? 0,
+          expirationDate: new Date(date.setMonth(date.getMonth() + 3)),
+        },
+      });
+
+      if (referralOwner && role === "CUSTOMER") {
+        const points = await prisma.points.create({
+          data: {
+            balance: 10000,
+            userId: referralOwner?.id,
+            expirationDate: new Date(date.setMonth(date.getMonth() + 3)),
+          },
+        });
+      }
+    }
+
     await prisma.wallet.create({
       data: {
         userId: user.id,
         credit: 0,
       },
     });
-
-    const referralOwner = await prisma.user.findFirst({
-      where: { referral: referral },
-    });
-
-    if (referralOwner && role === "CUSTOMER") {
-      const coupon = await prisma.points.create({
-        data: {
-          balance: 10000,
-          userId: referralOwner?.id,
-          expirationDate: new Date(date.setMonth(date.getMonth() + 3)),
-        },
-      });
-    }
 
     // where to put the code for expiration date
 

@@ -1,4 +1,5 @@
 import { PrismaClient } from "@prisma/client";
+import bcrypt, { compare, genSalt, hash } from "bcryptjs";
 
 const prisma = new PrismaClient();
 
@@ -6,6 +7,7 @@ async function seed() {
   try {
     await prisma.coupon.deleteMany();
     await prisma.wallet.deleteMany();
+    await prisma.order.deleteMany();
     await prisma.event.deleteMany();
     await prisma.points.deleteMany();
     await prisma.user.deleteMany();
@@ -13,6 +15,7 @@ async function seed() {
     /* -------------------------------------------------------------------------- */
     /*                                 Create User                                */
     /* -------------------------------------------------------------------------- */
+    const salt = await genSalt(10);
     const user1 = await prisma.user.create({
       data: {
         fullname: "Erlangga Adi Prasetya",
@@ -26,7 +29,7 @@ async function seed() {
       data: {
         fullname: "Rizky Maulana",
         email: "rizky@mail.com",
-        password: "pass123",
+        password: await bcrypt.hash("password", 10),
         role: "CUSTOMER",
       },
     });
@@ -108,7 +111,7 @@ async function seed() {
       data: {
         fullname: "Andi Saputra",
         email: "andi@mail.com",
-        password: "organizerId1",
+        password: await bcrypt.hash("password", salt),
         role: "ORGANIZER",
       },
     });
@@ -227,12 +230,36 @@ async function seed() {
         ticketSlot: 10000,
         prices: 250_000,
 
+
         organizer: ".Feast", // Menambahkan kolom organizer
+
+        organizerId: 11,
+
         description:
           "Konser spesial album terbaru dari .Feast yang akan membawa penonton dalam perjalanan musik penuh energi dan pesan mendalam. Album 'Membangun & Menghancurkan' menghadirkan konsep baru yang kuat dengan lirik-lirik yang penuh makna, menggugah, dan berani. Di Veledrome, para penggemar akan disuguhkan dengan aksi panggung luar biasa yang memadukan kekuatan musik rock dengan visual yang mendalam, serta tata panggung yang megah. Jangan lewatkan kesempatan untuk menyaksikan .Feast membawakan lagu-lagu terbaru mereka dan merasakan setiap emosi yang disampaikan lewat musik!",
         eventType: "PAID",
       },
     });
+
+
+    // ==== EVENT GENRE ROCK ====
+    const rockEvents = await prisma.event.create({
+      data: {
+        image:
+          "https://assets.loket.com/neo/production/images/banner/zDlVh_1738331348885958.jpeg",
+        name: "Membangun & Menghancurkan & ngehe - .Feast",
+        genre: "ROCK",
+        date: "2025-05-31T10:00:00.000Z",
+        place: "Veledrome",
+        ticketSlot: 10000,
+        prices: 250_000,
+        organizerId: 11,
+        description:
+          "Konser spesial album terbaru dari .Fiesta yang akan membawa penonton dalam perjalanan musik penuh energi dan pesan mendalam. Album 'Membangun & Menghancurkan' menghadirkan konsep baru yang kuat dengan lirik-lirik yang penuh makna, menggugah, dan berani. Di Veledrome, para penggemar akan disuguhkan dengan aksi panggung luar biasa yang memadukan kekuatan musik rock dengan visual yang mendalam, serta tata panggung yang megah. Jangan lewatkan kesempatan untuk menyaksikan .Feast membawakan lagu-lagu terbaru mereka dan merasakan setiap emosi yang disampaikan lewat musik!",
+        eventType: "PAID",
+      },
+    });
+
 
     const rockEvent2 = await prisma.event.create({
       data: {
@@ -263,7 +290,11 @@ async function seed() {
         ticketSlot: 10000,
         prices: 250_000,
 
+
         organizer: "Burgerkill", // Menambahkan kolom organizer
+
+        organizerId: 11,
+
         description:
           "Malam penuh headbang dengan Burgerkill! Konser ini akan membawa Anda menyelami dunia metal yang keras dan penuh kekuatan dengan salah satu band metal terbesar Indonesia. Burgerkill akan membawakan lagu-lagu mereka yang sudah menjadi anthem bagi para metalhead sejati. Di The Pallas, para penonton akan disuguhkan pengalaman musik yang intens dengan energi yang tak terbendung, serta penampilan panggung yang memukau dan menegangkan. Bersiaplah untuk merasakan adrenalin yang meluap dan terlibat dalam euforia headbang tanpa henti!",
         eventType: "PAID",
@@ -316,7 +347,7 @@ async function seed() {
         place: "JIExpo Kemayoran",
         ticketSlot: 10000,
         prices: 500_000,
-        organizer: "Jazz Nation",
+        organizerId: 13,
         description:
           "Festival Jazz terbesar di Indonesia yang menghadirkan musisi internasional dari berbagai penjuru dunia. Jakarta International Jazz Festival akan menyuguhkan pengalaman luar biasa dengan berbagai penampilan spektakuler dari para jazz legend dan musisi muda berbakat. Di JIExpo Kemayoran, festival ini akan menggabungkan berbagai genre jazz, mulai dari tradisional hingga kontemporer, dalam suasana yang penuh energi dan kehangatan. Jangan lewatkan kesempatan untuk menyaksikan aksi panggung yang memukau dan menikmati malam penuh musik berkualitas tinggi!",
         eventType: "PAID",
@@ -333,7 +364,7 @@ async function seed() {
         place: "Bentara Budaya",
         ticketSlot: 10000,
         prices: 200_000,
-        organizer: "JazzVibes",
+        organizerId: 12,
         description:
           "Tohpati, gitaris jazz ternama Indonesia, akan menghadirkan malam penuh nuansa jazz yang menenangkan dan mendalam bersama para musisi handal lainnya. 'A Night of Jazz' di Bentara Budaya akan membawa penonton dalam alunan musik jazz yang lembut namun penuh ekspresi. Tophati & Friends akan memainkan komposisi yang membawa sentuhan jazz fusion yang elegan, dengan improvisasi dan harmoni yang indah. Nikmati setiap notasi yang mengalun dengan indah, dan rasakan suasana intim yang akan membuat malam ini tak terlupakan!",
         eventType: "PAID",
@@ -350,7 +381,7 @@ async function seed() {
         place: "Taman Ismail Marzuki",
         ticketSlot: 10000,
         prices: 250_000,
-        organizer: "JazzVibes",
+        organizerId: 11,
         description:
           "Malam eksklusif bersama Dewa Bujana dalam alunan jazz yang syahdu dan memukau. Dewa Bujana, gitaris jazz yang telah mendunia, akan membawakan komposisi-komposisi terbaiknya dalam suasana yang sangat intim di Taman Ismail Marzuki. Konser ini akan menggabungkan improvisasi jazz yang khas dengan teknik permainan gitar yang memukau, menghadirkan pengalaman musikal yang mendalam dan penuh nuansa. Bersiaplah untuk terhanyut dalam setiap melodi yang mengalun dengan indah dan membawa Anda dalam perjalanan musikal yang tak terlupakan!",
         eventType: "PAID",
@@ -367,7 +398,7 @@ async function seed() {
         place: "La Piazza",
         ticketSlot: 10000,
         prices: 180_000,
-        organizer: "Smooth Jazz Indonesia",
+        organizerId: 11,
         description:
           "Akhir pekan santai dengan lantunan jazz yang menenangkan di La Piazza. 'Chill Jazz Weekend' akan menghadirkan penampilan-penampilan jazz yang lebih santai, penuh relaksasi, dan cocok untuk dinikmati sambil menikmati suasana akhir pekan yang tenang. Dengan latar belakang suasana La Piazza yang nyaman dan santai, acara ini adalah pilihan sempurna bagi Anda yang ingin bersantai sambil menikmati alunan musik jazz yang menenangkan hati. Jangan lewatkan kesempatan untuk menikmati musik berkualitas dalam suasana yang hangat dan akrab!",
         eventType: "PAID",
@@ -384,7 +415,7 @@ async function seed() {
         place: "Balai Sarbini",
         ticketSlot: 10000,
         prices: 300_000,
-        organizer: "IndoJazz Community",
+        organizerId: 12,
         description:
           "Pertemuan para legenda jazz Indonesia dalam satu panggung spektakuler yang akan menghadirkan kolaborasi langka antara musisi jazz terbaik Tanah Air. 'Indonesian Jazz Legends' di Balai Sarbini akan menghadirkan penampilan dari musisi jazz yang telah membentuk sejarah musik Indonesia, dengan kombinasi gaya dan teknik yang khas. Saksikan aksi panggung yang penuh emosi, improvisasi, dan harmoni luar biasa, serta rasakan aura magis dari setiap lagu yang dibawakan. Ini adalah kesempatan langka untuk menyaksikan kehebatan para legenda jazz Indonesia dalam satu malam penuh keajaiban musikal!",
         eventType: "PAID",
@@ -677,7 +708,7 @@ async function seed() {
         place: "Finns Beach Club, Bali",
         ticketSlot: 15000,
         prices: 0, // Gratis
-        organizer: "Ultra Worldwide",
+        organizerId: 11,
         description:
           "Ultra Music Festival akhirnya hadir di Bali! Bersiaplah untuk pengalaman musik elektronik terbesar dengan DJ kelas dunia, efek visual spektakuler, dan atmosfer pantai yang epik. Bergabunglah dengan ribuan pencinta EDM dari seluruh dunia dan rasakan pengalaman festival tak terlupakan di pulau surga!",
         eventType: "FREE",
@@ -774,9 +805,67 @@ async function seed() {
     /* -------------------------------------------------------------------------- */
     /*                                Create Order                                */
     /* -------------------------------------------------------------------------- */
-    // const order1 = await prisma.order.create({
-    //   data: { totalPrice: 900000, totalTicket: 3, eventId: ev, userId: 53 },
-    // });
+    const eventPrices = {
+      1: 250000,
+      2: 250000,
+      3: 300000,
+      4: 250000,
+      5: 280000,
+      6: 350000,
+      7: 500000,
+      8: 200000,
+      9: 250000,
+      10: 180000,
+      11: 300000,
+      12: 400000,
+      13: 350000,
+      14: 300000,
+      15: 450000,
+      16: 500000,
+      17: 150000,
+      18: 180000,
+      19: 200000,
+      20: 160000,
+      21: 170000,
+      22: 800000,
+      23: 900000,
+      24: 850000,
+      25: 950000,
+      26: 750000,
+      27: 0,
+      28: 500000,
+      29: 400000,
+      30: 600000,
+    };
+
+    const orders = Array.from({ length: 1000 }, () => {
+      const eventId = Math.floor(Math.random() * 30) + 1;
+      const userId = Math.floor(Math.random() * 10) + 1;
+
+      return {
+        totalPrice: eventPrices[eventId],
+        totalTicket: 1,
+        userId,
+        eventId,
+        createdAt: new Date(
+          Date.now() - Math.floor(Math.random() * 31536000000)
+        ),
+      };
+    });
+
+    await prisma.$transaction(async (prisma) => {
+      await prisma.order.createMany({ data: orders });
+
+      for (const order of orders) {
+        await prisma.event.update({
+          where: { id: order.eventId },
+          data: {
+            ticketSold: { increment: order.totalTicket },
+            ticketSlot: { decrement: order.totalTicket },
+          },
+        });
+      }
+    });
   } catch (error) {
     console.error(error);
   } finally {

@@ -1,34 +1,41 @@
-import { NextResponse, NextRequest } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { jwtVerify } from "jose";
 
 async function verifyJWTToken(token: string) {
   try {
+    if (!token) {
+      return console.log("Token unavailable");
+    }
+
     const verifiedToken = await jwtVerify(
       token,
-      new TextEncoder().encode(process.env.JWT_SECRET)
+      new TextEncoder().encode(process.env.JWT_SECRET!)
     );
 
     return verifiedToken.payload;
   } catch (error) {
-    console.log("Error!");
-    console.error(error);
+    console.error("JWT Verification Error:", error);
+    return null;
   }
 }
 
 export async function middleware(request: NextRequest) {
   const accessToken = request.cookies.get("accessToken")?.value;
-  const verifiedToken = await verifyJWTToken(accessToken!);
 
-  console.log(verifiedToken);
+  if (!accessToken) {
+    console.error("No access token found in cookies.");
+    return NextResponse.redirect(new URL("/login", request.url));
+  }
 
-  if (!accessToken || !verifiedToken) {
+  const verifiedToken = await verifyJWTToken(accessToken);
+
+  if (!verifiedToken || !verifiedToken.role) {
+    console.error("Invalid or expired token.");
     return NextResponse.redirect(new URL("/login", request.url));
   }
 
   const { pathname } = request.nextUrl;
   const role = verifiedToken.role;
-
-  console.log(accessToken);
 
   if (
     (pathname.startsWith("/dashboard/organizer") && role === "ORGANIZER") ||
@@ -37,14 +44,17 @@ export async function middleware(request: NextRequest) {
     return NextResponse.next();
   }
 
+  // Redirect based on role
   if (pathname.startsWith("/dashboard") && role === "ORGANIZER") {
     return NextResponse.redirect(new URL("/dashboard/organizer", request.url));
-  } else if (pathname.startsWith("/dashboard") && role === "CUSTOMER") {
+  }
+  if (pathname.startsWith("/dashboard") && role === "CUSTOMER") {
     return NextResponse.redirect(new URL("/dashboard/user", request.url));
   }
 
   return NextResponse.redirect(new URL("/sign-up", request.url));
 }
+
 export const config = {
   matcher: ["/dashboard/:path*"],
 };
