@@ -24,19 +24,88 @@ export async function GetOrganizerEvents(
       where: { organizerId: id },
     });
 
-    const userOrders = await prisma.order.findMany({
-      where: { userId: id },
+    const response = await prisma.event.findMany({
+      where: {
+        organizerId: id,
+      },
       include: {
-        event: {
-          include: {
-            Organizer: true,
+        Organizer: {
+          where: {
+            id: id,
+          },
+        },
+        Order: {
+          where: {
+            userId: id,
           },
         },
       },
     });
 
-    res.status(200).json({ ok: true, data: { userEvents, userOrders } });
+    const organizerOrders = response.map((event) => {
+      return {
+        id: event.id,
+        eventImage: event.image,
+        eventName: event.name,
+        price: event.prices.toLocaleString(),
+        date: event.date,
+        totalSingleEventRevenue: (
+          event.prices * event.ticketSold
+        ).toLocaleString(),
+        totalTicketSold: event.ticketSold,
+      };
+    });
+
+    // const response = await prisma.order.findMany({
+    //   where: { userId: id },
+    //   include: {
+    //     event: {
+    //       include: {
+    //         Organizer: true,
+    //       },
+    //     },
+    //   },
+    // });
+
+    // const organizerOrders = response.map((order) => {
+
+    //   return{
+    //     id: order.id,
+    //     eventImage: order.event.image,
+    //     eventName: order.event.name,
+    //     price: order.event.prices,
+    //     date: order.event.date,
+    //     totalSingleEventRevenue: order.event.prices * order.totalTicket,
+    //     totalTicketSold: order.event.ticketSlot - order.totalTicket,
+    //   }
+    // });
+
+    res.status(200).json({ ok: true, data: organizerOrders });
   } catch (error) {
     console.error(error);
   }
 }
+
+export async function getSingleOrganizerStatistics(
+  req: Request,
+  res: Response,
+  next: NextFunction
+) {
+  try {
+    const response = await prisma.event.findUnique({
+      where: {
+        id: +req.params.id,
+      },
+      include: {
+        Organizer: true,
+        Order: true,
+      },
+    });
+    res.status(200).json({ ok: true, data: response });
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+// how to show per day, weeek, and month?
+// how to show total revenue?

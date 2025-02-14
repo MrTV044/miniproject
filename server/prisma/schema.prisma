@@ -58,6 +58,7 @@ model Order {
   eventId     Int
   event       Event    @relation(fields: [eventId], references: [id])
   Ticket      Ticket[]
+  createdAt   DateTime @default(now())
 }
 
 model Event {
@@ -71,7 +72,6 @@ model Event {
   ticketSold  Int       @default(0)
   prices      Int
   eventType   EventType
-  organizer   String
   description String
   organizerId Int?
 
@@ -113,7 +113,7 @@ model Points {
   balance        Int
   expirationDate DateTime
   userId         Int
-  User           User     @relation(fields: [userId], references: [id],  onDelete: Cascade))
+  User           User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model FeedBack {
@@ -136,5 +136,4 @@ model Wallet {
   updatedAt DateTime @updatedAt
 
   User User @relation(fields: [userId], references: [id])
-
 }
