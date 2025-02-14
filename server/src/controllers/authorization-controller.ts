@@ -40,6 +40,7 @@ export async function register(req: Request, res: Response) {
       },
     });
 
+
     if (referral) {
       const referralOwner = await prisma.user.findFirst({
         where: { referral: referral },
