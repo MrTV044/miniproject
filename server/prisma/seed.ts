@@ -787,39 +787,66 @@ async function seed() {
     /* -------------------------------------------------------------------------- */
     /*                                Create Order                                */
     /* -------------------------------------------------------------------------- */
-    await prisma.order.createMany({
-      data: [
-        {
-          totalPrice: 5000,
-          totalTicket: 50,
-          userId: 11,
-          eventId: 1,
-        },
-        {
-          totalPrice: 7500,
-          totalTicket: 200,
-          userId: 12,
-          eventId: 2,
-        },
-        {
-          totalPrice: 2000,
-          totalTicket: 100,
-          userId: 13,
-          eventId: 3,
-        },
-        {
-          totalPrice: 10000,
-          totalTicket: 25,
-          userId: 11,
-          eventId: 4,
-        },
-        {
-          totalPrice: 1500,
-          totalTicket: 35,
-          userId: 12,
-          eventId: 5,
-        },
-      ],
+    const eventPrices = {
+      1: 250000,
+      2: 250000,
+      3: 300000,
+      4: 250000,
+      5: 280000,
+      6: 350000,
+      7: 500000,
+      8: 200000,
+      9: 250000,
+      10: 180000,
+      11: 300000,
+      12: 400000,
+      13: 350000,
+      14: 300000,
+      15: 450000,
+      16: 500000,
+      17: 150000,
+      18: 180000,
+      19: 200000,
+      20: 160000,
+      21: 170000,
+      22: 800000,
+      23: 900000,
+      24: 850000,
+      25: 950000,
+      26: 750000,
+      27: 0,
+      28: 500000,
+      29: 400000,
+      30: 600000,
+    };
+
+    const orders = Array.from({ length: 1000 }, () => {
+      const eventId = Math.floor(Math.random() * 30) + 1;
+      const userId = Math.floor(Math.random() * 10) + 1;
+
+      return {
+        totalPrice: eventPrices[eventId],
+        totalTicket: 1,
+        userId,
+        eventId,
+        createdAt: new Date(
+          Date.now() - Math.floor(Math.random() * 31536000000)
+        ),
+      };
+    });
+
+    await prisma.$transaction(async (prisma) => {
+      await prisma.order.createMany({ data: orders });
+
+      for (const order of orders) {
+        await prisma.event.update({
+          where: { id: order.eventId },
+          data: {
+            ticketSold: { increment: order.totalTicket },
+            ticketSlot: { decrement: order.totalTicket },
+          },
+        });
+      }
     });
   } catch (error) {
     console.error(error);

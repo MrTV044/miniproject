@@ -7,7 +7,7 @@ import "./event-dashboard.css";
 import { events } from "@/types/event";
 import Link from "next/link";
 
-function Dashboard() {
+export default function Dashboard() {
   const [events, setEvents] = useState<events[]>();
 
   useEffect(() => {
@@ -77,6 +77,5 @@ function Dashboard() {
   );
 }
 
-export default Dashboard;
 
 // kalo accesstoken user ke dashboard user, kalo accesstoken organizer. how?

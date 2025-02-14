@@ -98,11 +98,7 @@ export async function getSingleOrganizerStatistics(
       },
       include: {
         Organizer: true,
-        Order: {
-          where: {
-            userId: +req.params.id,
-          },
-        },
+        Order: true,
       },
     });
     res.status(200).json({ ok: true, data: response });
@@ -110,3 +106,6 @@ export async function getSingleOrganizerStatistics(
     console.error(error);
   }
 }
+
+// how to show per day, weeek, and month?
+// how to show total revenue?
