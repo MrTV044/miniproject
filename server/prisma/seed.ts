@@ -5,6 +5,7 @@ const prisma = new PrismaClient();
 
 async function seed() {
   try {
+    await prisma.voucher.deleteMany();
     await prisma.coupon.deleteMany();
     await prisma.wallet.deleteMany();
     await prisma.order.deleteMany();
@@ -140,63 +141,63 @@ async function seed() {
 
     const walletUser2 = await prisma.wallet.create({
       data: {
-        credit: 1_000_000,
+        balance: 1_000_000,
         userId: user2.id,
       },
     });
 
     const walletUser3 = await prisma.wallet.create({
       data: {
-        credit: 1_000_000,
+        balance: 1_000_000,
         userId: user3.id,
       },
     });
 
     const walletUser4 = await prisma.wallet.create({
       data: {
-        credit: 1_000_000,
+        balance: 1_000_000,
         userId: user4.id,
       },
     });
 
     const walletUser5 = await prisma.wallet.create({
       data: {
-        credit: 1_000_000,
+        balance: 1_000_000,
         userId: user5.id,
       },
     });
 
     const walletUser6 = await prisma.wallet.create({
       data: {
-        credit: 1_000_000,
+        balance: 1_000_000,
         userId: user6.id,
       },
     });
 
     const walletUser7 = await prisma.wallet.create({
       data: {
-        credit: 1_000_000,
+        balance: 1_000_000,
         userId: user7.id,
       },
     });
 
     const walletUser8 = await prisma.wallet.create({
       data: {
-        credit: 1_000_000,
+        balance: 1_000_000,
         userId: user8.id,
       },
     });
 
     const walletUser9 = await prisma.wallet.create({
       data: {
-        credit: 1_000_000,
+        balance: 1_000_000,
         userId: user9.id,
       },
     });
 
     const walletUser10 = await prisma.wallet.create({
       data: {
-        credit: 1_000_000,
+        balance: 1_000_000,
         userId: user10.id,
       },
     });
@@ -218,7 +219,7 @@ async function seed() {
     /* -------------------------------------------------------------------------- */
 
     // ==== EVENT GENRE ROCK ====
-    // ==== EVENT GENRE ROCK ====
+
     const rockEvent1 = await prisma.event.create({
       data: {
         image:
@@ -230,7 +231,6 @@ async function seed() {
         ticketSlot: 10000,
         prices: 250_000,
 
-
         organizer: ".Feast", // Menambahkan kolom organizer
 
         organizerId: 11,
@@ -240,7 +240,6 @@ async function seed() {
         eventType: "PAID",
       },
     });
-
 
     // ==== EVENT GENRE ROCK ====
     const rockEvents = await prisma.event.create({
@@ -254,12 +253,12 @@ async function seed() {
         ticketSlot: 10000,
         prices: 250_000,
         organizerId: 11,
+        organizer: "Sun Eater",
         description:
           "Konser spesial album terbaru dari .Fiesta yang akan membawa penonton dalam perjalanan musik penuh energi dan pesan mendalam. Album 'Membangun & Menghancurkan' menghadirkan konsep baru yang kuat dengan lirik-lirik yang penuh makna, menggugah, dan berani. Di Veledrome, para penggemar akan disuguhkan dengan aksi panggung luar biasa yang memadukan kekuatan musik rock dengan visual yang mendalam, serta tata panggung yang megah. Jangan lewatkan kesempatan untuk menyaksikan .Feast membawakan lagu-lagu terbaru mereka dan merasakan setiap emosi yang disampaikan lewat musik!",
         eventType: "PAID",
       },
     });
-
 
     const rockEvent2 = await prisma.event.create({
       data: {
@@ -289,7 +288,6 @@ async function seed() {
         place: "The Pallas",
         ticketSlot: 10000,
         prices: 250_000,
-
 
         organizer: "Burgerkill", // Menambahkan kolom organizer
 
@@ -348,6 +346,7 @@ async function seed() {
         ticketSlot: 10000,
         prices: 500_000,
         organizerId: 13,
+        organizer: "Jakarta Jazz Community", // Menambahkan kolom organizer
         description:
           "Festival Jazz terbesar di Indonesia yang menghadirkan musisi internasional dari berbagai penjuru dunia. Jakarta International Jazz Festival akan menyuguhkan pengalaman luar biasa dengan berbagai penampilan spektakuler dari para jazz legend dan musisi muda berbakat. Di JIExpo Kemayoran, festival ini akan menggabungkan berbagai genre jazz, mulai dari tradisional hingga kontemporer, dalam suasana yang penuh energi dan kehangatan. Jangan lewatkan kesempatan untuk menyaksikan aksi panggung yang memukau dan menikmati malam penuh musik berkualitas tinggi!",
         eventType: "PAID",
@@ -365,6 +364,7 @@ async function seed() {
         ticketSlot: 10000,
         prices: 200_000,
         organizerId: 12,
+        organizer: "Tohpati Productions", // Menambahkan kolom organizer
         description:
           "Tohpati, gitaris jazz ternama Indonesia, akan menghadirkan malam penuh nuansa jazz yang menenangkan dan mendalam bersama para musisi handal lainnya. 'A Night of Jazz' di Bentara Budaya akan membawa penonton dalam alunan musik jazz yang lembut namun penuh ekspresi. Tophati & Friends akan memainkan komposisi yang membawa sentuhan jazz fusion yang elegan, dengan improvisasi dan harmoni yang indah. Nikmati setiap notasi yang mengalun dengan indah, dan rasakan suasana intim yang akan membuat malam ini tak terlupakan!",
         eventType: "PAID",
@@ -382,6 +382,7 @@ async function seed() {
         ticketSlot: 10000,
         prices: 250_000,
         organizerId: 11,
+        organizer: "Dewa Bujana Music", // Menambahkan kolom organizer
         description:
           "Malam eksklusif bersama Dewa Bujana dalam alunan jazz yang syahdu dan memukau. Dewa Bujana, gitaris jazz yang telah mendunia, akan membawakan komposisi-komposisi terbaiknya dalam suasana yang sangat intim di Taman Ismail Marzuki. Konser ini akan menggabungkan improvisasi jazz yang khas dengan teknik permainan gitar yang memukau, menghadirkan pengalaman musikal yang mendalam dan penuh nuansa. Bersiaplah untuk terhanyut dalam setiap melodi yang mengalun dengan indah dan membawa Anda dalam perjalanan musikal yang tak terlupakan!",
         eventType: "PAID",
@@ -399,6 +400,7 @@ async function seed() {
         ticketSlot: 10000,
         prices: 180_000,
         organizerId: 11,
+        organizer: "La Piazza Events", // Menambahkan kolom organizer
         description:
           "Akhir pekan santai dengan lantunan jazz yang menenangkan di La Piazza. 'Chill Jazz Weekend' akan menghadirkan penampilan-penampilan jazz yang lebih santai, penuh relaksasi, dan cocok untuk dinikmati sambil menikmati suasana akhir pekan yang tenang. Dengan latar belakang suasana La Piazza yang nyaman dan santai, acara ini adalah pilihan sempurna bagi Anda yang ingin bersantai sambil menikmati alunan musik jazz yang menenangkan hati. Jangan lewatkan kesempatan untuk menikmati musik berkualitas dalam suasana yang hangat dan akrab!",
         eventType: "PAID",
@@ -416,6 +418,7 @@ async function seed() {
         ticketSlot: 10000,
         prices: 300_000,
         organizerId: 12,
+        organizer: "Jazz Indonesia Foundation", // Menambahkan kolom organizer
         description:
           "Pertemuan para legenda jazz Indonesia dalam satu panggung spektakuler yang akan menghadirkan kolaborasi langka antara musisi jazz terbaik Tanah Air. 'Indonesian Jazz Legends' di Balai Sarbini akan menghadirkan penampilan dari musisi jazz yang telah membentuk sejarah musik Indonesia, dengan kombinasi gaya dan teknik yang khas. Saksikan aksi panggung yang penuh emosi, improvisasi, dan harmoni luar biasa, serta rasakan aura magis dari setiap lagu yang dibawakan. Ini adalah kesempatan langka untuk menyaksikan kehebatan para legenda jazz Indonesia dalam satu malam penuh keajaiban musikal!",
         eventType: "PAID",
@@ -709,6 +712,7 @@ async function seed() {
         ticketSlot: 15000,
         prices: 0, // Gratis
         organizerId: 11,
+        organizer: "Finns",
         description:
           "Ultra Music Festival akhirnya hadir di Bali! Bersiaplah untuk pengalaman musik elektronik terbesar dengan DJ kelas dunia, efek visual spektakuler, dan atmosfer pantai yang epik. Bergabunglah dengan ribuan pencinta EDM dari seluruh dunia dan rasakan pengalaman festival tak terlupakan di pulau surga!",
         eventType: "FREE",
@@ -803,8 +807,82 @@ async function seed() {
     });
 
     /* -------------------------------------------------------------------------- */
+    /*                               Create Voucher                               */
+    /* -------------------------------------------------------------------------- */
+
+    const voucher1 = await prisma.voucher.create({
+      data: {
+        code: "SID10",
+        discount: 10, // Diskon 10%
+        stock: 50,
+        expiredDate: new Date("2025-08-10T23:59:59.000Z"),
+        eventId: rockEvent1.id, // Menggunakan id dari rockEvent1
+      },
+    });
+
+    const voucher2 = await prisma.voucher.create({
+      data: {
+        code: "SID20",
+        discount: 20, // Diskon 20%
+        stock: 30,
+        expiredDate: new Date("2025-08-12T23:59:59.000Z"),
+        eventId: rockEvent2.id, // Menggunakan id dari rockEvent2
+      },
+    });
+
+    const voucher3 = await prisma.voucher.create({
+      data: {
+        code: "SID30",
+        discount: 30, // Diskon 30%
+        stock: 20,
+        expiredDate: new Date("2025-08-14T23:59:59.000Z"),
+        eventId: rockEvent3.id, // Menggunakan id dari rockEvent3
+      },
+    });
+
+    const voucher4 = await prisma.voucher.create({
+      data: {
+        code: "SID40",
+        discount: 30, // Diskon 30%
+        stock: 20,
+        expiredDate: new Date("2025-08-16T23:59:59.000Z"),
+        eventId: rockEvent4.id, // Menggunakan id dari rockEvent4
+      },
+    });
+
+    const voucher5 = await prisma.voucher.create({
+      data: {
+        code: "SID50",
+        discount: 30, // Diskon 30%
+        stock: 20,
+        expiredDate: new Date("2025-08-18T23:59:59.000Z"),
+        eventId: rockEvent5.id, // Menggunakan id dari rockEvent5
+      },
+    });
+
+    /* -------------------------------------------------------------------------- */
+    /*                                Create Point                                */
+    /* -------------------------------------------------------------------------- */
+
+    const userList = await prisma.user.findMany();
+
+    // Create Points
+    await Promise.all(
+      userList.map((user) =>
+        prisma.points.create({
+          data: {
+            balance: 20000,
+            // expiredDate: new Date(Date.now() + 1000 * 60 * 60 * 24 * 30),
+            userId: user.id,
+          },
+        })
+      )
+    );
+
+    /* -------------------------------------------------------------------------- */
     /*                                Create Order                                */
     /* -------------------------------------------------------------------------- */
+
     const eventPrices = {
       1: 250000,
       2: 250000,
@@ -847,9 +925,6 @@ async function seed() {
         totalTicket: 1,
         userId,
         eventId,
-        createdAt: new Date(
-          Date.now() - Math.floor(Math.random() * 31536000000)
-        ),
       };
     });
 
@@ -866,6 +941,43 @@ async function seed() {
         });
       }
     });
+
+    /* -------------------------------------------------------------------------- */
+    /*                                Create Ticket                               */
+    /* -------------------------------------------------------------------------- */
+    const eventPrices1 = {
+      1: 250000,
+      2: 250000,
+      3: 300000,
+      4: 250000,
+      5: 280000,
+      6: 350000,
+      7: 500000,
+    };
+
+    // Fungsi untuk menghasilkan kode tiket unik
+    const generateTicketCode = (eventId) => {
+      const timestamp = Date.now().toString(36);
+      const randomString = Math.random().toString(36).substring(2, 8);
+      return `TCK-${eventId}-${timestamp}-${randomString}`;
+    };
+
+    // Membuat tiket untuk setiap acara
+    for (const eventId in eventPrices1) {
+      const ticketCode = generateTicketCode(eventId);
+      const ticketTotal = eventPrices1[eventId];
+      const orderId = parseInt(eventId, 10); // Menggunakan eventId sebagai orderId
+
+      const ticket = await prisma.ticket.create({
+        data: {
+          ticketCode: ticketCode,
+          ticketTotal: ticketTotal,
+          orderId: orderId,
+        },
+      });
+
+      console.log(`Tiket dibuat:`, ticket);
+    }
   } catch (error) {
     console.error(error);
   } finally {
