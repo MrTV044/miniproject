@@ -58,6 +58,7 @@ model Order {
   eventId     Int
   event       Event    @relation(fields: [eventId], references: [id])
   Ticket      Ticket[]
+  createdAt DateTime  @default(now())
 }
 
 model Event {

@@ -27,6 +27,7 @@ CREATE TABLE "Order" (
     "totalTicket" INTEGER NOT NULL,
     "userId" INTEGER NOT NULL,
     "eventId" INTEGER NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
     CONSTRAINT "Order_pkey" PRIMARY KEY ("id")
 );
@@ -41,7 +42,7 @@ CREATE TABLE "Event" (
     "place" TEXT NOT NULL,
     "ticketSlot" INTEGER NOT NULL,
     "ticketSold" INTEGER NOT NULL DEFAULT 0,
-    "prices" INTEGER NOT NULL,
+    "prices" DECIMAL(65,30) NOT NULL,
     "eventType" "EventType" NOT NULL,
     "description" TEXT NOT NULL,
     "organizer" TEXT NOT NULL,
@@ -88,7 +89,7 @@ CREATE TABLE "Coupon" (
 -- CreateTable
 CREATE TABLE "Points" (
     "id" SERIAL NOT NULL,
-    "balance" INTEGER NOT NULL,
+    "balance" INTEGER NOT NULL DEFAULT 0,
     "userId" INTEGER NOT NULL,
 
     CONSTRAINT "Points_pkey" PRIMARY KEY ("id")
@@ -109,7 +110,7 @@ CREATE TABLE "FeedBack" (
 -- CreateTable
 CREATE TABLE "Wallet" (
     "id" SERIAL NOT NULL,
-    "balance" INTEGER NOT NULL DEFAULT 0,
+    "balance" DECIMAL(65,30) NOT NULL DEFAULT 0,
     "userId" INTEGER NOT NULL,
 
     CONSTRAINT "Wallet_pkey" PRIMARY KEY ("id")

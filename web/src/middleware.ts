@@ -60,5 +60,5 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/dashboard/:path*", "/create-event/:path*"],
+  matcher: ["/dashboard/:path*"],
 };
