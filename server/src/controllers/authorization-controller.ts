@@ -50,7 +50,7 @@ export async function register(req: Request, res: Response) {
         data: {
           discount: 10000,
           code: `${Math.random()}`,
-          userId: referralOwner?.id ?? 0,
+          userId: user?.id ?? 0,
           expirationDate: new Date(date.setMonth(date.getMonth() + 3)),
         },
       });
@@ -129,7 +129,10 @@ export function logout(req: Request, res: Response) {
   try {
     req.user = null;
 
-    res.status(200).json({ ok: true, message: "Logged out successfully" });
+    res
+      .clearCookie("accessToken")
+      .status(200)
+      .json({ ok: true, message: "Logged out successfully" });
   } catch (error) {}
 }
 
