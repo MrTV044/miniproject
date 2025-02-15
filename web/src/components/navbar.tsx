@@ -1,36 +1,30 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import Link from "next/link";
 import { Menu, X } from "lucide-react";
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
-  const useLogout = () => {
-    useEffect(() => {
-      const logout = async () => {
-        try {
-          const response = await fetch("http://localhost:8000/api/v1/logout", {
-            method: "POST",
-            credentials: "include",
-            headers: {
-              "Content-Type": "application/json",
-            },
-          });
+  async function logout() {
+    try {
+      const response = await fetch("http://localhost:8000/api/v1/logout", {
+        method: "POST",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
 
-          if (!response.ok) {
-            throw new Error("Logout failed");
-          }
+      if (!response.ok) {
+        throw new Error("Logout failed");
+      }
 
-          console.log("Logout successful");
-        } catch (error) {
-          console.error("Error logging out:", error);
-        }
-      };
-
-      logout();
-    }, []); // Run only once on mount
-  };
+      console.log("Logout successful");
+    } catch (error) {
+      console.error("Error logging out:", error);
+    }
+  }
 
   return (
     <nav>
@@ -75,7 +69,7 @@ export default function Navbar() {
 
           <button
             className="p-3 rounded-full hover:bg-gray-200"
-            onClick={useLogout}
+            onClick={logout}
           >
             Log Out
           </button>
