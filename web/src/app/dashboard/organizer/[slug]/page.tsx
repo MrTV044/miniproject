@@ -41,12 +41,13 @@ export default function EventDashboard({
       try {
         const id = (await params).slug;
         const response = await fetch(
-          `http://localhost:8000/api/v1/single-event/${id}`
+          `http://localhost:8000/api/v1/single-event/${id}`,
+          { credentials: "include" }
         );
         const data = await response.json();
-        console.log(data, "HIT");
         setEvent(data.data);
         setOrders(data.data.Order);
+        console.log(data.data.Order);
       } catch (error) {
         console.error("Error fetching event:", error);
       }
@@ -71,7 +72,10 @@ export default function EventDashboard({
         if (timeframe === "daily") {
           key = date.toISOString().split("T")[0]; // YYYY-MM-DD
         } else if (timeframe === "monthly") {
-          key = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}`; // YYYY-MM
+          key = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(
+            2,
+            "0"
+          )}`; // YYYY-MM
         } else if (timeframe === "yearly") {
           key = `${date.getFullYear()}`; // YYYY
         }
@@ -132,7 +136,9 @@ export default function EventDashboard({
         {["daily", "monthly", "yearly"].map((tf, index) => (
           <button
             key={index}
-            className={`px-4 py-2 rounded-lg ${timeframe === tf ? "bg-blue-500 text-white" : "bg-gray-200"}`}
+            className={`px-4 py-2 rounded-lg ${
+              timeframe === tf ? "bg-blue-500 text-white" : "bg-gray-200"
+            }`}
             onClick={() => setTimeframe(tf as Timeframe)}
           >
             {tf.charAt(0).toUpperCase() + tf.slice(1)}
