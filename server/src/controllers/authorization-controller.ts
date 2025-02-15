@@ -40,7 +40,6 @@ export async function register(req: Request, res: Response) {
       },
     });
 
-
     if (referral) {
       const referralOwner = await prisma.user.findFirst({
         where: { referral: referral },
@@ -60,7 +59,6 @@ export async function register(req: Request, res: Response) {
           data: {
             balance: 10000,
             userId: referralOwner?.id,
-            expirationDate: new Date(date.setMonth(date.getMonth() + 3)),
           },
         });
       }
@@ -69,7 +67,7 @@ export async function register(req: Request, res: Response) {
     await prisma.wallet.create({
       data: {
         userId: user.id,
-        credit: 0,
+        balance: 0,
       },
     });
 

@@ -1,114 +1,139 @@
 import { Request, Response, NextFunction } from "express";
 import prisma from "../configs/prisma";
 
-export async function getOrder(
+export async function getAllOrder(
   req: Request,
   res: Response,
   next: NextFunction
 ) {
-  const { userId, couponCode, voucherCode, usePoints, pointsToUse } = req.body;
-
+  /*
+  1. Check if post exist
+  2. Get buyer (reader) and post owner (author)
+  3. Check if valid voucher used
+  4. Check if valid coupon used
+  5. Check if valid points used
+  6. Check if buyer has enough balance
+  7. Peform transaction
+  8. Record transaction
+  */
   try {
-    // Ambil data wallet dan poin pengguna
-    const user = await prisma.user.findUnique({
-      where: { id: userId },
-      include: { Wallet: true, Points: true },
+    const { eventId, points, voucherCode, couponCode } = req.body;
+
+    if (!req.user) {
+      res.status(401).json({ message: "Please login first" });
+      return;
+    }
+
+    //Step 1
+    const event = await prisma.event.findUnique({
+      where: { id: +eventId },
     });
 
-    if (!user) {
-      return res.status(404).json({ message: "User not found" });
+    if (!event) {
+      res.status(404).json({ message: "Event not found" });
+      return;
     }
 
-    const walletBalance = user?.Wallet?.balance ?? 0; // Saldo wallet//+
-    const userPoints = user.Points; // Poin pengguna
-    let discount = 0; // Diskon yang akan diterapkan
+    //Step 2
+    const buyer = await prisma.user.findUnique({
+      where: { id: req.user.id },
+      include: { Wallet: true, Coupon: true, Points: true },
+    });
 
-    // Cek kode kupon
-    if (couponCode) {
-      const coupon = await prisma.coupon.findUnique({
-        where: { code: couponCode },
+    if (!buyer) {
+      res.status(404).json({ message: "Buyer ID not found" });
+      return;
+    }
+
+    if (event.organizerId === null) {
+      res.status(404).json({ message: "Organizer ID not found" });
+      return;
+    }
+
+    const organizer = await prisma.user.findUnique({
+      where: { id: event.organizerId },
+    });
+
+    if (!organizer) {
+      res.status(404).json({ message: "Organizer ID not found" });
+      return;
+    }
+
+    //Step 3
+    let finalPrice = event.prices.toNumber();
+
+    if (voucherCode && finalPrice > 0) {
+      const validVoucher = await prisma.voucher.findUnique({
+        where: {
+          code: voucherCode,
+          stock: { gt: 0 },
+          expiredDate: { gt: new Date() },
+        },
       });
 
-      if (coupon) {
-        if (!coupon.used) {
-          discount += 0.1; // Diskon 10%
-          // Tandai kupon sebagai sudah digunakan
-          await prisma.coupon.update({
-            where: { id: coupon.id },
-            data: { used: true },
-          });
-        } else {
-          return res
-            .status(400)
-            .json({ message: "Coupon has already been used" });
-        }
-      } else {
-        return res.status(400).json({ message: "Invalid coupon code" });
+      if (!validVoucher) {
+        res.status(404).json({ message: "Invalid voucher" });
+        return;
       }
-    }
 
-    // Cek kode voucher
-    if (voucherCode) {
-      const voucher = await prisma.voucher.findUnique({
+      finalPrice = finalPrice - finalPrice * (validVoucher.discount / 100);
+
+      await prisma.voucher.update({
         where: { code: voucherCode },
+        data: { stock: { decrement: 1 } },
+      });
+    }
+
+    //Step 4
+    if (couponCode && finalPrice > 0) {
+      const validCoupon = await prisma.coupon.findUnique({
+        where: {
+          code: couponCode,
+          used: false,
+          expirationDate: { gt: new Date() },
+        },
       });
 
-      if (voucher) {
-        if (!voucher.used) {
-          discount += 0.1; // Diskon 10%
-          // Tandai voucher sebagai sudah digunakan
-          await prisma.voucher.update({
-            where: { id: voucher.id },
-            data: { used: true },
-          });
-        } else {
-          return res
-            .status(400)
-            .json({ message: "Voucher has already been used" });
-        }
-      } else {
-        return res.status(400).json({ message: "Invalid voucher code" });
+      if (!validCoupon) {
+        res.status(404).json({ message: "Invalid coupon" });
+        return;
       }
+
+      finalPrice = finalPrice - finalPrice * (validCoupon.discount / 100);
+
+      await prisma.coupon.update({
+        where: { code: couponCode },
+        data: { used: true },
+      });
     }
 
-    // Cek penggunaan poin
-    if (usePoints) {
-      if (pointsToUse > userPoints) {
-        return res.status(400).json({ message: "Not enough points" });
-      } else {
-        // Hitung pengurangan harga berdasarkan poin
-        discount += pointsToUse * 0.01; // Misalnya, 1 poin = 1 unit diskon
-        // Kurangi poin dari pengguna
-        await prisma.user.update({
-          where: { id: userId },
-          data: { points: userPoints - pointsToUse },
-        });
+    //Step 5
+    if (points && finalPrice > 0) {
+      const validPoint = await prisma.points.findUnique({
+        where: { userId: req.user.id, balance: { gt: 0 } },
+      });
+
+      if (!validPoint) {
+        res.status(404).json({ message: "Invalid points" });
+        return;
       }
+
+      const maxPointToUse = Math.min(points, finalPrice);
+
+      finalPrice = finalPrice - maxPointToUse;
+
+      await prisma.points.update({
+        where: { userId: req.user.id },
+        data: { balance: validPoint.balance - maxPointToUse },
+      });
     }
 
-    // Hitung total harga setelah diskon
-    const totalPrice = 100000; // Misalnya, harga total sebelum diskon
-    const finalPrice = totalPrice - totalPrice * discount;
-
-    // Cek kecukupan saldo wallet
-    if (walletBalance < finalPrice) {
-      return res.status(400).json({ message: "Insufficient wallet balance" });
+    //Step 6
+    if (buyer.Wallet?.balance && buyer.Wallet.balance.toNumber() < finalPrice) {
+      res.status(400).json({ message: "Insufficient wallet balance" });
+      return;
     }
-
-    // Kurangi saldo wallet
-    await prisma.wallet.update({
-      where: { userId: userId },
-      data: { credit: walletBalance - finalPrice },
-    });
-
-    // Kirim respons sukses
-    return res.status(200).json({
-      message: "Order successful",
-      finalPrice,
-      remainingBalance: walletBalance - finalPrice,
-    });
   } catch (error) {
-    console.error(error);
-    return res.status(500).json({ message: "Internal server error" });
+    next(error);
   }
 }

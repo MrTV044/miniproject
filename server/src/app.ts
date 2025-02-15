@@ -24,12 +24,11 @@ app.get(`/api/v1`, (req: Request, res: Response) => {
 });
 
 app.use("/api/v1/events", eventRouter);
-app.use("/api/v1/order", orderRouter);
+
 app.use("/api/v1/wallet", walletRouter);
 
 app.use("/api/v1/", authorization);
 app.use("/api/v1/", eventStatistic);
-
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);

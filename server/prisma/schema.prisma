@@ -46,7 +46,7 @@ model User {
   created_at DateTime   @default(now())
   FeedBack   FeedBack[]
   Wallet     Wallet?
-  Points     Points[]
+  Points     Points?
 }
 
 model Order {
@@ -58,7 +58,6 @@ model Order {
   eventId     Int
   event       Event    @relation(fields: [eventId], references: [id])
   Ticket      Ticket[]
-  createdAt   DateTime @default(now())
 }
 
 model Event {
@@ -70,9 +69,10 @@ model Event {
   place       String
   ticketSlot  Int
   ticketSold  Int       @default(0)
-  prices      Int
+  prices      Decimal
   eventType   EventType
   description String
+  organizer   String
   organizerId Int?
 
   Organizer User?      @relation(fields: [organizerId], references: [id])
@@ -82,18 +82,21 @@ model Event {
 }
 
 model Ticket {
-  id         Int    @id @default(autoincrement())
-  ticketCode String @unique // Menggunakan String jika kode tiket bisa berupa huruf dan angka
-  orderId    Int
-  Order      Order  @relation(fields: [orderId], references: [id])
+  id          Int      @id @default(autoincrement())
+  ticketCode  String   @unique // Menggunakan String jika kode tiket bisa berupa huruf dan angka
+  ticketTotal Decimal
+  orderId     Int
+  createdAt   DateTime @default(now())
+  Order       Order    @relation(fields: [orderId], references: [id])
 }
 
 model Voucher {
-  id       Int      @id @default(autoincrement())
-  code     String   @unique
-  discount Int
-  used     Boolean?
-  eventId  Int
+  id          Int      @id @default(autoincrement())
+  code        String   @unique
+  discount    Int
+  stock       Int      @default(10)
+  expiredDate DateTime
+  eventId     Int
 
   Event Event @relation(fields: [eventId], references: [id])
 }
@@ -101,19 +104,20 @@ model Voucher {
 model Coupon {
   id             Int      @id @default(autoincrement())
   code           String   @unique
-  discount       Int
-  expirationDate DateTime
-  used           Boolean?
+  discount       Int      @default(10)
+  used           Boolean  @default(false)
   userId         Int
-  User           User     @relation(fields: [userId], references: [id])
+  expirationDate DateTime
+
+  User User @relation(fields: [userId], references: [id])
 }
 
 model Points {
-  id             Int      @id @default(autoincrement())
-  balance        Int
-  expirationDate DateTime
-  userId         Int
-  User           User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  id      Int  @id @default(autoincrement())
+  balance Int  @default(0)
+  // expirationDate DateTime
+  userId  Int  @unique
+  User    User @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model FeedBack {
@@ -129,11 +133,9 @@ model FeedBack {
 }
 
 model Wallet {
-  id        Int      @id @default(autoincrement())
-  credit    Int      @default(0)
-  userId    Int      @unique
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id      Int     @id @default(autoincrement())
+  balance Decimal @default(0)
+  userId  Int     @unique
 
   User User @relation(fields: [userId], references: [id])
 }

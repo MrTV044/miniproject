@@ -27,7 +27,6 @@ CREATE TABLE "Order" (
     "totalTicket" INTEGER NOT NULL,
     "userId" INTEGER NOT NULL,
     "eventId" INTEGER NOT NULL,
-    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
     CONSTRAINT "Order_pkey" PRIMARY KEY ("id")
 );
@@ -45,6 +44,7 @@ CREATE TABLE "Event" (
     "prices" INTEGER NOT NULL,
     "eventType" "EventType" NOT NULL,
     "description" TEXT NOT NULL,
+    "organizer" TEXT NOT NULL,
     "organizerId" INTEGER,
 
     CONSTRAINT "Event_pkey" PRIMARY KEY ("id")
@@ -54,7 +54,9 @@ CREATE TABLE "Event" (
 CREATE TABLE "Ticket" (
     "id" SERIAL NOT NULL,
     "ticketCode" TEXT NOT NULL,
+    "ticketTotal" DECIMAL(65,30) NOT NULL,
     "orderId" INTEGER NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
     CONSTRAINT "Ticket_pkey" PRIMARY KEY ("id")
 );
@@ -64,7 +66,8 @@ CREATE TABLE "Voucher" (
     "id" SERIAL NOT NULL,
     "code" TEXT NOT NULL,
     "discount" INTEGER NOT NULL,
-    "used" BOOLEAN,
+    "stock" INTEGER NOT NULL DEFAULT 10,
+    "expiredDate" TIMESTAMP(3) NOT NULL,
     "eventId" INTEGER NOT NULL,
 
     CONSTRAINT "Voucher_pkey" PRIMARY KEY ("id")
@@ -74,10 +77,10 @@ CREATE TABLE "Voucher" (
 CREATE TABLE "Coupon" (
     "id" SERIAL NOT NULL,
     "code" TEXT NOT NULL,
-    "discount" INTEGER NOT NULL,
-    "expirationDate" TIMESTAMP(3) NOT NULL,
-    "used" BOOLEAN,
+    "discount" INTEGER NOT NULL DEFAULT 10,
+    "used" BOOLEAN NOT NULL DEFAULT false,
     "userId" INTEGER NOT NULL,
+    "expirationDate" TIMESTAMP(3) NOT NULL,
 
     CONSTRAINT "Coupon_pkey" PRIMARY KEY ("id")
 );
@@ -86,7 +89,6 @@ CREATE TABLE "Coupon" (
 CREATE TABLE "Points" (
     "id" SERIAL NOT NULL,
     "balance" INTEGER NOT NULL,
-    "expirationDate" TIMESTAMP(3) NOT NULL,
     "userId" INTEGER NOT NULL,
 
     CONSTRAINT "Points_pkey" PRIMARY KEY ("id")
@@ -107,10 +109,8 @@ CREATE TABLE "FeedBack" (
 -- CreateTable
 CREATE TABLE "Wallet" (
     "id" SERIAL NOT NULL,
-    "credit" INTEGER NOT NULL DEFAULT 0,
+    "balance" INTEGER NOT NULL DEFAULT 0,
     "userId" INTEGER NOT NULL,
-    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "updatedAt" TIMESTAMP(3) NOT NULL,
 
     CONSTRAINT "Wallet_pkey" PRIMARY KEY ("id")
 );
@@ -129,6 +129,9 @@ CREATE UNIQUE INDEX "Voucher_code_key" ON "Voucher"("code");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "Coupon_code_key" ON "Coupon"("code");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "Points_userId_key" ON "Points"("userId");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "Wallet_userId_key" ON "Wallet"("userId");
