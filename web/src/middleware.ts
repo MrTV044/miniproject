@@ -37,6 +37,10 @@ export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
   const role = verifiedToken.role;
 
+  if (pathname.startsWith("/create-event") && role === "ORGANIZER") {
+    return NextResponse.next();
+  }
+
   if (
     (pathname.startsWith("/dashboard/organizer") && role === "ORGANIZER") ||
     (pathname.startsWith("/dashboard/user") && role === "CUSTOMER")
@@ -56,5 +60,5 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/dashboard/:path*"],
+  matcher: ["/dashboard/:path*", "/create-event/:path*"],
 };

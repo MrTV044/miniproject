@@ -101,6 +101,7 @@ export async function getSingleOrganizerStatistics(
         Order: true,
       },
     });
+
     res.status(200).json({ ok: true, data: response });
   } catch (error) {
     console.error(error);

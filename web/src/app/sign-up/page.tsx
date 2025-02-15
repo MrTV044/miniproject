@@ -54,9 +54,9 @@ export default function SignUp() {
       if (!response.ok) {
         return notify("Sign up failed");
       }
-      // clearForm();
+      clearForm();
       notify("Signup successful!");
-      // router.push("/login");
+      router.push("/login");
     } catch (error) {
       console.error(error);
     } finally {

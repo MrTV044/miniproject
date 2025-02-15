@@ -9,7 +9,9 @@ const router = express.Router();
 
 router.route("/organizer-events").get(verifyToken, GetOrganizerEvents);
 
-router.route("/single-event/:id").get(getSingleOrganizerStatistics);
+router
+  .route("/single-event/:id")
+  .get(verifyToken, roleGuard("ORGANIZER"), getSingleOrganizerStatistics);
 
 // router.route("/organizer-events").get(GetOrganizerEvents);
 
