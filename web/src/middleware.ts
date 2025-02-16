@@ -41,6 +41,10 @@ export async function middleware(request: NextRequest) {
     return NextResponse.next();
   }
 
+  if (pathname.startsWith("/transaction") && role === "CUSTOMER") {
+    return NextResponse.next();
+  }
+
   if (
     (pathname.startsWith("/dashboard/organizer") && role === "ORGANIZER") ||
     (pathname.startsWith("/dashboard/user") && role === "CUSTOMER")
@@ -60,5 +64,5 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/dashboard/:path*"],
+  matcher: ["/dashboard/:path*", "/create-event", "/transaction"],
 };
