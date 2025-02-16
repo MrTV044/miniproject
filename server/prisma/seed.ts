@@ -941,6 +941,9 @@ async function seed() {
         totalTicket: 1,
         userId,
         eventId,
+        createdAt: new Date(
+          Date.now() - Math.floor(Math.random() * 31536000000)
+        ),
       };
     });
 

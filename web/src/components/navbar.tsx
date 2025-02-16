@@ -1,41 +1,40 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import Link from "next/link";
 import { Menu, X } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
+
   interface User {
     role: string;
   }
 
-  const [user, setUser] = useState<User | null>(null);
-  const useLogout = () => {
-    useEffect(() => {
-      const logout = async () => {
-        try {
-          const response = await fetch("http://localhost:8000/api/v1/logout", {
-            method: "POST",
-            credentials: "include",
-            headers: {
-              "Content-Type": "application/json",
-            },
-          });
 
-          if (!response.ok) {
-            throw new Error("Logout failed");
-          }
+  const router = useRouter();
+  async function logout() {
+    try {
+      const response = await fetch("http://localhost:8000/api/v1/logout", {
+        method: "POST",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+() => setIsOpen(!isOpen)
 
-          console.log("Logout successful");
-        } catch (error) {
-          console.error("Error logging out:", error);
-        }
-      };
+      if (!response.ok) {
+        throw new Error("Logout failed");
+      }
 
-      logout();
-    }, []); // Run only once on mount
-  };
+      console.log("Logout successful");
+    } catch (error) {
+      console.error("Error logging out:", error);
+    }
+    router.push("/login");
+  }
 
   useEffect(() => {
     async function getCurrentUser() {
@@ -63,8 +62,10 @@ export default function Navbar() {
 
           {/* Hamburger Menu Button */}
           <button
-            className="md:hidden p-2 rounded focus:outline-none focus:ring-2 focus:ring-gray-300"
-            onClick={() => setIsOpen(!isOpen)}
+
+            className="p-3 rounded-full hover:bg-gray-200"
+            onClick={logout}
+
           >
             {isOpen ? <X size={28} /> : <Menu size={28} />}
           </button>
