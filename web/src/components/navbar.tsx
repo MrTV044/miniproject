@@ -1,17 +1,17 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { Menu, X } from "lucide-react";
 import { useRouter } from "next/navigation";
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
+  const [user, setUser] = useState<User | null>(null);
 
   interface User {
     role: string;
   }
-
 
   const router = useRouter();
   async function logout() {
@@ -23,7 +23,6 @@ export default function Navbar() {
           "Content-Type": "application/json",
         },
       });
-() => setIsOpen(!isOpen)
 
       if (!response.ok) {
         throw new Error("Logout failed");
@@ -33,6 +32,7 @@ export default function Navbar() {
     } catch (error) {
       console.error("Error logging out:", error);
     }
+    setIsOpen(!isOpen);
     router.push("/login");
   }
 
@@ -62,10 +62,8 @@ export default function Navbar() {
 
           {/* Hamburger Menu Button */}
           <button
-
             className="p-3 rounded-full hover:bg-gray-200"
             onClick={logout}
-
           >
             {isOpen ? <X size={28} /> : <Menu size={28} />}
           </button>
@@ -152,7 +150,7 @@ export default function Navbar() {
 
             <button
               className="p-3 rounded-full hover:bg-gray-200"
-              onClick={useLogout}
+              onClick={logout}
             >
               Log Out
             </button>
@@ -187,7 +185,7 @@ export default function Navbar() {
 
             <button
               className="p-3 w-full text-center hover:bg-gray-200"
-              onClick={useLogout}
+              onClick={logout}
             >
               Log Out
             </button>
@@ -242,7 +240,7 @@ export default function Navbar() {
 
             <button
               className="p-3 rounded-full hover:bg-gray-200"
-              onClick={useLogout}
+              onClick={logout}
             >
               Log Out
             </button>
@@ -283,7 +281,7 @@ export default function Navbar() {
 
             <button
               className="p-3 w-full text-center hover:bg-gray-200"
-              onClick={useLogout}
+              onClick={logout}
             >
               Log Out
             </button>
