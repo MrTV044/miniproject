@@ -11,6 +11,7 @@ export default function TicketBooking() {
   const [agreeTerms, setAgreeTerms] = useState(false);
   const [agreePrivacy, setAgreePrivacy] = useState(false);
   const [ticketQuantity, setTicketQuantity] = useState(1);
+
   interface Event {
     id: string;
     name: string;
@@ -63,10 +64,8 @@ export default function TicketBooking() {
 
       if (response.ok) {
         console.log("Order berhasil dibuat:", data);
-        // Tambahkan logika untuk menampilkan pesan sukses atau mengarahkan pengguna ke halaman lain
       } else {
         console.error("Error saat membuat order:", data.message);
-        // Tambahkan logika untuk menampilkan pesan kesalahan
       }
     } catch (error) {
       console.error("Terjadi kesalahan:", error);
@@ -84,8 +83,8 @@ export default function TicketBooking() {
         <div className="md:col-span-2">
           <h2 className="text-xl font-semibold mb-4">Order Details</h2>
           <div className="border rounded-lg p-5 shadow-sm">
-            <div className="flex gap-3 rounded-xl overflow-hidden">
-              <div className="relative h-[175px] w-[370px] rounded-xl overflow-hidden">
+            <div className="flex flex-col md:flex-row gap-3 rounded-xl overflow-hidden">
+              <div className="relative h-[175px] w-full md:w-[370px] rounded-xl overflow-hidden">
                 {event && (
                   <Image
                     src={event.image}
@@ -95,7 +94,7 @@ export default function TicketBooking() {
                   />
                 )}
               </div>
-              <div>
+              <div className="flex flex-col justify-center">
                 <h3 className="text-lg font-semibold">{event?.name}</h3>
                 <p>{event && format(new Date(event.date), "yyyy-MMM-dd")}</p>
                 <p>

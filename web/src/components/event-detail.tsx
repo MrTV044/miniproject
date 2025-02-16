@@ -11,10 +11,11 @@ export default async function EventDetail({ id }: { id: string }) {
     style: "currency",
     currency: "IDR",
   });
+
   return (
-    <section className="py-10">
-      <div className="flex justify-center gap-10">
-        <div className="relative h-[350px] w-[750px] rounded-3xl overflow-hidden">
+    <section className="py-10 px-4 md:px-10">
+      <div className="flex flex-col md:flex-row justify-center gap-10">
+        <div className="relative h-[250px] md:h-[350px] w-full md:w-[750px] rounded-3xl overflow-hidden">
           <Image
             src={eventDetail.data.image}
             alt=""
@@ -24,7 +25,7 @@ export default async function EventDetail({ id }: { id: string }) {
         </div>
 
         <div>
-          <div className="shadow-[0_10px_15px_rgba(0,0,0,0.25)] p-4 rounded-2xl h-fit w-[300px]">
+          <div className="shadow-[0_10px_15px_rgba(0,0,0,0.25)] p-4 rounded-2xl h-fit w-full md:w-[300px]">
             <span className="font-semibold pb-5 text-[18px]">
               {eventDetail.data.name}
             </span>
@@ -65,7 +66,7 @@ export default async function EventDetail({ id }: { id: string }) {
             </div>
           </div>
 
-          <div className="shadow-[0_10px_15px_rgba(0,0,0,0.25)] mt-[50px] rounded-lg  h-fit w-[400px] p-3">
+          <div className="shadow-[0_10px_15px_rgba(0,0,0,0.25)] mt-[50px] rounded-lg h-fit w-full md:w-[400px] p-3">
             <div className="flex gap-3 items-center mx-3 mt-3">
               <div className="relative h-[50px] w-[70px]">
                 <Image src="/ticket.svg" alt="" fill className="object-cover" />
@@ -96,9 +97,9 @@ export default async function EventDetail({ id }: { id: string }) {
         </div>
       </div>
 
-      <div className="ml-[150px]">
+      <div className="mt-10 md:ml-[150px]">
         <h2 className="mb-3 font-black">Description</h2>
-        <p className="w-[700px]">{eventDetail.data.description}</p>
+        <p className="w-full md:w-[700px]">{eventDetail.data.description}</p>
       </div>
     </section>
   );
