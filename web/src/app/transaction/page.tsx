@@ -11,18 +11,17 @@ export default function TicketBooking() {
   const [agreeTerms, setAgreeTerms] = useState(false);
   const [agreePrivacy, setAgreePrivacy] = useState(false);
   const [ticketQuantity, setTicketQuantity] = useState(1);
-
-  const searchParams = useSearchParams();
-  const id = searchParams.get("id");
-
   interface Event {
+    id: string;
     name: string;
-    prices: string;
-    image: string;
     date: string;
+    image: string;
+    prices: number;
   }
 
   const [event, setEvent] = useState<Event | null>(null);
+  const searchParams = useSearchParams();
+  const id = searchParams.get("id");
   const ticketPrice = event ? Number(event.prices) : 0;
 
   useEffect(() => {
@@ -41,16 +40,37 @@ export default function TicketBooking() {
     if (id) getDetail();
   }, [id]);
 
-  const handleBooking = () => {
-    console.log("Order Details:", {
-      point,
-      voucher,
-      coupon,
-      agreeTerms,
-      agreePrivacy,
-      ticketQuantity,
-      totalPayment: ticketQuantity * ticketPrice,
-    });
+  const handleBooking = async () => {
+    const orderDetails = {
+      eventId: id,
+      voucherCode: voucher,
+      couponCode: coupon,
+      points: point,
+    };
+
+    try {
+      const response = await fetch("http://localhost:8000/api/v1/order", {
+        credentials: "include",
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+        body: JSON.stringify(orderDetails),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        console.log("Order berhasil dibuat:", data);
+        // Tambahkan logika untuk menampilkan pesan sukses atau mengarahkan pengguna ke halaman lain
+      } else {
+        console.error("Error saat membuat order:", data.message);
+        // Tambahkan logika untuk menampilkan pesan kesalahan
+      }
+    } catch (error) {
+      console.error("Terjadi kesalahan:", error);
+    }
   };
 
   const formatter = new Intl.NumberFormat("id-ID", {

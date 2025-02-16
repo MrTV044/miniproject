@@ -64,9 +64,7 @@ export default function Navbar() {
           <button
             className="p-3 rounded-full hover:bg-gray-200"
             onClick={logout}
-          >
-            {isOpen ? <X size={28} /> : <Menu size={28} />}
-          </button>
+          ></button>
 
           {/* Desktop Menu */}
           <ul className="hidden md:flex gap-5 font-semibold">
