@@ -1,11 +1,11 @@
-
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 
 const EventDashboard = () => {
   const [activeContent, setActiveContent] = useState("dashboard"); // State untuk konten aktif
   const [eventView, setEventView] = useState("active"); // State untuk memilih antara Event Aktif dan Event Lalu Lintas
+  const [isSidebarOpen, setIsSidebarOpen] = useState(true); // State untuk mengatur sidebar
 
   // Daftar item sidebar
   const sidebarItems = [
@@ -15,8 +15,9 @@ const EventDashboard = () => {
   ];
 
   // Fungsi untuk mengubah konten aktif
-  const handleSidebarClick = (value) => {
+  const handleSidebarClick = (value: string) => {
     setActiveContent(value);
+    setIsSidebarOpen(false); // Menutup sidebar setelah memilih item
   };
 
   // Fungsi untuk merender konten berdasarkan item yang dipilih
@@ -79,9 +80,13 @@ const EventDashboard = () => {
   };
 
   return (
-    <div className="flex h-screen">
+    <div className="flex flex-col md:flex-row h-screen">
       {/* Sidebar */}
-      <aside className="w-64 bg-gray-800 text-white p-6">
+      <aside
+        className={`w-full md:w-64 bg-gray-800 text-white p-6 ${
+          isSidebarOpen ? "block" : "hidden md:block"
+        }`}
+      >
         <h2 className="text-xl font-bold mb-4">Dashboard</h2>
         <nav className="space-y-2">
           {sidebarItems.map((item) => (
@@ -108,6 +113,12 @@ const EventDashboard = () => {
             placeholder="Cari Event Saya"
             className="border border-gray-300 rounded p-2"
           />
+          <button
+            className="md:hidden p-2 bg-blue-600 text-white rounded"
+            onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+          >
+            {isSidebarOpen ? "Sembunyikan Menu" : "Tampilkan Menu"}
+          </button>
         </header>
 
         <div className="bg-white p-4 rounded shadow">

@@ -1,10 +1,9 @@
 export default function FooterSection() {
   return (
-    <section className="flex gap-[100px] bg-[#1e0a3b] text-white h-[500px] justify-center p-20">
-      <div>
+    <section className="flex flex-col md:flex-row gap-10 bg-[#1e0a3b] text-white h-auto justify-center p-10">
+      <div className="flex-1">
         <div className="pb-2 text-[20px] font-semibold">About Ticketing</div>
-
-        <ul>
+        <ul className="list-disc pl-5">
           <li>Sign In</li>
           <li>Pricing</li>
           <li>View Events</li>
@@ -12,12 +11,11 @@ export default function FooterSection() {
         </ul>
       </div>
 
-      <div>
+      <div className="flex-1">
         <div className="pb-2 text-[20px] font-semibold">
           Celebrate Your Event
         </div>
-
-        <ul>
+        <ul className="list-disc pl-5">
           <li>How to Prepare an Event</li>
           <li>How to Create a Competition Event</li>
           <li>How to Publish an Event</li>
@@ -26,10 +24,9 @@ export default function FooterSection() {
         </ul>
       </div>
 
-      <div>
+      <div className="flex-1">
         <div className="pb-2 text-[20px] font-semibold">Event Location</div>
-
-        <ul>
+        <ul className="list-disc pl-5">
           <li>Jakarta</li>
           <li>Bandung</li>
           <li>Yogyakarta</li>
@@ -40,10 +37,9 @@ export default function FooterSection() {
         </ul>
       </div>
 
-      <div>
+      <div className="flex-1">
         <div className="pb-2 text-[20px] font-semibold">Event Inspiration</div>
-
-        <ul>
+        <ul className="list-disc pl-5">
           <li>Festival</li>
           <li>Concert</li>
         </ul>
