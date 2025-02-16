@@ -3,9 +3,11 @@
 import { useState } from "react";
 import Link from "next/link";
 import { Menu, X } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
+  const router = useRouter();
   async function logout() {
     try {
       const response = await fetch("http://localhost:8000/api/v1/logout", {
@@ -24,6 +26,7 @@ export default function Navbar() {
     } catch (error) {
       console.error("Error logging out:", error);
     }
+    router.push("/login");
   }
 
   return (
