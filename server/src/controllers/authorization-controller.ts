@@ -6,7 +6,6 @@ import { Role } from "@prisma/client";
 
 export async function register(req: Request, res: Response) {
   try {
-    console.log("Hit");
     const { fullname, email, password, confirmPassword, referral, role } =
       req.body;
 

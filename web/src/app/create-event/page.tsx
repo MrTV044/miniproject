@@ -47,6 +47,7 @@ export default function CreateEventPage() {
     const response = await fetch("http://localhost:8000/api/v1/events", {
       method: "POST",
       body: formData,
+      credentials: "include",
     });
 
     if (response.ok) {
@@ -59,7 +60,9 @@ export default function CreateEventPage() {
   return (
     <div className="max-w-4xl mx-auto p-5">
       <h1 className="text-2xl font-bold mb-5">Upload Image/Poster/Banner</h1>
-      <p className="mb-5">Recommended size: 724 x 340px and no more than 2MB</p>
+      <p className="mb-5">
+        Recommended size: 724 x 340px, no more than 2MB and should PNG
+      </p>
 
       <form onSubmit={handleSubmit}>
         <div className="mb-5">
