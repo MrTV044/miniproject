@@ -43,15 +43,17 @@ export async function register(req: Request, res: Response) {
       const referralOwner = await prisma.user.findFirst({
         where: { referral: referral },
       });
-
-      const coupon = await prisma.coupon.create({
-        data: {
-          discount: 10000,
-          code: `${Math.random()}`,
-          userId: user?.id ?? 0,
-          expirationDate: new Date(date.setMonth(date.getMonth() + 3)),
-        },
-      });
+      
+      if (role === "CUSTOMER") {
+        await prisma.coupon.create({
+          data: {
+            discount: 10000,
+            code: `${Math.random()}`,
+            userId: user?.id ?? 0,
+            expirationDate: new Date(date.setMonth(date.getMonth() + 3)),
+          },
+        });
+      }
 
       if (referralOwner && role === "CUSTOMER") {
         const points = await prisma.points.create({
