@@ -6,6 +6,11 @@ import { Menu, X } from "lucide-react";
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
+  interface User {
+    role: string;
+  }
+
+  const [user, setUser] = useState<User | null>(null);
   const useLogout = () => {
     useEffect(() => {
       const logout = async () => {
@@ -32,88 +37,260 @@ export default function Navbar() {
     }, []); // Run only once on mount
   };
 
-  return (
-    <nav>
-      <div className="flex justify-between px-10 font-InterThigt items-center">
-        <div className="p-3 text-[40px] font-black text-orange-600">
-          <Link href="/">QuickTix</Link>
+  useEffect(() => {
+    async function getCurrentUser() {
+      try {
+        const response = await fetch("http://localhost:8000/api/v1/user", {
+          credentials: "include",
+        });
+
+        const user = await response.json();
+        setUser(user.data);
+      } catch (error) {
+        console.error(error);
+      }
+    }
+    getCurrentUser();
+  }, []);
+
+  if (!user) {
+    return (
+      <nav>
+        <div className="flex justify-between px-10 font-InterThigt items-center">
+          <div className="p-3 text-[40px] font-black text-orange-600">
+            <Link href="/">QuickTix</Link>
+          </div>
+
+          {/* Hamburger Menu Button */}
+          <button
+            className="md:hidden p-2 rounded focus:outline-none focus:ring-2 focus:ring-gray-300"
+            onClick={() => setIsOpen(!isOpen)}
+          >
+            {isOpen ? <X size={28} /> : <Menu size={28} />}
+          </button>
+
+          {/* Desktop Menu */}
+          <ul className="hidden md:flex gap-5 font-semibold">
+            <Link href="/" className="p-3 rounded-full hover:bg-gray-200">
+              Home
+            </Link>
+
+            <Link href="/login" className="p-3 rounded-full hover:bg-gray-200">
+              Log In
+            </Link>
+            <Link
+              href="/sign-up"
+              className="p-3 rounded-full hover:bg-gray-200"
+            >
+              Sign Up
+            </Link>
+          </ul>
         </div>
 
-        {/* Hamburger Menu Button */}
-        <button
-          className="md:hidden p-2 rounded focus:outline-none focus:ring-2 focus:ring-gray-300"
-          onClick={() => setIsOpen(!isOpen)}
-        >
-          {isOpen ? <X size={28} /> : <Menu size={28} />}
-        </button>
+        {/* Mobile Menu */}
+        {isOpen && (
+          <ul className="md:hidden flex flex-col items-center gap-4 py-4 bg-white shadow-lg">
+            <Link href="/" className="p-3 w-full text-center hover:bg-gray-200">
+              Home
+            </Link>
 
-        {/* Desktop Menu */}
-        <ul className="hidden md:flex gap-5 font-semibold">
-          <Link href="/" className="p-3 rounded-full hover:bg-gray-200">
-            Home
-          </Link>
+            <Link
+              href="/login"
+              className="p-3 w-full text-center hover:bg-gray-200"
+            >
+              Log In
+            </Link>
+            <Link
+              href="/sign-up"
+              className="p-3 w-full text-center hover:bg-gray-200"
+            >
+              Sign Up
+            </Link>
+          </ul>
+        )}
+      </nav>
+    );
+  } else if (user.role === "CUSTOMER") {
+    return (
+      <nav>
+        <div className="flex justify-between px-10 font-InterThigt items-center">
+          <div className="p-3 text-[40px] font-black text-orange-600">
+            <Link href="/">QuickTix</Link>
+          </div>
 
-          <Link
-            href="/dashboard/user"
-            className={`${
-              user.role === "CUSTOMER" ? "hidden" : "flex"
-            } p-3 rounded-full hover:bg-gray-200`}
-          >
-            Dashboard
-          </Link>
-
-          <Link
-            href="/create-event"
-            className="p-3 rounded-full hover:bg-gray-200"
-          >
-            Create Event
-          </Link>
-          <Link href="/login" className="p-3 rounded-full hover:bg-gray-200">
-            Log In
-          </Link>
-          <Link href="/sign-up" className="p-3 rounded-full hover:bg-gray-200">
-            Sign Up
-          </Link>
-
+          {/* Hamburger Menu Button */}
           <button
-            className="p-3 rounded-full hover:bg-gray-200"
-            onClick={useLogout}
+            className="md:hidden p-2 rounded focus:outline-none focus:ring-2 focus:ring-gray-300"
+            onClick={() => setIsOpen(!isOpen)}
           >
-            Log Out
+            {isOpen ? <X size={28} /> : <Menu size={28} />}
           </button>
-        </ul>
-      </div>
 
-      {/* Mobile Menu */}
-      {isOpen && (
-        <ul className="md:hidden flex flex-col items-center gap-4 py-4 bg-white shadow-lg">
-          <Link href="/" className="p-3 w-full text-center hover:bg-gray-200">
-            Home
-          </Link>
-          <Link
-            href="/create-event"
-            className={`${
-              user.role === "CUSTOMER" ? "hidden" : "flex"
-            } p-3 w-full text-center hover:bg-gray-200`}
+          {/* Desktop Menu */}
+          <ul className="hidden md:flex gap-5 font-semibold">
+            <Link href="/" className="p-3 rounded-full hover:bg-gray-200">
+              Home
+            </Link>
+
+            <Link
+              href="/dashboard/user"
+              className="p-3 rounded-full hover:bg-gray-200"
+            >
+              Dashboard
+            </Link>
+
+            <Link href="/login" className="p-3 rounded-full hover:bg-gray-200">
+              Log In
+            </Link>
+            <Link
+              href="/sign-up"
+              className="p-3 rounded-full hover:bg-gray-200"
+            >
+              Sign Up
+            </Link>
+
+            <button
+              className="p-3 rounded-full hover:bg-gray-200"
+              onClick={useLogout}
+            >
+              Log Out
+            </button>
+          </ul>
+        </div>
+
+        {/* Mobile Menu */}
+        {isOpen && (
+          <ul className="md:hidden flex flex-col items-center gap-4 py-4 bg-white shadow-lg">
+            <Link href="/" className="p-3 w-full text-center hover:bg-gray-200">
+              Home
+            </Link>
+
+            <Link
+              href="/dashboard/user"
+              className="p-3 w-full text-center hover:bg-gray-200"
+            >
+              Dashboard
+            </Link>
+            <Link
+              href="/login"
+              className="p-3 w-full text-center hover:bg-gray-200"
+            >
+              Log In
+            </Link>
+            <Link
+              href="/sign-up"
+              className="p-3 w-full text-center hover:bg-gray-200"
+            >
+              Sign Up
+            </Link>
+
+            <button
+              className="p-3 w-full text-center hover:bg-gray-200"
+              onClick={useLogout}
+            >
+              Log Out
+            </button>
+          </ul>
+        )}
+      </nav>
+    );
+  } else {
+    return (
+      <nav>
+        <div className="flex justify-between px-10 font-InterThigt items-center">
+          <div className="p-3 text-[40px] font-black text-orange-600">
+            <Link href="/">QuickTix</Link>
+          </div>
+
+          {/* Hamburger Menu Button */}
+          <button
+            className="md:hidden p-2 rounded focus:outline-none focus:ring-2 focus:ring-gray-300"
+            onClick={() => setIsOpen(!isOpen)}
           >
-            Create Event
-          </Link>
-          <Link
-            href="/login"
-            className="p-3 w-full text-center hover:bg-gray-200"
-          >
-            Log In
-          </Link>
-          <Link
-            href="/sign-up"
-            className="p-3 w-full text-center hover:bg-gray-200"
-          >
-            Sign Up
-          </Link>
-        </ul>
-      )}
-    </nav>
-  );
+            {isOpen ? <X size={28} /> : <Menu size={28} />}
+          </button>
+
+          {/* Desktop Menu */}
+          <ul className="hidden md:flex gap-5 font-semibold">
+            <Link href="/" className="p-3 rounded-full hover:bg-gray-200">
+              Home
+            </Link>
+
+            <Link
+              href="/dashboard/user"
+              className="p-3 rounded-full hover:bg-gray-200"
+            >
+              Dashboard
+            </Link>
+
+            <Link
+              href="/create-event"
+              className="p-3 rounded-full hover:bg-gray-200"
+            >
+              Create Event
+            </Link>
+            <Link href="/login" className="p-3 rounded-full hover:bg-gray-200">
+              Log In
+            </Link>
+            <Link
+              href="/sign-up"
+              className="p-3 rounded-full hover:bg-gray-200"
+            >
+              Sign Up
+            </Link>
+
+            <button
+              className="p-3 rounded-full hover:bg-gray-200"
+              onClick={useLogout}
+            >
+              Log Out
+            </button>
+          </ul>
+        </div>
+
+        {/* Mobile Menu */}
+        {isOpen && (
+          <ul className="md:hidden flex flex-col items-center gap-4 py-4 bg-white shadow-lg">
+            <Link href="/" className="p-3 w-full text-center hover:bg-gray-200">
+              Home
+            </Link>
+            <Link
+              href="/dashboard/user"
+              className="p-3 w-full text-center hover:bg-gray-200"
+            >
+              Dashboard
+            </Link>
+            <Link
+              href="/create-event"
+              className="p-3 w-full text-center hover:bg-gray-200"
+            >
+              Create Event
+            </Link>
+            <Link
+              href="/login"
+              className="p-3 w-full text-center hover:bg-gray-200"
+            >
+              Log In
+            </Link>
+
+            <Link
+              href="/sign-up"
+              className="p-3 w-full text-center hover:bg-gray-200"
+            >
+              Sign Up
+            </Link>
+
+            <button
+              className="p-3 w-full text-center hover:bg-gray-200"
+              onClick={useLogout}
+            >
+              Log Out
+            </button>
+          </ul>
+        )}
+      </nav>
+    );
+  }
 }
 
 {
@@ -124,6 +301,6 @@ export default function Navbar() {
             } p-3 rounded-full  hover:hover:bg-gray-200`}
           >
             Create Event
-
+z<<<<<<< HEAD
           </Link> */
 }

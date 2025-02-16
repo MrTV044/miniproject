@@ -10,7 +10,6 @@ export async function verifyToken(
 ) {
   try {
     const token = req.cookies.accessToken;
-    console.log(token, "test token"); 
 
     if (!token) {
       res.status(401).json({ message: "Token is required!!!!" });

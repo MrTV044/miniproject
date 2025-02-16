@@ -100,6 +100,8 @@ export async function CreateOrder(
 
     //Step 4
     if (couponCode && finalPrice > 0) {
+      console.log(req.user.id);
+      console.log(couponCode);
       const validCoupon = await prisma.coupon.findUnique({
         where: {
           code: couponCode,

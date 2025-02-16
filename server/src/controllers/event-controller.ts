@@ -55,8 +55,8 @@ export async function createEvent(
       ticketSlot,
       dateTime,
       eventType,
-      voucherCode, // Tambahkan ini
-      voucherDiscount, // Tambahkan ini
+      // voucherCode, // Tambahkan ini
+      // voucherDiscount, // Tambahkan ini
     } = req.body;
 
     if (
@@ -97,20 +97,20 @@ export async function createEvent(
       },
     });
 
-    // Jika voucher disediakan, buat voucher
-    if (voucherCode && voucherDiscount) {
-      const expiredDate = new Date(createEvent.date); // Ambil tanggal event
-      expiredDate.setHours(expiredDate.getHours() + 1); // Tambahkan satu jam
+    // // Jika voucher disediakan, buat voucher
+    // if (voucherCode && voucherDiscount) {
+    //   const expiredDate = new Date(createEvent.date); // Ambil tanggal event
+    //   expiredDate.setHours(expiredDate.getHours() + 1); // Tambahkan satu jam
 
-      await prisma.voucher.create({
-        data: {
-          code: voucherCode,
-          discount: +voucherDiscount,
-          eventId: createEvent.id,
-          expiredDate: expiredDate.toISOString(), // Set expiredDate ke satu jam setelah event
-        },
-      });
-    }
+    //   await prisma.voucher.create({
+    //     data: {
+    //       code: voucherCode,
+    //       discount: +voucherDiscount,
+    //       eventId: createEvent.id,
+    //       expiredDate: expiredDate.toISOString(), // Set expiredDate ke satu jam setelah event
+    //     },
+    //   });
+    // }
 
     res.status(201).json({ ok: true, data: createEvent });
   } catch (error) {
