@@ -55,7 +55,9 @@ export default function Navbar() {
 
           <Link
             href="/dashboard/user"
-            className="p-3 rounded-full hover:bg-gray-200"
+            className={`${
+              user.role === "CUSTOMER" ? "hidden" : "flex"
+            } p-3 rounded-full hover:bg-gray-200`}
           >
             Dashboard
           </Link>
@@ -90,7 +92,9 @@ export default function Navbar() {
           </Link>
           <Link
             href="/create-event"
-            className="p-3 w-full text-center hover:bg-gray-200"
+            className={`${
+              user.role === "CUSTOMER" ? "hidden" : "flex"
+            } p-3 w-full text-center hover:bg-gray-200`}
           >
             Create Event
           </Link>
@@ -120,6 +124,6 @@ export default function Navbar() {
             } p-3 rounded-full  hover:hover:bg-gray-200`}
           >
             Create Event
-z<<<<<<< HEAD
+
           </Link> */
 }

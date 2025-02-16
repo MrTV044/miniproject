@@ -202,6 +202,13 @@ async function seed() {
       },
     });
 
+    const walletOrganizer1 = await prisma.wallet.create({
+      data: {
+        balance: 0,
+        userId: user11.id,
+      },
+    });
+
     /* -------------------------------------------------------------------------- */
     /*                                Create Coupon                               */
     /* -------------------------------------------------------------------------- */
@@ -210,6 +217,15 @@ async function seed() {
         code: "123ABC",
         discount: 10,
         userId: user1.id,
+        expirationDate: new Date(),
+      },
+    });
+
+    const coupon2 = await prisma.coupon.create({
+      data: {
+        code: "456ABC",
+        discount: 10,
+        userId: user2.id,
         expirationDate: new Date(),
       },
     });
@@ -975,8 +991,6 @@ async function seed() {
           orderId: orderId,
         },
       });
-
-      console.log(`Tiket dibuat:`, ticket);
     }
   } catch (error) {
     console.error(error);

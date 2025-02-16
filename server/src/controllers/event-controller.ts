@@ -29,7 +29,6 @@ export async function getSingleEvent(
   res: Response,
   next: NextFunction
 ) {
-  console.log(req.params);
   try {
     const eventDetail = await prisma.event.findUnique({
       where: { id: +req.params.id },
@@ -56,6 +55,8 @@ export async function createEvent(
       ticketSlot,
       dateTime,
       eventType,
+      voucherCode, // Tambahkan ini
+      voucherDiscount, // Tambahkan ini
     } = req.body;
 
     if (
@@ -95,6 +96,21 @@ export async function createEvent(
         eventType,
       },
     });
+
+    // Jika voucher disediakan, buat voucher
+    if (voucherCode && voucherDiscount) {
+      const expiredDate = new Date(createEvent.date); // Ambil tanggal event
+      expiredDate.setHours(expiredDate.getHours() + 1); // Tambahkan satu jam
+
+      await prisma.voucher.create({
+        data: {
+          code: voucherCode,
+          discount: +voucherDiscount,
+          eventId: createEvent.id,
+          expiredDate: expiredDate.toISOString(), // Set expiredDate ke satu jam setelah event
+        },
+      });
+    }
 
     res.status(201).json({ ok: true, data: createEvent });
   } catch (error) {

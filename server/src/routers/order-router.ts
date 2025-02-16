@@ -1,8 +1,12 @@
 import express from "express";
-import { CreateOrder, getOrder } from "../controllers/order-controller";
+import { CreateOrder, getAllOrder } from "../controllers/order-controller";
+import { roleGuard, verifyToken } from "../middleware/authorization-middleware";
 
 const router = express.Router();
 
-router.route("/").get(getOrder).post(CreateOrder);
+router
+  .route("/")
+  .get(verifyToken, roleGuard("CUSTOMER"), getAllOrder)
+  .post(verifyToken, roleGuard("CUSTOMER"), CreateOrder);
 
 export default router;

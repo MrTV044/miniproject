@@ -1,7 +1,21 @@
 import { Request, Response, NextFunction } from "express";
 import prisma from "../configs/prisma";
+import { date } from "zod";
 
 export async function getAllOrder(
+  req: Request,
+  res: Response,
+  next: NextFunction
+) {
+  try {
+    const order = await prisma.order.findMany();
+    res.status(200).json({ ok: true, data: order });
+  } catch (error) {
+    next(error);
+  }
+}
+
+export async function CreateOrder(
   req: Request,
   res: Response,
   next: NextFunction
@@ -17,7 +31,7 @@ export async function getAllOrder(
   8. Record transaction
   */
   try {
-    const { eventId, points, voucherCode, couponCode } = req.body;
+    const { eventId, voucherCode, couponCode, points } = req.body;
 
     if (!req.user) {
       res.status(401).json({ message: "Please login first" });
@@ -133,6 +147,60 @@ export async function getAllOrder(
       res.status(400).json({ message: "Insufficient wallet balance" });
       return;
     }
+
+    //Step 7
+    await prisma.wallet.update({
+      where: { userId: req.user.id },
+      data: { balance: { decrement: finalPrice } },
+    });
+
+    const wallet = await prisma.wallet.findUnique({
+      where: { userId: event.organizerId },
+    });
+
+    if (!wallet) {
+      throw new Error(
+        `Dompet tidak ditemukan untuk ID pengguna: ${event.organizerId}`
+      );
+    }
+
+    await prisma.wallet.update({
+      where: { userId: event.organizerId },
+      data: { balance: { increment: finalPrice } },
+    });
+
+    //Step 8
+    const order = await prisma.order.create({
+      data: {
+        userId: req.user.id,
+        eventId: event.id,
+        totalPrice: finalPrice,
+        totalTicket: 1,
+      },
+    });
+
+    await prisma.event.update({
+      where: { id: event.id },
+      data: { ticketSlot: { decrement: 1 } },
+    });
+
+    await prisma.event.update({
+      where: { id: event.id },
+      data: { ticketSold: { increment: 1 } },
+    });
+
+    const ticket = await prisma.ticket.create({
+      data: {
+        ticketCode: `TICKET-${event.id}-%${String(new Date().getTime()).slice(
+          0,
+          5
+        )}`,
+        ticketTotal: finalPrice,
+        orderId: order.id,
+      },
+    });
+
+    res.status(201).json({ ok: true, data: { order, ticket } });
   } catch (error) {
     next(error);
   }

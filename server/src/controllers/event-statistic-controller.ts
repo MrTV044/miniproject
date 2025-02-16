@@ -50,7 +50,7 @@ export async function GetOrganizerEvents(
         price: event.prices.toLocaleString(),
         date: event.date,
         totalSingleEventRevenue: (
-          event.prices * event.ticketSold
+          +event.prices * event.ticketSold
         ).toLocaleString(),
         totalTicketSold: event.ticketSold,
       };
